@@ -54,10 +54,11 @@
 			</div>
 			<div class="kt-grid__item kt-grid__item--fluid kt-wizard-v3__wrapper">
 				<!--begin: Form Wizard Form-->
-				<form style="width: 100% !important;" class="kt-form px-5 w-full" id="kt_form">
+				<form style="width: 100% !important;" enctype="multipart/form-data" method="POST"
+					action="<?= base_url('request/data-request/store') ?>" class="kt-form px-5 w-full" id="kt_form">
 					<!--begin: Form Wizard Step 1-->
 					<div class="kt-wizard-v3__content" data-ktwizard-type="step-content" data-ktwizard-state="current">
-						<div class="kt-heading kt-heading--md border-bottom pb-2">Basic Information</div>
+						<div class="kt-heading kt-heading--md border-bottom pb-2">Please enter basic information</div>
 						<div class="kt-form__section kt-form__section--first">
 							<div class="kt-wizard-v3__form">
 								<div class="form-group row">
@@ -113,15 +114,15 @@
 											<div class="row mb-2 participant-form">
 												<div class="col-4">
 													<input class="form-control" type="text" placeholder="Name"
-														class="participant_name" name="participant_name">
+														class="participant_name" name="participant_name[]">
 												</div>
 												<div class="col-4">
 													<input class="form-control" type="text" placeholder="Email"
-														class="participant_email" name="participant_email">
+														class="participant_email" name="participant_email[]">
 												</div>
 												<div class="col-4">
 													<input class="form-control" type="text" placeholder="Title"
-														class="participant_title" name="participant_title">
+														class="participant_title" name="participant_title[]">
 												</div>
 											</div>
 										</div>
@@ -338,8 +339,8 @@
 								</div>
 								<div class="form-group row">
 									<label for="example-search-input" class="col-md-3 col-form-label">
-                                        Special Instruction
-                                    </label>
+										Special Instruction
+									</label>
 									<div class="col-md-9">
 										<textarea class="form-control" name="special_instructions"
 											id="special_instructions" rows="2"></textarea>
@@ -352,53 +353,88 @@
 
 					<!--begin: Form Wizard Step 2-->
 					<div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
-						<div class="kt-heading kt-heading--md">Enter the Details of your
-							Delivery</div>
+						<div class="kt-heading kt-heading--md border-bottom pb-2">Please enter destination details</div>
 						<div class="kt-form__section kt-form__section--first">
 							<div class="kt-wizard-v3__form">
-								<div class="form-group">
-									<label>Package Details</label>
-									<input type="text" class="form-control" name="package" placeholder="Package Details"
-										value="Complete Workstation (Monitor, Computer, Keyboard & Mouse)">
-									<span class="form-text text-muted">Please enter your Pakcage
-										Details.</span>
+								<div class="destinations-lists">
+									<div class="destination pb-2 mb-5 border-bottom">
+										<h5 class="mb-3">1st Destination</h5>
+										<div class="form-group row">
+											<label for="example-search-input"
+												class="col-md-3 col-form-label">City/country</label>
+											<div class="col-md-9">
+												<input placeholder="Enter city/country" class="form-control" type="text"
+													name="destination_city[]">
+											</div>
+										</div>
+										<div class="form-group row">
+											<label for="example-search-input" class="col-md-3 col-form-label">Departure
+												date</label>
+											<div class="col-md-9">
+												<input class="form-control" type="date"
+													name="destination_departure_date[]">
+											</div>
+										</div>
+										<div class="form-group row">
+											<label for="example-search-input" class="col-md-3 col-form-label">Project
+												Number</label>
+											<div class="col-md-9">
+												<input maxlength="9" placeholder="1297.0446" class="form-control"
+													type="text" name="project_number[]">
+											</div>
+										</div>
+										<div class="form-group row">
+											<label for="example-search-input" class="col-md-3 col-form-label">Budget
+												Monitor</label>
+											<div class="col-md-9">
+												<input value="Nico Hardiyanto" class="form-control" type="text"
+													name="destination_budget_monitor[]">
+											</div>
+										</div>
+										<div class="form-group row">
+											<label for="example-search-input"
+												class="col-md-3 col-form-label">Lodging</label>
+											<div class="col-md-9">
+												<input placeholder="Estimate lodging cost" class="form-control lodging"
+													type="number" name="lodging[]">
+											</div>
+										</div>
+										<div class="form-group row">
+											<label for="example-search-input"
+												class="col-md-3 col-form-label">Meals</label>
+											<div class="col-md-9">
+												<input placeholder="Input M&IE standard cost" class="form-control meals" type="number" name="meals[]">
+											</div>
+										</div>
+										<div class="form-group row">
+											<label for="example-search-input" class="col-md-3 col-form-label">Total
+												(lodging + meals)</label>
+											<div class="col-md-9">
+												<input disabled class="form-control meals_lodging_total" type="number"
+													name="meals_lodging_total[]">
+											</div>
+										</div>
+										<div class="form-group row">
+											<label for="example-search-input"
+												class="col-md-3 col-form-label">Night</label>
+											<div class="col-md-9">
+												<input placeholder="# of nights" class="form-control night" type="number" name="night[]">
+											</div>
+										</div>
+										<div class="form-group row">
+											<label for="example-search-input"
+												class="col-md-3 col-form-label">Total</label>
+											<div class="col-md-9">
+												<input disabled class="form-control total" type="number" name="total[]">
+											</div>
+										</div>
+									</div>
 								</div>
-								<div class="form-group">
-									<label>Package Weight in KG</label>
-									<input type="text" class="form-control" name="weight" placeholder="Package Weight"
-										value="25">
-									<span class="form-text text-muted">Please enter your Package
-										Weight in KG.</span>
-								</div>
-								<div class="kt-wizard-v3__form-label">Package Dimensions</div>
-								<div class="row">
-									<div class="col-xl-4">
-										<div class="form-group">
-											<label>Package Width in CM</label>
-											<input type="text" class="form-control" name="width"
-												placeholder="Package Width" value="110">
-											<span class="form-text text-muted">Please enter your
-												Package Width in CM.</span>
-										</div>
-									</div>
-									<div class="col-xl-4">
-										<div class="form-group">
-											<label>Package Height in CM</label>
-											<input type="text" class="form-control" name="height"
-												placeholder="Package Length" value="90">
-											<span class="form-text text-muted">Please enter your
-												Package Width in CM.</span>
-										</div>
-									</div>
-									<div class="col-xl-4">
-										<div class="form-group">
-											<label>Package Length in CM</label>
-											<input type="text" class="form-control" name="length"
-												placeholder="Package Length" value="150">
-											<span class="form-text text-muted">Please enter your
-												Package Length in CM.</span>
-										</div>
-									</div>
+								<div class="d-flex justify-content-end mt-3">
+									<button id="btn-more-destination" class="btn btn-success btn-sm btn-icon-sm">
+										<i class="la la-plus"></i>
+										Add more destination
+									</button>
 								</div>
 							</div>
 						</div>
@@ -457,7 +493,8 @@
 							data-ktwizard-type="action-prev">
 							Previous
 						</button>
-						<button class="btn btn-success btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u"
+						<button id="btn-submit" type="submit"
+							class="btn btn-success btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u"
 							data-ktwizard-type="action-submit">
 							Submit
 						</button>
@@ -529,19 +566,132 @@
                 <div class="row mb-2 participant-form">
                         <div class="col-4">
                             <input class="form-control" type="text" placeholder="Name"
-                                class="participant_name" name="participant_name">
+                                class="participant_name" name="participant_name[]">
                         </div>
                         <div class="col-4">
                             <input class="form-control" type="text" placeholder="Email"
-                                class="participant_email" name="participant_email">
+                                class="participant_email" name="participant_email[]">
                         </div>
                         <div class="col-4">
                             <input class="form-control" type="text" placeholder="Title"
-                                class="participant_title" name="participant_title">
+                                class="participant_title" name="participant_title[]">
                         </div>
                     </div>`;
 			$('.participants-lists').append(html);
 		})
+
+		$(document).on('click', '#btn-more-destination', function (e) {
+			e.preventDefault()
+            var list = $('.destination').length + 1
+			let order
+            if(list == 2) {
+                order = '2nd'
+            } else if(list == 3) {
+                order = '3rd'
+            } else if(list == 4) {
+                order = '4th'
+            } else if(list == 5) {
+                order = '5th'
+                $(this).addClass('d-none')
+            }
+
+			const html = `<div class="destination pb-2 mb-5 border-bottom">
+										<h5 class="mb-3">${order} Destination</h5>
+										<div class="form-group row">
+											<label for="example-search-input"
+												class="col-md-3 col-form-label">City/country</label>
+											<div class="col-md-9">
+												<input placeholder="Enter city/country" class="form-control" type="text"
+													name="destination_city[]">
+											</div>
+										</div>
+										<div class="form-group row">
+											<label for="example-search-input" class="col-md-3 col-form-label">Departure
+												date</label>
+											<div class="col-md-9">
+												<input class="form-control" type="date"
+													name="destination_departure_date[]">
+											</div>
+										</div>
+										<div class="form-group row">
+											<label for="example-search-input" class="col-md-3 col-form-label">Project
+												Number</label>
+											<div class="col-md-9">
+												<input maxlength="9" placeholder="1297.0446" class="form-control"
+													type="text" name="project_number[]">
+											</div>
+										</div>
+										<div class="form-group row">
+											<label for="example-search-input" class="col-md-3 col-form-label">Budget
+												Monitor</label>
+											<div class="col-md-9">
+												<input value="Nico Hardiyanto" class="form-control" type="text"
+													name="destination_budget_monitor[]">
+											</div>
+										</div>
+										<div class="form-group row">
+											<label for="example-search-input"
+												class="col-md-3 col-form-label">Lodging</label>
+											<div class="col-md-9">
+												<input placeholder="Estimate lodging cost" class="form-control lodging"
+													type="number" name="lodging[]">
+											</div>
+										</div>
+										<div class="form-group row">
+											<label for="example-search-input"
+												class="col-md-3 col-form-label">Meals</label>
+											<div class="col-md-9">
+												<input placeholder="Input M&IE standard cost" class="form-control meals" type="number" name="meals[]">
+											</div>
+										</div>
+										<div class="form-group row">
+											<label for="example-search-input" class="col-md-3 col-form-label">Total
+												(lodging + meals)</label>
+											<div class="col-md-9">
+												<input disabled class="form-control meals_lodging_total" type="number"
+													name="meals_lodging_total[]">
+											</div>
+										</div>
+										<div class="form-group row">
+											<label for="example-search-input"
+												class="col-md-3 col-form-label">Night</label>
+											<div class="col-md-9">
+												<input placeholder="# of nights" class="form-control night" type="number" name="night[]">
+											</div>
+										</div>
+										<div class="form-group row">
+											<label for="example-search-input"
+												class="col-md-3 col-form-label">Total</label>
+											<div class="col-md-9">
+												<input disabled class="form-control total" type="number" name="total[]">
+											</div>
+										</div>
+									</div>`;
+			$('.destinations-lists').append(html);
+		})
+
+		$("#kt_form").submit(function (e) {
+			e.preventDefault();
+			const formData = new FormData(this);
+			$.ajax({
+				url: $(this).attr("action"),
+				type: 'POST',
+				data: formData,
+				beforeSend: function () {
+					// $('.invalid-feedback').remove()
+				},
+				error: function (xhr) {
+					const response = xhr.responseJSON;
+					console.log(response)
+				},
+				success: function (data) {
+					showToast('Sukses', 'Berhasil')
+				},
+				cache: false,
+				contentType: false,
+				processData: false
+			});
+		});
 	});
 
 </script>

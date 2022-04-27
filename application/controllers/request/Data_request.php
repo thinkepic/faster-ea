@@ -28,4 +28,22 @@ class Data_request extends MY_Controller {
 		$this->template->render('request/create');
 	}
 
+	public function store()
+	{
+		echo json_encode($this->input->post());
+		echo json_encode($_FILES['car_rental_memo']);
+		// $this->form_validation->set_rules('meta_title', 'Judul', 'required');
+		// $this->form_validation->set_rules('summary', 'Deskripsi', 'required');
+
+		// if ($this->form_validation->run()) {
+		// 	$status_code = 200;
+		// } else {
+		// 	$response['errors'] = $this->form_validation->error_array();
+		// 	$response['message'] = 'Periksa kembali isian anda';
+		// 	$status_code = 422;
+		// }
+
+		// $this->send_json($response, $status_code);
+	}
+
 }

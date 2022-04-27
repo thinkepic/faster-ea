@@ -1,0 +1,28 @@
+.question-card {
+  background-color: #eee;
+  cursor: pointer;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 4px;
+}
+
+.question-card.visited {
+  background-color: #ddd;
+  color: white;
+}
+
+.question-card.active {
+  background-color: #0D6EFD;
+  color: white;
+}
+
+.question-card.error {
+  background-color: #DC2626;
+  color: white;
+}
+
+.form-container {
+  max-width: 720px;
+  padding: 3rem 0;
+  margin: 0 auto;
+}

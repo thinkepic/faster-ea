@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Faster EA | <?= (isset($page) ? $page : '') ?></title>
+	<title>Faster | <?= (isset($page) ? $page : '') ?></title>
 	<link rel="stylesheet" href="<?= site_url('assets/css/app.css?v=' . ASSETS_VERSION) ?>">
 	<!--begin::Fonts -->
 	<link rel="stylesheet"
@@ -70,7 +70,7 @@
 		<div class="kt-header-mobile__logo">
 			<a href="<?= base_url('dashboard') ?>">
 				<!-- <img style="height: 3rem; width: auto;" alt="Logo" src="<?= site_url('assets/images/faster.png') ?>" /> -->
-				<h3 class="text-light">Faster EA</h3>
+				<h3 class="text-light">Faster</h3>
 			</a>
 		</div>
 		<div class="kt-header-mobile__toolbar">
@@ -99,7 +99,7 @@
 					<div class="kt-aside__brand-logo">
 						<a href="<?= base_url('dashboard') ?>">
 							<!-- <img style="height: 3rem; width: auto;" alt="Logo" src="<?= site_url('assets/images/faster.png') ?>" /> -->
-							<h3 class="text-light">Faster EA</h3>
+							<h3 class="text-light">Faster</h3>
 						</a>
 					</div>
 
@@ -308,7 +308,7 @@
 				<div class="kt-footer  kt-grid__item kt-grid kt-grid--desktop kt-grid--ver-desktop" id="kt_footer">
 					<div class="kt-container  kt-container--fluid ">
 						<div class="kt-footer__copyright">
-							2022&nbsp;&copy;&nbsp; Faster EA
+							2022&nbsp;&copy;&nbsp; Faster
 						</div>
 					</div>
 				</div>
@@ -355,7 +355,8 @@
 
 	<!--begin:: Global Mandatory Vendors -->
 	<script src="<?= site_url('assets/vendors/general/js-cookie/src/js.cookie.js') ?>" type="text/javascript"></script>
-	<script src="<?= site_url('assets/vendors/general/sweetalert2/dist/sweetalert2.min.js') ?>" type="text/javascript"></script>
+	<script src="<?= site_url('assets/vendors/general/sweetalert2/dist/sweetalert2.min.js') ?>" type="text/javascript">
+	</script>
 	<script src="<?= site_url('assets/vendors/general/sticky-js/dist/sticky.min.js') ?>" type="text/javascript">
 	</script>
 	<script src="<?= site_url('assets/vendors/general/perfect-scrollbar/dist/perfect-scrollbar.js') ?>"
@@ -370,16 +371,6 @@
 	<!--end::Global Theme Bundle -->
 
 	<script>
-		const toast = new bootstrap.Toast(document.getElementById('liveToast'))
-
-		function showToast(title, message, indicator = 'success') {
-			$('#liveToast #toast-indicator').removeClass().addClass(`bg-${indicator}`)
-			$('#liveToast .toast-header strong').text(title)
-			$('#liveToast .toast-body').text(message)
-
-			toast.show()
-		}
-
 		var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
 		var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
 			return new bootstrap.Tooltip(tooltipTriggerEl)
