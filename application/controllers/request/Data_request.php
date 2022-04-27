@@ -29,9 +29,9 @@ class Data_request extends MY_Controller {
 	}
 
 	public function store()
-	{
+	{	
 		echo json_encode($this->input->post());
-		echo json_encode($_FILES['car_rental_memo']);
+		// echo json_encode($_FILES['car_rental_memo']);
 		// $this->form_validation->set_rules('meta_title', 'Judul', 'required');
 		// $this->form_validation->set_rules('summary', 'Deskripsi', 'required');
 

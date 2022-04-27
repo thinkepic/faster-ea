@@ -62,10 +62,38 @@
 						<div class="kt-form__section kt-form__section--first">
 							<div class="kt-wizard-v3__form">
 								<div class="form-group row">
-									<label for="example-search-input" class="col-md-3 col-form-label">Internal
-										TOR</label>
+									<label for="example-search-input" class="col-md-3 col-form-label">Request Base
+										on</label>
 									<div class="col-md-9">
-										<input class="form-control" type="search" id="tor_number" name="tor_number">
+										<div class="kt-radio-inline">
+											<label class="kt-radio">
+												<input value="Internal TOR" type="radio" name="request_base"> Internal
+												TOR
+												<span></span>
+											</label>
+											<label class="kt-radio">
+												<input value="Exteral Invitation" type="radio" name="request_base">
+												Exteral Invitation
+												<span></span>
+											</label>
+										</div>
+									</div>
+								</div>
+								<div class="form-group row tor-form d-none">
+									<label for="example-search-input" class="col-md-3 col-form-label">TOR Number</label>
+									<div class="col-md-9">
+										<input type="text" class="form-control" name="tor_number">
+									</div>
+								</div>
+								<div class="form-group row exteral-form d-none">
+									<label for="example-search-input" class="col-md-3 col-form-label">Supporting
+										document</label>
+									<div class="col-md-9">
+										<div class="custom-file">
+											<input type="file" class="custom-file-input" name="exteral_invitation"
+												id="exteral_invitation">
+											<label class="custom-file-label" for="customFile">Choose file</label>
+										</div>
 									</div>
 								</div>
 								<div class="form-group row">
@@ -73,12 +101,11 @@
 									<div class="col-md-9">
 										<div class="kt-radio-inline">
 											<label class="kt-radio">
-												<input id="just_for_me" value="Just for me" type="radio"
-													name="employment"> Just for me
+												<input value="Just for me" type="radio" name="employment"> Just for me
 												<span></span>
 											</label>
 											<label class="kt-radio">
-												<input id="on_behalf" value="On behalf" type="radio" name="employment">
+												<input value="On behalf" type="radio" name="employment">
 												On behalf
 												<span></span>
 											</label>
@@ -142,21 +169,21 @@
 										<div class="participants-group-lists mb-3">
 											<div class="row mb-2">
 												<div class="col-6 mb-2">
-													<input class="form-control" type="text" placeholder="Name Of Group"
-														class="participant_group_name" name="participant_group_name">
+													<input class="form-control participant_group_name" type="text" placeholder="Name Of Group"
+													 name="participant_group_name">
 												</div>
 												<div class="col-6 mb-2">
-													<input class="form-control" type="text" placeholder="Email"
-														class="participant_group_email" name="participant_group_email">
+													<input class="form-control participant_group_email" type="text" placeholder="Email"
+													 name="participant_group_email">
 												</div>
 												<div class="col-6 mb-2">
-													<input class="form-control" type="text" placeholder="Contact Person"
-														class="contact_person" name="contanct_person">
+													<input class="form-control contact_person" type="text" placeholder="Contact Person"
+														 name="participant_group_contact_person">
 												</div>
 												<div class="col-6 mb-2">
-													<input class="form-control" type="number"
+													<input class="form-control number_of_participants" type="number"
 														placeholder="Number of participants"
-														class="number_of_participants" name="number_of_participants">
+													 name="number_of_participants">
 												</div>
 											</div>
 										</div>
@@ -272,8 +299,7 @@
 											<div class="custom-file">
 												<input type="file" class="custom-file-input" name="car_rental_memo"
 													id="car_rental_memo">
-												<label class="custom-file-label" for="car_rental_memo">Choose
-													file</label>
+												<label class="custom-file-label" for="customFile">Choose file</label>
 											</div>
 										</div>
 									</div>
@@ -403,14 +429,15 @@
 											<label for="example-search-input"
 												class="col-md-3 col-form-label">Meals</label>
 											<div class="col-md-9">
-												<input placeholder="Input M&IE standard cost" class="form-control meals" type="number" name="meals[]">
+												<input placeholder="Input M&IE standard cost" class="form-control meals"
+													type="number" name="meals[]">
 											</div>
 										</div>
 										<div class="form-group row">
 											<label for="example-search-input" class="col-md-3 col-form-label">Total
 												(lodging + meals)</label>
 											<div class="col-md-9">
-												<input disabled class="form-control meals_lodging_total" type="number"
+												<input readonly class="form-control meals_lodging_total" type="number"
 													name="meals_lodging_total[]">
 											</div>
 										</div>
@@ -418,14 +445,15 @@
 											<label for="example-search-input"
 												class="col-md-3 col-form-label">Night</label>
 											<div class="col-md-9">
-												<input placeholder="# of nights" class="form-control night" type="number" name="night[]">
+												<input placeholder="# of nights" class="form-control night"
+													type="number" name="night[]">
 											</div>
 										</div>
 										<div class="form-group row">
 											<label for="example-search-input"
 												class="col-md-3 col-form-label">Total</label>
 											<div class="col-md-9">
-												<input disabled class="form-control total" type="number" name="total[]">
+												<input readonly class="form-control total" type="number" name="total[]">
 											</div>
 										</div>
 									</div>
@@ -522,6 +550,17 @@
 			}
 		});
 
+        $('input[name=request_base]').change(function () {
+			const value = $(this).val();
+			if (value == 'Internal TOR') {
+				$('.tor-form').removeClass('d-none')
+				$('.exteral-form').addClass('d-none')
+			} else {
+				$('.exteral-form').removeClass('d-none')
+				$('.tor-form').addClass('d-none')
+			}
+		});
+
 		$('input[name=employment_status]').change(function () {
 			const value = $(this).val();
 			if (value == 'Consultant' || value == 'Other') {
@@ -560,6 +599,31 @@
 			}
 		});
 
+		$(document).on('keyup', '.lodging', function () {
+			updateCosts($(this))
+		});
+
+		$(document).on('keyup', '.meals', function () {
+			updateCosts($(this))
+		});
+
+		$(document).on('keyup', '.night', function () {
+			updateCosts($(this))
+		});
+
+		const updateCosts = (el) => {
+			const parent = el.parent().parent().parent()
+			const lodging = parent.find('.lodging').val()
+			const meals = parent.find('.meals').val()
+			const night = parent.find('.night').val()
+			const mealsLodgingEl = parent.find('.meals_lodging_total')
+			const mealsLodging = Number(lodging) + Number(meals)
+			mealsLodgingEl.val(mealsLodging)
+			const totalEl = parent.find('.total')
+			const total = Number(night) * mealsLodging
+			totalEl.val(total)
+		}
+
 		$(document).on('click', '#btn-more-participant', function (e) {
 			e.preventDefault()
 			const html = `
@@ -582,18 +646,18 @@
 
 		$(document).on('click', '#btn-more-destination', function (e) {
 			e.preventDefault()
-            var list = $('.destination').length + 1
+			var list = $('.destination').length + 1
 			let order
-            if(list == 2) {
-                order = '2nd'
-            } else if(list == 3) {
-                order = '3rd'
-            } else if(list == 4) {
-                order = '4th'
-            } else if(list == 5) {
-                order = '5th'
-                $(this).addClass('d-none')
-            }
+			if (list == 2) {
+				order = '2nd'
+			} else if (list == 3) {
+				order = '3rd'
+			} else if (list == 4) {
+				order = '4th'
+			} else if (list == 5) {
+				order = '5th'
+				$(this).addClass('d-none')
+			}
 
 			const html = `<div class="destination pb-2 mb-5 border-bottom">
 										<h5 class="mb-3">${order} Destination</h5>
@@ -648,7 +712,7 @@
 											<label for="example-search-input" class="col-md-3 col-form-label">Total
 												(lodging + meals)</label>
 											<div class="col-md-9">
-												<input disabled class="form-control meals_lodging_total" type="number"
+												<input readonly class="form-control meals_lodging_total" type="number"
 													name="meals_lodging_total[]">
 											</div>
 										</div>
@@ -663,7 +727,7 @@
 											<label for="example-search-input"
 												class="col-md-3 col-form-label">Total</label>
 											<div class="col-md-9">
-												<input disabled class="form-control total" type="number" name="total[]">
+												<input readonly class="form-control total" type="number" name="total[]">
 											</div>
 										</div>
 									</div>`;
@@ -684,9 +748,7 @@
 					const response = xhr.responseJSON;
 					console.log(response)
 				},
-				success: function (data) {
-					showToast('Sukses', 'Berhasil')
-				},
+				success: function (data) {},
 				cache: false,
 				contentType: false,
 				processData: false
