@@ -19,4 +19,16 @@ class Data_request extends MY_Controller {
 		$this->template->render('request/index');
 	}
 
+	public function create()
+	{
+		$this->template->set('assets_css', [
+			site_url('assets/css/demo1/pages/wizard/wizard-3.css')
+		]);
+		$this->template->set('assets_js', [
+			site_url('assets/js/demo1/pages/wizard/wizard-3.js')
+		]);
+		$this->template->set('page', 'Create request');
+		$this->template->render('request/create');
+	}
+
 }

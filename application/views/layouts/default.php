@@ -20,10 +20,11 @@
 		type="text/css" />
 	<link href="<?= site_url('assets/vendors/general/perfect-scrollbar/css/perfect-scrollbar.css') ?>" rel="stylesheet"
 		type="text/css" />
+	<link href="<?= site_url('assets/vendors/general/sweetalert2/dist/sweetalert2.min.css') ?>" rel="stylesheet"
+		type="text/css" />
 	<!--end:: Global Mandatory Vendors -->
 
 	<!--begin::Global Theme Styles(used by all pages) -->
-
 	<link href="<?= site_url('assets/css/demo1/style.bundle.css') ?>" rel="stylesheet" type="text/css" />
 	<!--end::Global Theme Styles -->
 
@@ -242,8 +243,11 @@
 					<button class="kt-header-menu-wrapper-close" id="kt_header_menu_mobile_close_btn"><i
 							class="la la-close"></i></button>
 					<div class="kt-header-menu-wrapper d-flex" id="kt_header_menu_wrapper">
-						<h3 class="fw-bolder ml-1 pl-4 mt-4 text-dark">Faster <small class="text-muted fs-6 pl-t mt-4">
-								- Inventory Management System </small> </h3>
+						<h3 class="fw-bolder ml-1 pl-4 mt-4 text-dark">Expense AUTHORIZATION
+							<!-- <small class="text-muted fs-6 pl-t mt-4">
+								- Inventory Management System 
+							</small>  -->
+						</h3>
 					</div>
 					<!-- end:: Header Menu -->
 					<!-- begin:: Header Topbar -->
@@ -351,12 +355,14 @@
 
 	<!--begin:: Global Mandatory Vendors -->
 	<script src="<?= site_url('assets/vendors/general/js-cookie/src/js.cookie.js') ?>" type="text/javascript"></script>
+	<script src="<?= site_url('assets/vendors/general/sweetalert2/dist/sweetalert2.min.js') ?>" type="text/javascript"></script>
 	<script src="<?= site_url('assets/vendors/general/sticky-js/dist/sticky.min.js') ?>" type="text/javascript">
 	</script>
 	<script src="<?= site_url('assets/vendors/general/perfect-scrollbar/dist/perfect-scrollbar.js') ?>"
 		type="text/javascript"></script>
 	<script src="<?= site_url('assets/vendors/general/jquery-validation/dist/jquery.validate.js') ?>"
 		type="text/javascript"></script>
+
 	<!--end:: Global Mandatory Vendors -->
 
 	<!--begin::Global Theme Bundle(used by all pages) -->

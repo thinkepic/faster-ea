@@ -6,7 +6,6 @@ const path = require('path')
 mix.setPublicPath('assets');
 mix.js('resources/js/app.js', 'assets/js')
    .sass('resources/sass/app.scss', 'assets/css')
-   .sass('resources/sass/pages/home.scss', 'assets/css/pages')
    .options({
       processCssUrls: false
    })

@@ -9,7 +9,6 @@ window.bootstrap = bootstrap
 import dt from "datatables.net";
 window.$.DataTable = dt;
 
-
 // dayjs
 const dayjs = require('dayjs')
 const relativeTime = require('dayjs/plugin/relativeTime')
@@ -21,6 +20,7 @@ dayjs.extend(relativeTime)
 window.dayjs = dayjs
 
 
-import { initFormAjax, initDatatable } from "./helpers";
+import { initFormAjax, initDatatable, initSelect2 } from "./helpers";
 window.initFormAjax = initFormAjax
 window.initDatatable = initDatatable
+window.initSelect2 = initSelect2
