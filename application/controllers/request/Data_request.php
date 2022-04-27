@@ -12,9 +12,6 @@ class Data_request extends MY_Controller {
 
 	public function index()
 	{
-		// $this->template->set('assets_css', [
-		// 	site_url('assets/css/pages/home.css')
-		// ]);
 		$this->template->set('page', 'Data request');
 		$this->template->render('request/index');
 	}

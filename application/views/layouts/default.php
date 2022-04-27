@@ -243,7 +243,7 @@
 					<button class="kt-header-menu-wrapper-close" id="kt_header_menu_mobile_close_btn"><i
 							class="la la-close"></i></button>
 					<div class="kt-header-menu-wrapper d-flex" id="kt_header_menu_wrapper">
-						<h3 class="fw-bolder ml-1 pl-4 mt-4 text-dark">Expense AUTHORIZATION
+						<h3 class="fw-bolder ml-1 pl-4 mt-4 text-dark">Expense Authorization
 							<!-- <small class="text-muted fs-6 pl-t mt-4">
 								- Inventory Management System 
 							</small>  -->

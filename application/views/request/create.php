@@ -64,8 +64,7 @@
 									<label for="example-search-input" class="col-md-3 col-form-label">Internal
 										TOR</label>
 									<div class="col-md-9">
-										<input required class="form-control" type="search" id="tor_number"
-											name="tor_number">
+										<input class="form-control" type="search" id="tor_number" name="tor_number">
 									</div>
 								</div>
 								<div class="form-group row">
@@ -111,7 +110,7 @@
 									<label for="participants" class="col-md-3 col-form-label">Participants</label>
 									<div class="col-md-9">
 										<div class="participants-lists mb-3">
-											<div class="row mb-2 participant-el">
+											<div class="row mb-2 participant-form">
 												<div class="col-4">
 													<input class="form-control" type="text" placeholder="Name"
 														class="participant_name" name="participant_name">
@@ -313,7 +312,7 @@
 											<div class="col-12 mt-3">
 												<label for="preferred_hotel">Preferred Hotel</label>
 												<textarea class="form-control" name="preferred_hotel"
-													id="preferred_hotel" rows="1"></textarea>
+													id="preferred_hotel" rows="2"></textarea>
 											</div>
 										</div>
 									</div>
@@ -335,6 +334,15 @@
 												<span></span>
 											</label>
 										</div>
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="example-search-input" class="col-md-3 col-form-label">
+                                        Special Instruction
+                                    </label>
+									<div class="col-md-9">
+										<textarea class="form-control" name="special_instructions"
+											id="special_instructions" rows="2"></textarea>
 									</div>
 								</div>
 							</div>
@@ -514,6 +522,26 @@
 				$('.hotel-reservations-el').addClass('d-none')
 			}
 		});
+
+		$(document).on('click', '#btn-more-participant', function (e) {
+			e.preventDefault()
+			const html = `
+                <div class="row mb-2 participant-form">
+                        <div class="col-4">
+                            <input class="form-control" type="text" placeholder="Name"
+                                class="participant_name" name="participant_name">
+                        </div>
+                        <div class="col-4">
+                            <input class="form-control" type="text" placeholder="Email"
+                                class="participant_email" name="participant_email">
+                        </div>
+                        <div class="col-4">
+                            <input class="form-control" type="text" placeholder="Title"
+                                class="participant_title" name="participant_title">
+                        </div>
+                    </div>`;
+			$('.participants-lists').append(html);
+		})
 	});
 
 </script>
