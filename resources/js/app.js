@@ -13,8 +13,6 @@ window.$.DataTable = dt;
 const dayjs = require('dayjs')
 const relativeTime = require('dayjs/plugin/relativeTime')
 const isSameOrBefore = require('dayjs/plugin/isSameOrBefore')
-require('dayjs/locale/id')
-dayjs.locale('id') // use locale globally
 dayjs.extend(isSameOrBefore)
 dayjs.extend(relativeTime)
 window.dayjs = dayjs

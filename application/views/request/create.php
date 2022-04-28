@@ -42,7 +42,15 @@
 						<a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step">
 							<div class="kt-wizard-v3__nav-body">
 								<div class="kt-wizard-v3__nav-label text-center">
-									<span>3</span> <br> Review and Submit
+									<span>3</span> <br> Review
+								</div>
+								<div class="kt-wizard-v3__nav-bar"></div>
+							</div>
+						</a>
+						<a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step">
+							<div class="kt-wizard-v3__nav-body">
+								<div class="kt-wizard-v3__nav-label text-center">
+									<span>4</span> <br> Submit
 								</div>
 								<div class="kt-wizard-v3__nav-bar"></div>
 							</div>
@@ -59,7 +67,7 @@
 					<!--begin: Form Wizard Step 1-->
 					<div class="kt-wizard-v3__content" data-ktwizard-type="step-content" data-ktwizard-state="current">
 						<div class="kt-heading kt-heading--md border-bottom pb-2">Please enter basic information</div>
-						<div class="kt-form__section kt-form__section--first">
+						<div id="step-1-form" class="kt-form__section kt-form__section--first">
 							<div class="kt-wizard-v3__form">
 								<div class="form-group row">
 									<label for="example-search-input" class="col-md-3 col-form-label">Request Base
@@ -169,21 +177,22 @@
 										<div class="participants-group-lists mb-3">
 											<div class="row mb-2">
 												<div class="col-6 mb-2">
-													<input class="form-control participant_group_name" type="text" placeholder="Name Of Group"
-													 name="participant_group_name">
+													<input class="form-control participant_group_name" type="text"
+														placeholder="Name Of Group" name="participant_group_name">
 												</div>
 												<div class="col-6 mb-2">
-													<input class="form-control participant_group_email" type="text" placeholder="Email"
-													 name="participant_group_email">
+													<input class="form-control participant_group_email" type="text"
+														placeholder="Email" name="participant_group_email">
 												</div>
 												<div class="col-6 mb-2">
-													<input class="form-control contact_person" type="text" placeholder="Contact Person"
-														 name="participant_group_contact_person">
+													<input class="form-control contact_person" type="text"
+														placeholder="Contact Person"
+														name="participant_group_contact_person">
 												</div>
 												<div class="col-6 mb-2">
 													<input class="form-control number_of_participants" type="number"
 														placeholder="Number of participants"
-													 name="number_of_participants">
+														name="number_of_participants">
 												</div>
 											</div>
 										</div>
@@ -193,12 +202,9 @@
 									<label for="example-search-input" class="col-md-3 col-form-label">Originating
 										City</label>
 									<div class="col-md-9">
-										<select class="form-control" id="exampleSelect1">
-											<option>1</option>
-											<option>2</option>
-											<option>3</option>
-											<option>4</option>
-											<option>5</option>
+										<select class="form-control" name="originating_city" id="originating_city">
+											<option value="Langsa">Langsa</option>
+											<option value="Medan">Medan</option>
 										</select>
 									</div>
 								</div>
@@ -255,121 +261,126 @@
 								</div>
 								<div class="kt-heading kt-heading--md border-bottom pb-2 mt-5 mb-3">Special Requests
 								</div>
-								<div class="form-group mb-3 row border-bottom">
-									<label class="col-md-7 col-form-label">Documents Needed more than 3 days prior to
-										departure?</label>
-									<div class="col-md-5">
-										<div class="kt-radio-inline">
-											<label class="kt-radio">
-												<input value="Yes" type="radio" name="need_documents">
-												Yes
-												<span></span>
-											</label>
-											<label class="kt-radio">
-												<input value="No" type="radio" name="need_documents">
-												No
-												<span></span>
-											</label>
-										</div>
-										<div class="form-group mt-4 documents-description-el d-none">
-											<label for="document_description">What document do you need?</label>
-											<textarea class="form-control" name="document_description"
-												id="document_description" rows="2"></textarea>
-										</div>
-									</div>
-								</div>
-								<div class="form-group mb-3 row border-bottom">
-									<label class="col-md-7 col-form-label">Car Rental? If yes, attach approved per diem
-										variance memo to Travel Manager</label>
-									<div class="col-md-5">
-										<div class="kt-radio-inline">
-											<label class="kt-radio">
-												<input value="Yes" type="radio" name="car_rental">
-												Yes
-												<span></span>
-											</label>
-											<label class="kt-radio">
-												<input value="No" type="radio" name="car_rental">
-												No
-												<span></span>
-											</label>
-										</div>
-										<div class="form-group mt-4 car-rental-memo-el d-none">
-											<label for="car_rental_memo">Please upload memo</label>
-											<div class="custom-file">
-												<input type="file" class="custom-file-input" name="car_rental_memo"
-													id="car_rental_memo">
-												<label class="custom-file-label" for="customFile">Choose file</label>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="form-group mb-3 row border-bottom">
-									<label class="col-md-7 col-form-label">Hotel Reservations? If yes, specify dates
-										in/out
-										and hotel(s) if known.</label>
-									<div class="col-md-5">
-										<div class="kt-radio-inline">
-											<label class="kt-radio">
-												<input value="Yes" type="radio" name="hotel_reservations">
-												Yes
-												<span></span>
-											</label>
-											<label class="kt-radio">
-												<input value="No" type="radio" name="hotel_reservations">
-												No
-												<span></span>
-											</label>
-										</div>
-										<div class="form-group row mt-4 hotel-reservations-el d-none">
-											<div class="col-6">
-												<label for="hotel_check_in" class="form-label">
-													Check in
+								<div class="special-request-el">
+									<div class="form-group mb-3 row border-bottom">
+										<label class="col-md-7 col-form-label">Documents Needed more than 3 days prior
+											to
+											departure?</label>
+										<div class="col-md-5">
+											<div class="kt-radio-inline">
+												<label class="kt-radio">
+													<input value="Yes" type="radio" name="need_documents">
+													Yes
+													<span></span>
 												</label>
-												<input class="form-control" type="time" name="hotel_check_in"
-													id="hotel_check_in">
-											</div>
-											<div class="col-6">
-												<label for="hotel_check_out" class="form-label">
-													Check out
+												<label class="kt-radio">
+													<input value="No" type="radio" name="need_documents">
+													No
+													<span></span>
 												</label>
-												<input class="form-control" type="time" name="hotel_check_out"
-													id="hotel_check_out">
 											</div>
-											<div class="col-12 mt-3">
-												<label for="preferred_hotel">Preferred Hotel</label>
-												<textarea class="form-control" name="preferred_hotel"
-													id="preferred_hotel" rows="2"></textarea>
+											<div class="form-group mt-4 documents-description-el d-none">
+												<label for="document_description">What document do you need?</label>
+												<textarea class="form-control" name="document_description"
+													id="document_description" rows="2"></textarea>
 											</div>
 										</div>
 									</div>
-								</div>
-								<div class="form-group mb-3 row">
-									<label class="col-md-7 col-form-label">Hotel transfer/taxi/other transportation
-										needed
-										(International Travel only)</label>
-									<div class="col-md-5">
-										<div class="kt-radio-inline">
-											<label class="kt-radio">
-												<input value="Yes" type="radio" name="other_transportation">
-												Yes
-												<span></span>
-											</label>
-											<label class="kt-radio">
-												<input value="No" type="radio" name="other_transportation">
-												No
-												<span></span>
-											</label>
+									<div class="form-group mb-3 row border-bottom">
+										<label class="col-md-7 col-form-label">Car Rental? If yes, attach approved per
+											diem
+											variance memo to Travel Manager</label>
+										<div class="col-md-5">
+											<div class="kt-radio-inline">
+												<label class="kt-radio">
+													<input value="Yes" type="radio" name="car_rental">
+													Yes
+													<span></span>
+												</label>
+												<label class="kt-radio">
+													<input value="No" type="radio" name="car_rental">
+													No
+													<span></span>
+												</label>
+											</div>
+											<div class="form-group mt-4 car-rental-memo-el d-none">
+												<label for="car_rental_memo">Please upload memo</label>
+												<div class="custom-file">
+													<input type="file" class="custom-file-input" name="car_rental_memo"
+														id="car_rental_memo">
+													<label class="custom-file-label" for="customFile">Choose
+														file</label>
+												</div>
+											</div>
 										</div>
 									</div>
-								</div>
-								<div class="form-group row">
-									<label for="example-search-input" class="col-md-3 col-form-label">
-										Special Instruction
-									</label>
-									<div class="col-md-9">
-										<textarea class="form-control" name="special_instructions"
-											id="special_instructions" rows="2"></textarea>
+									<div class="form-group mb-3 row border-bottom">
+										<label class="col-md-7 col-form-label">Hotel Reservations? If yes, specify dates
+											in/out
+											and hotel(s) if known.</label>
+										<div class="col-md-5">
+											<div class="kt-radio-inline">
+												<label class="kt-radio">
+													<input value="Yes" type="radio" name="hotel_reservations">
+													Yes
+													<span></span>
+												</label>
+												<label class="kt-radio">
+													<input value="No" type="radio" name="hotel_reservations">
+													No
+													<span></span>
+												</label>
+											</div>
+											<div class="form-group row mt-4 hotel-reservations-el d-none">
+												<div class="col-6">
+													<label for="hotel_check_in" class="form-label">
+														Check in
+													</label>
+													<input class="form-control" type="time" name="hotel_check_in"
+														id="hotel_check_in">
+												</div>
+												<div class="col-6">
+													<label for="hotel_check_out" class="form-label">
+														Check out
+													</label>
+													<input class="form-control" type="time" name="hotel_check_out"
+														id="hotel_check_out">
+												</div>
+												<div class="col-12 mt-3">
+													<label for="preferred_hotel">Preferred Hotel</label>
+													<textarea class="form-control" name="preferred_hotel"
+														id="preferred_hotel" rows="2"></textarea>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="form-group mb-3 row">
+										<label class="col-md-7 col-form-label">Hotel transfer/taxi/other transportation
+											needed
+											(International Travel only)</label>
+										<div class="col-md-5">
+											<div class="kt-radio-inline">
+												<label class="kt-radio">
+													<input value="Yes" type="radio" name="other_transportation">
+													Yes
+													<span></span>
+												</label>
+												<label class="kt-radio">
+													<input value="No" type="radio" name="other_transportation">
+													No
+													<span></span>
+												</label>
+											</div>
+										</div>
+									</div>
+									<div class="form-group row">
+										<label for="example-search-input" class="col-md-3 col-form-label">
+											Special Instruction
+										</label>
+										<div class="col-md-9">
+											<textarea class="form-control" name="special_instructions"
+												id="special_instructions" rows="2"></textarea>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -471,49 +482,155 @@
 
 					<!--begin: Form Wizard Step 3-->
 					<div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
-						<div class="kt-heading kt-heading--md">Select your Services</div>
+						<div class="kt-heading kt-heading--md pb-2 border-bottom">Please review the data</div>
 						<div class="kt-form__section kt-form__section--first">
-							<div class="kt-wizard-v3__form">
-								<div class="form-group">
-									<label>Delivery Type</label>
-									<select name="delivery" class="form-control">
-										<option value="">Select a Service Type Option</option>
-										<option value="overnight" selected>Overnight Delivery
-											(within 48 hours)</option>
-										<option value="express">Express Delivery (within 5
-											working days)</option>
-										<option value="basic">Basic Delivery (within 5 - 10
-											working days)</option>
-									</select>
+							<div class="text-dark">
+								<div class="step-1-review pb-3 border-bottom">
+									<!--  Data dari session -->
+									<h5 class="mb-3">Basic information :</h5>
+									<div class="pb-2 mb-2 border-bottom">
+										<p class="mb-1">Fadel Al Fayed</p>
+										<p class="mb-1">Date of birth: 05/10/1998</p>
+										<p class="mb-1">Address: Jln peutua bayeun matang seulimeng</p>
+										<p class="mb-1">Division: Epic</p>
+										<p class="mb-1">Employee status: Programmatic</p>
+									</div>
+									<div class="pt-2 mb-2 pb-2">
+										<p class="mb-1">Request base: <span class="review-request-base-val"></span><span
+												class="review-tor-number d-none"></span></p>
+										<p class="mb-1">Employment: <span class="review-employment-val"></span>
+										</p>
+										<p class="mb-1">Originating city: <span class="review-originating-city"></span>
+										</p>
+										<div class="mb-1 d-flex">
+											<p class="mr-5 mb-0">Departure date: <span
+													class="review-departure-date"></span></p>
+											<p class="mb-0">Return date: <span class="review-return-date"></span></p>
+										</div>
+									</div>
+									<div class="special-request-review mt-2">
+										<table class="table table-bordered">
+											<tbody>
+												<tr>
+													<td>
+														Country director notified?
+													</td>
+													<td class="text-center review-director-notif-val">Yes</td>
+												</tr>
+												<tr>
+													<td>
+														Travel Advance?
+													</td>
+													<td class="text-center review-travel-advance-val">Yes</td>
+												</tr>
+												<tr>
+													<td>Documents Needed more than 3 days prior to departure?</td>
+													<td class="text-center review-need-documents-val">No</td>
+												</tr>
+												<tr>
+													<td>Car Rental?</td>
+													<td class="text-center review-car-rental-val">Yes</td>
+												</tr>
+												<tr>
+													<td>Hotel Reservations?</td>
+													<td class="text-center review-hotel-res-val">No</td>
+												</tr>
+												<tr>
+													<td>Hotel transfer/taxi/other transportation needed (International
+														Travel only)</td>
+													<td class="text-center review-other-trasnport-val">No</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
 								</div>
-								<div class="form-group">
-									<label>Packaging Type</label>
-									<select name="packaging" class="form-control">
-										<option value="">Select a Packaging Type Option</option>
-										<option value="regular" selected>Regular Packaging
-										</option>
-										<option value="oversized">Oversized Packaging</option>
-										<option value="fragile">Fragile Packaging</option>
-										<option value="frozen">Frozen Packaging</option>
-									</select>
-								</div>
-								<div class="form-group">
-									<label>Preferred Delivery Window</label>
-									<select name="preferreddelivery" class="form-control">
-										<option value="">Select a Preferred Delivery Option
-										</option>
-										<option value="morning" selected>Morning Delivery
-											(8:00AM - 11:00AM)</option>
-										<option value="afternoon">Afternoon Delivery (11:00AM -
-											3:00PM)</option>
-										<option value="evening">Evening Delivery (3:00PM -
-											7:00PM)</option>
-									</select>
+								<div class="step-2-review py-3 border-bottom">
+									<h5 class="mb-3">Destination details :</h5>
+									<div class="row destinations-review-lists">
+										<div class="col-md-6 destination-review border p-3">
+											<h6 class="pb-2 border-bottom font-weight-bold">1st destination </h6>
+											<p class="mb-1">City/country: <span class="destination-city-val">Kota
+													Langsa</span> </p>
+											<p class="mb-1">Arrival date: <span
+													class="destination-arrival-date-val">05/10/2022</span> </p>
+											<p class="mb-1">Departure date: <span
+													class="destination-departure-date-val">10/10/2022</span> </p>
+											<p class="mb-1">Project number: <span
+													class="destination-project-number-val">1232.1232</span> </p>
+											<p class="mb-1">Budget monitor: <span
+													class="destination-project-number-val">Nico Hardiyanto</span> </p>
+											<p class="mb-1">Lodging: <span class="destination-lodging-val">50000</span>
+											</p>
+											<p class="mb-1">Meals: <span class="destination-meals-val">10000</span> </p>
+											<p class="mb-1">Total (lodging+meals): <span
+													class="destination-meals-lodging-total-val">600000</span> </p>
+											<p class="mb-1">Number of nights: <span
+													class="destination-night-val">5</span> </p>
+											<p class="mb-1">Total: <span class="destination-total-val">1000000</span>
+											</p>
+										</div>
+										<div class="col-md-6 destination-review border p-3">
+											<h6 class="pb-2 border-bottom font-weight-bold">2nd destination </h6>
+											<p class="mb-1">City/country: <span class="destination-city-val">Kota
+													Langsa</span> </p>
+											<p class="mb-1">Arrival date: <span
+													class="destination-arrival-date-val">05/10/2022</span> </p>
+											<p class="mb-1">Departure date: <span
+													class="destination-departure-date-val">10/10/2022</span> </p>
+											<p class="mb-1">Project number: <span
+													class="destination-project-number-val">1232.1232</span> </p>
+											<p class="mb-1">Budget monitor: <span
+													class="destination-project-number-val">Nico Hardiyanto</span> </p>
+											<p class="mb-1">Lodging: <span class="destination-lodging-val">50000</span>
+											</p>
+											<p class="mb-1">Meals: <span class="destination-meals-val">10000</span> </p>
+											<p class="mb-1">Total (lodging+meals): <span
+													class="destination-meals-lodging-total-val">600000</span> </p>
+											<p class="mb-1">Number of nights: <span
+													class="destination-night-val">5</span> </p>
+											<p class="mb-1">Total: <span class="destination-total-val">1000000</span>
+											</p>
+										</div>
+										<div class="col-md-6 destination-review border p-3">
+											<h6 class="pb-2 border-bottom font-weight-bold">3rd destination </h6>
+											<p class="mb-1">City/country: <span class="destination-city-val">Kota
+													Langsa</span> </p>
+											<p class="mb-1">Arrival date: <span
+													class="destination-arrival-date-val">05/10/2022</span> </p>
+											<p class="mb-1">Departure date: <span
+													class="destination-departure-date-val">10/10/2022</span> </p>
+											<p class="mb-1">Project number: <span
+													class="destination-project-number-val">1232.1232</span> </p>
+											<p class="mb-1">Budget monitor: <span
+													class="destination-project-number-val">Nico Hardiyanto</span> </p>
+											<p class="mb-1">Lodging: <span class="destination-lodging-val">50000</span>
+											</p>
+											<p class="mb-1">Meals: <span class="destination-meals-val">10000</span> </p>
+											<p class="mb-1">Total (lodging+meals): <span
+													class="destination-meals-lodging-total-val">600000</span> </p>
+											<p class="mb-1">Number of nights: <span
+													class="destination-night-val">5</span> </p>
+											<p class="mb-1">Total: <span class="destination-total-val">1000000</span>
+											</p>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 					<!--end: Form Wizard Step 3-->
+
+					<!--begin: Form Wizard Step 4-->
+					<div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
+						<div class="kt-heading kt-heading--md pb-2 border-bottom">Final step, please submit the data
+						</div>
+						<div class="kt-form__section kt-form__section--first">
+							<div class="kt-wizard-v3__form">
+
+							</div>
+						</div>
+					</div>
+					<!--end: Form Wizard Step 4-->
 
 					<!--begin: Form Actions -->
 					<div class="kt-form__actions">
@@ -526,7 +643,8 @@
 							data-ktwizard-type="action-submit">
 							Submit
 						</button>
-						<button class="btn btn-brand btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u"
+						<button id="btn-next-step"
+							class="btn btn-brand btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u"
 							data-ktwizard-type="action-next">
 							Next Step
 						</button>
@@ -550,7 +668,7 @@
 			}
 		});
 
-        $('input[name=request_base]').change(function () {
+		$('input[name=request_base]').change(function () {
 			const value = $(this).val();
 			if (value == 'Internal TOR') {
 				$('.tor-form').removeClass('d-none')
@@ -611,6 +729,8 @@
 			updateCosts($(this))
 		});
 
+		let destinations = []
+
 		const updateCosts = (el) => {
 			const parent = el.parent().parent().parent()
 			const lodging = parent.find('.lodging').val()
@@ -623,6 +743,34 @@
 			const total = Number(night) * mealsLodging
 			totalEl.val(total)
 		}
+
+		const updateStepReview = (destinations) => {
+			const requestBaseValue = $('input[name=request_base]:checked').val()
+			$('.review-request-base-val').text(requestBaseValue)
+			if (requestBaseValue == 'Internal TOR') {
+				$('.review-tor-number').removeClass('d-none')
+				const torNumber = $('input[name=tor_number]').val()
+				$('.review-tor-number').text(`(${torNumber})`)
+			} else {
+				$('.review-tor-number').addClass('d-none')
+			}
+
+			$('.review-employment-val').text($('input[name=employment]:checked').val())
+			$('.review-originating-city').text($('#originating_city').val())
+
+			const departureDate = dayjs($('input[name=departure_date]').val()).format('DD MMMM YYYY')
+			const returnDate = dayjs($('input[name=return_date]').val()).format('DD MMMM YYYY')
+			$('.review-departure-date').text(departureDate)
+			$('.review-return-date').text(returnDate)
+		}
+
+		$(document).on('click', '#btn-next-step', function (e) {
+			updateStepReview(destinations)
+		})
+
+		$(document).on('click', '.kt-wizard-v3__nav-item', function (e) {
+			updateStepReview(destinations)
+		})
 
 		$(document).on('click', '#btn-more-participant', function (e) {
 			e.preventDefault()
