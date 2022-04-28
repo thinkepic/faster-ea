@@ -22,39 +22,38 @@
 				<div class="kt-wizard-v3__nav">
 					<div class="kt-wizard-v3__nav-items justify-content-between">
 						<!--doc: Replace A tag with SPAN tag to disable the step link click -->
-						<a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step"
-							data-ktwizard-state="current">
+						<span class="kt-wizard-v3__nav-item" data-ktwizard-type="step" data-ktwizard-state="current">
 							<div class="kt-wizard-v3__nav-body">
 								<div class="kt-wizard-v3__nav-label text-center">
 									<span>1</span> <br> Basic Information
 								</div>
 								<div class="kt-wizard-v3__nav-bar"></div>
 							</div>
-						</a>
-						<a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step">
+						</span>
+						<span class="kt-wizard-v3__nav-item" data-ktwizard-type="step">
 							<div class="kt-wizard-v3__nav-body">
 								<div class="kt-wizard-v3__nav-label text-center">
 									<span>2</span> <br> Destination Details
 								</div>
 								<div class="kt-wizard-v3__nav-bar"></div>
 							</div>
-						</a>
-						<a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step">
+						</span>
+						<span class="kt-wizard-v3__nav-item" data-ktwizard-type="step">
 							<div class="kt-wizard-v3__nav-body">
 								<div class="kt-wizard-v3__nav-label text-center">
 									<span>3</span> <br> Review
 								</div>
 								<div class="kt-wizard-v3__nav-bar"></div>
 							</div>
-						</a>
-						<a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step">
+						</span>
+						<span class="kt-wizard-v3__nav-item" data-ktwizard-type="step">
 							<div class="kt-wizard-v3__nav-body">
 								<div class="kt-wizard-v3__nav-label text-center">
 									<span>4</span> <br> Submit
 								</div>
 								<div class="kt-wizard-v3__nav-bar"></div>
 							</div>
-						</a>
+						</span>
 					</div>
 				</div>
 				<!--end: Form Wizard Nav -->
@@ -62,8 +61,9 @@
 			</div>
 			<div class="kt-grid__item kt-grid__item--fluid kt-wizard-v3__wrapper">
 				<!--begin: Form Wizard Form-->
-				<form style="width: 100% !important;" enctype="multipart/form-data" method="POST"
-					action="<?= base_url('request/data-request/store') ?>" class="kt-form px-5 w-full" id="kt_form">
+				<form style="width: 100% !important; padding-top: 1.2rem !important;" enctype="multipart/form-data"
+					method="POST" action="<?= base_url('request/data-request/store') ?>" class="kt-form px-5 w-full"
+					id="kt_form">
 					<!--begin: Form Wizard Step 1-->
 					<div class="kt-wizard-v3__content" data-ktwizard-type="step-content" data-ktwizard-state="current">
 						<div class="kt-heading kt-heading--md border-bottom pb-2">Please enter basic information</div>
@@ -73,9 +73,10 @@
 									<label for="example-search-input" class="col-md-3 col-form-label">Request Base
 										on</label>
 									<div class="col-md-9">
-										<div class="kt-radio-inline">
+										<div id="request_base" class="kt-radio-inline">
 											<label class="kt-radio">
-												<input value="Internal TOR" type="radio" name="request_base"> Internal
+												<input value="Internal TOR" type="radio" name="request_base">
+												Internal
 												TOR
 												<span></span>
 											</label>
@@ -84,13 +85,14 @@
 												Exteral Invitation
 												<span></span>
 											</label>
+
 										</div>
 									</div>
 								</div>
 								<div class="form-group row tor-form d-none">
 									<label for="example-search-input" class="col-md-3 col-form-label">TOR Number</label>
 									<div class="col-md-9">
-										<input type="text" class="form-control" name="tor_number">
+										<input type="text" placeholder="Enter tor number" class="form-control" name="tor_number">
 									</div>
 								</div>
 								<div class="form-group row exteral-form d-none">
@@ -107,7 +109,7 @@
 								<div class="form-group row">
 									<label class="col-md-3 col-form-label">Employment</label>
 									<div class="col-md-9">
-										<div class="kt-radio-inline">
+										<div id="employment" class="kt-radio-inline">
 											<label class="kt-radio">
 												<input value="Just for me" type="radio" name="employment"> Just for me
 												<span></span>
@@ -123,7 +125,7 @@
 								<div class="form-group row on-behalf-form d-none">
 									<label class="col-md-3 col-form-label">Employment status</label>
 									<div class="col-md-9">
-										<div class="kt-radio-inline">
+										<div id="employment_status" class="kt-radio-inline">
 											<label class="kt-radio">
 												<input id="consultant" value="Consultant" type="radio"
 													name="employment_status"> Consultant
@@ -202,9 +204,8 @@
 									<label for="example-search-input" class="col-md-3 col-form-label">Originating
 										City</label>
 									<div class="col-md-9">
-										<select class="form-control" name="originating_city" id="originating_city">
-											<option value="Langsa">Langsa</option>
-											<option value="Medan">Medan</option>
+										<select data-url="<?= site_url('api/cities') ?>" class="form-control"
+											name="originating_city" id="originating_city">
 										</select>
 									</div>
 								</div>
@@ -227,35 +228,33 @@
 									</div>
 								</div>
 								<div class="form-group row">
-									<div class="col-md-6 row">
-										<label class="col-6 col-form-label">Country Director Notified</label>
-										<div class="col-6">
-											<div class="kt-radio-inline">
-												<label class="kt-radio">
-													<input type="radio" value="Yes" name="country_director_notified">
-													Yes
-													<span></span>
-												</label>
-												<label class="kt-radio">
-													<input type="radio" value="No" name="country_director_notified"> No
-													<span></span>
-												</label>
-											</div>
+									<label class="col-3 col-form-label">Country Director Notified</label>
+									<div class="col-9">
+										<div id="country_director_notified" class="kt-radio-inline">
+											<label class="kt-radio">
+												<input type="radio" value="Yes" name="country_director_notified">
+												Yes
+												<span></span>
+											</label>
+											<label class="kt-radio">
+												<input type="radio" value="No" name="country_director_notified"> No
+												<span></span>
+											</label>
 										</div>
 									</div>
-									<div class="col-md-6 row">
-										<label class="col-6 col-form-label">Travel advance</label>
-										<div class="col-6">
-											<div class="kt-radio-inline">
-												<label class="kt-radio">
-													<input type="radio" value="Yes" name="travel_advance"> Yes
-													<span></span>
-												</label>
-												<label class="kt-radio">
-													<input type="radio" value="No" name="travel_advance"> No
-													<span></span>
-												</label>
-											</div>
+								</div>
+								<div class="form-group row">
+									<label class="col-3 col-form-label">Travel advance</label>
+									<div class="col-9">
+										<div id="travel_advance" class="kt-radio-inline">
+											<label class="kt-radio">
+												<input type="radio" value="Yes" name="travel_advance"> Yes
+												<span></span>
+											</label>
+											<label class="kt-radio">
+												<input type="radio" value="No" name="travel_advance"> No
+												<span></span>
+											</label>
 										</div>
 									</div>
 								</div>
@@ -267,7 +266,7 @@
 											to
 											departure?</label>
 										<div class="col-md-5">
-											<div class="kt-radio-inline">
+											<div id="need_documents" class="kt-radio-inline">
 												<label class="kt-radio">
 													<input value="Yes" type="radio" name="need_documents">
 													Yes
@@ -291,7 +290,7 @@
 											diem
 											variance memo to Travel Manager</label>
 										<div class="col-md-5">
-											<div class="kt-radio-inline">
+											<div id="car_rental" class="kt-radio-inline">
 												<label class="kt-radio">
 													<input value="Yes" type="radio" name="car_rental">
 													Yes
@@ -319,7 +318,7 @@
 											in/out
 											and hotel(s) if known.</label>
 										<div class="col-md-5">
-											<div class="kt-radio-inline">
+											<div id="hotel_reservations" class="kt-radio-inline">
 												<label class="kt-radio">
 													<input value="Yes" type="radio" name="hotel_reservations">
 													Yes
@@ -359,7 +358,7 @@
 											needed
 											(International Travel only)</label>
 										<div class="col-md-5">
-											<div class="kt-radio-inline">
+											<div id="other_transportation" class="kt-radio-inline">
 												<label class="kt-radio">
 													<input value="Yes" type="radio" name="other_transportation">
 													Yes
@@ -580,12 +579,13 @@
 					<!--begin: Form Wizard Step 4-->
 					<div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
 						<div class="kt-heading kt-heading--md pb-2 border-bottom">Final step, select head of units and
-							submit the data
+							submit
 						</div>
 						<div class="kt-form__section kt-form__section--first">
 							<div class="d-flex justify-content-center align-items-center py-5">
 								<div class="mr-5">
-									<img style="width: 10rem; height: auto;" src="<?= site_url('assets/images/undraw_mail_re_duel.svg') ?>" alt="">
+									<img style="width: 10rem; height: auto;"
+										src="<?= site_url('assets/images/undraw_mail_re_duel.svg') ?>" alt="">
 								</div>
 								<div>
 									<div class="form-group">
@@ -628,6 +628,81 @@
 
 <script>
 	$(document).ready(function () {
+
+		// Wizard
+		// Class definition
+		var KTWizard3 = function () {
+			// Base elements
+			var wizardEl;
+			var formEl;
+			var validator;
+			var wizard;
+
+			// Private functions
+			var initWizard = function () {
+				// Initialize form wizard
+				wizard = new KTWizard('kt_wizard_v3', {
+					startStep: 1,
+				});
+
+				// Validation before going to next page
+				wizard.on('beforeNext', function (wizardObj) {
+					const step = wizardObj.currentStep
+					$('p.error').remove();
+					if (step == 1) {
+						const validate = validateStep1()
+						if (!validate) {
+							wizardObj.stop();
+							swal.fire({
+								"title": "",
+								"text": "Please fill all required fields",
+								"type": "error",
+								"confirmButtonClass": "btn btn-dark"
+							});
+						}
+					}
+				});
+
+				// Change event
+				wizard.on('change', function (wizard) {
+					KTUtil.scrollTop();
+				});
+			}
+
+			return {
+				// public functions
+				init: function () {
+					wizardEl = KTUtil.get('kt_wizard_v3');
+					formEl = $('#kt_form');
+					initWizard();
+				}
+			};
+		}();
+
+		wizard = new KTWizard('kt_wizard_v3', {
+			startStep: 1,
+		});
+
+		KTWizard3.init();
+
+		$('#originating_city').select2({
+			placeholder: 'Select originating city',
+			ajax: {
+				'url': `${base_url}api/cities`,
+				data: function (params) {
+					return {
+						q: params.term,
+						select2: true,
+					}
+				},
+				processResults: function (response) {
+					return {
+						results: response.result
+					}
+				}
+			}
+		})
+
 		$('input[name=employment]').change(function () {
 			const value = $(this).val();
 			if (value == 'On behalf') {
@@ -697,6 +772,177 @@
 			const totalEl = parent.find('.total')
 			const total = Number(night) * mealsLodging
 			totalEl.val(total)
+		}
+
+		const validateStep1 = () => {
+			const requestBase = $('input[name=request_base]:checked').val()
+			const employment = $('input[name=employment]:checked').val()
+			const city = $('select[name=originating_city]').val()
+			const departureDate = $('input[name=departure_date]').val()
+			const returnDate = $('input[name=return_date]').val()
+			const directorNotified = $('input[name=country_director_notified]:checked').val()
+			const travelAdvance = $('input[name=travel_advance]:checked').val()
+			const needDocuments = $('input[name=need_documents]:checked').val()
+			const carRental = $('input[name=car_rental]:checked').val()
+			const hotelRes = $('input[name=hotel_reservations]:checked').val()
+			const otherTran = $('input[name=other_transportation]:checked').val()
+			const specialInstr = $('#special_instructions').val()
+			const errors = []
+
+			if (requestBase) {
+				if (requestBase == 'Internal TOR') {
+					const torNumber = $('input[name=tor_number]').val()
+					if (!torNumber) {
+						errors.push({
+							type: 1,
+							field: 'tor_number'
+						})
+					}
+				}
+			} else {
+				errors.push({
+					type: 1,
+					field: 'request_base'
+				})
+			}
+
+			if (employment) {
+				if (employment == 'On behalf') {
+					const employmentStatus = $('input[name=employment_status]:checked').val()
+					if (!employmentStatus) {
+						errors.push({
+							type: 1,
+							field: 'employment_status'
+						})
+					}
+				}
+			} else {
+				errors.push({
+					type: 1,
+					field: 'employment'
+				})
+			}
+
+			if (!departureDate) {
+				errors.push({
+					type: 1,
+					field: 'departure_date'
+				})
+			}
+
+			if (!returnDate) {
+				errors.push({
+					type: 1,
+					field: 'return_date'
+				})
+			}
+
+			if (!city) {
+				errors.push({
+					type: 1,
+					field: 'originating_city'
+				})
+			}
+
+			if (!directorNotified) {
+				errors.push({
+					type: 1,
+					field: 'country_director_notified'
+				})
+			}
+
+			if (!travelAdvance) {
+				errors.push({
+					type: 1,
+					field: 'travel_advance'
+				})
+			}
+
+			if(!needDocuments) {
+				errors.push({
+					type: 2,
+					field: 'need_documents'
+				})
+			} else {
+				if(needDocuments == 'Yes') {
+					const documentDescriptions = $('#document_description').val()
+					if (!documentDescriptions) {
+						errors.push({
+							type: 1,
+							field: 'document_description'
+						})
+					}
+				}
+			}
+
+			if(!carRental) {
+				errors.push({
+					type: 2,
+					field: 'car_rental'
+				})
+			}
+			if(!hotelRes) {
+				errors.push({
+					type: 2,
+					field: 'hotel_reservations'
+				})
+			} else {
+				if(hotelRes == 'Yes') {
+					const checkIn = $('input[name=hotel_check_in]').val()
+					const checkOut = $('input[name=hotel_check_out]').val()
+					const preferredHotel = $('#preferred_hotel').val()
+					if (!checkIn) {
+						errors.push({
+							type: 2,
+							field: 'hotel_check_in'
+						})
+					}
+					if (!checkOut) {
+						errors.push({
+							type: 2,
+							field: 'hotel_check_out'
+						})
+					}
+					if (!preferredHotel) {
+						errors.push({
+							type: 1,
+							field: 'preferred_hotel'
+						})
+					}
+				}
+			}
+
+			if(!otherTran) {
+				errors.push({
+					type: 2,
+					field: 'other_transportation'
+				})
+			}
+
+			if(!specialInstr) {
+				errors.push({
+					type: 2,
+					field: 'special_instructions'
+				})
+			}
+
+			if (errors.length > 0) {
+				showErrors(errors)
+				return false
+			} else {
+				return true
+			}
+		}
+
+		const showErrors = (errors) => {
+			errors.forEach(err => {
+				if(err.type == 1) {
+					$(`#${err.field}`).parent().append(
+					'<p class="error mt-1 mb-0">This is field required</p>')
+				} else if(err.type == 2){
+					$('<p class="error mt-1 mb-0">This is field required</p>').insertAfter($(`#${err.field}`))
+				}
+			})
 		}
 
 		const updateDestinationsReview = () => {
@@ -920,7 +1166,9 @@
 					const response = xhr.responseJSON;
 					console.log(response)
 				},
-				success: function (data) {},
+				success: function (data) {
+					console.log(data)
+				},
 				cache: false,
 				contentType: false,
 				processData: false

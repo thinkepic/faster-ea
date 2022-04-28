@@ -10473,7 +10473,7 @@ label {
 }
 
 .error {
-  color: #c00000;
+  color: #c00000 !important;
   margin-top: 5px;
 }
 
