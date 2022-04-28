@@ -496,8 +496,8 @@
 										<p class="mb-1">Employee status: Programmatic</p>
 									</div>
 									<div class="pt-2 mb-2 pb-2">
-										<p class="mb-1">Request base: <span class="review-request-base-val"></span><span
-												class="review-tor-number d-none"></span></p>
+										<p class="mb-1">Request base: <span class="review-request-base-val"></span>
+											<span class="review-tor-number d-none"></span></p>
 										<p class="mb-1">Employment: <span class="review-employment-val"></span>
 										</p>
 										<p class="mb-1">Originating city: <span class="review-originating-city"></span>
@@ -515,33 +515,37 @@
 													<td>
 														Country director notified?
 													</td>
-													<td class="text-center review-director-notif-val">Yes</td>
+													<td class="text-center review-director-notif-val"> - </td>
 												</tr>
 												<tr>
 													<td>
 														Travel Advance?
 													</td>
-													<td class="text-center review-travel-advance-val">Yes</td>
+													<td class="text-center review-travel-advance-val">-</td>
 												</tr>
 												<tr>
 													<td>Documents Needed more than 3 days prior to departure?</td>
-													<td class="text-center review-need-documents-val">No</td>
+													<td class="text-center review-need-documents-val">-</td>
 												</tr>
 												<tr>
 													<td>Car Rental?</td>
-													<td class="text-center review-car-rental-val">Yes</td>
+													<td class="text-center review-car-rental-val">-</td>
 												</tr>
 												<tr>
 													<td>Hotel Reservations?</td>
-													<td class="text-center review-hotel-res-val">No</td>
+													<td class="text-center review-hotel-res-val">-</td>
 												</tr>
 												<tr>
 													<td>Hotel transfer/taxi/other transportation needed (International
 														Travel only)</td>
-													<td class="text-center review-other-trasnport-val">No</td>
+													<td class="text-center review-other-trasnport-val">-</td>
 												</tr>
 											</tbody>
 										</table>
+										<div class="pl-3">
+											<p class="mt-2 mb-0 font-weight-bold">Special instructions: </p>
+											<p class="review-special-instrc"></p>
+										</div>
 									</div>
 								</div>
 								<div class="step-2-review py-3 border-bottom">
@@ -717,18 +721,6 @@
 			}
 		});
 
-		$(document).on('keyup', '.lodging', function () {
-			updateCosts($(this))
-		});
-
-		$(document).on('keyup', '.meals', function () {
-			updateCosts($(this))
-		});
-
-		$(document).on('keyup', '.night', function () {
-			updateCosts($(this))
-		});
-
 		let destinations = []
 
 		const updateCosts = (el) => {
@@ -745,6 +737,7 @@
 		}
 
 		const updateStepReview = (destinations) => {
+			// Basic Information
 			const requestBaseValue = $('input[name=request_base]:checked').val()
 			$('.review-request-base-val').text(requestBaseValue)
 			if (requestBaseValue == 'Internal TOR') {
@@ -754,23 +747,30 @@
 			} else {
 				$('.review-tor-number').addClass('d-none')
 			}
-
 			$('.review-employment-val').text($('input[name=employment]:checked').val())
 			$('.review-originating-city').text($('#originating_city').val())
-
 			const departureDate = dayjs($('input[name=departure_date]').val()).format('DD MMMM YYYY')
 			const returnDate = dayjs($('input[name=return_date]').val()).format('DD MMMM YYYY')
 			$('.review-departure-date').text(departureDate)
 			$('.review-return-date').text(returnDate)
+
+			// Special requests
+			$('.review-director-notif-val').text($('input[name=country_director_notified]:checked').val())
+			$('.review-travel-advance-val').text($('input[name=travel_advance]:checked').val())
+			$('.review-need-documents-val').text($('input[name=need_documents]:checked').val())
+			$('.review-car-rental-val').text($('input[name=car_rental]:checked').val())
+			$('.review-hotel-res-val').text($('input[name=hotel_reservations]:checked').val())
+			$('.review-other-trasnport-val').text($('input[name=other_transportation]:checked').val())
+			$('.review-special-instrc').text($('#special_instructions').val())
 		}
 
-		$(document).on('click', '#btn-next-step', function (e) {
+		$(document).on('click', '#btn-next-step, .kt-wizard-v3__nav-item', function (e) {
 			updateStepReview(destinations)
 		})
 
-		$(document).on('click', '.kt-wizard-v3__nav-item', function (e) {
-			updateStepReview(destinations)
-		})
+		$(document).on('keyup', '.lodging, .meals, .night', function () {
+			updateCosts($(this))
+		});
 
 		$(document).on('click', '#btn-more-participant', function (e) {
 			e.preventDefault()
