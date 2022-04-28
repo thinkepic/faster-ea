@@ -92,7 +92,8 @@
 								<div class="form-group row tor-form d-none">
 									<label for="example-search-input" class="col-md-3 col-form-label">TOR Number</label>
 									<div class="col-md-9">
-										<input type="text" placeholder="Enter tor number" class="form-control" name="tor_number">
+										<input type="text" placeholder="Enter tor number" class="form-control"
+											name="tor_number">
 									</div>
 								</div>
 								<div class="form-group row exteral-form d-none">
@@ -150,16 +151,16 @@
 										<div class="participants-lists mb-3">
 											<div class="row mb-2 participant-form">
 												<div class="col-4">
-													<input class="form-control" type="text" placeholder="Name"
-														class="participant_name" name="participant_name[]">
+													<input class="form-control participant_name" type="text"
+														placeholder="Name" name="participant_name[]">
 												</div>
 												<div class="col-4">
-													<input class="form-control" type="text" placeholder="Email"
-														class="participant_email" name="participant_email[]">
+													<input class="form-control participant_email" type="text"
+														placeholder="Email" name="participant_email[]">
 												</div>
 												<div class="col-4">
-													<input class="form-control" type="text" placeholder="Title"
-														class="participant_title" name="participant_title[]">
+													<input class="form-control participant_title" type="text"
+														placeholder="Title" name="participant_title[]">
 												</div>
 											</div>
 										</div>
@@ -180,20 +181,23 @@
 											<div class="row mb-2">
 												<div class="col-6 mb-2">
 													<input class="form-control participant_group_name" type="text"
-														placeholder="Name Of Group" name="participant_group_name">
+														placeholder="Name Of Group" id="participant_group_name"
+														name="participant_group_name">
 												</div>
 												<div class="col-6 mb-2">
 													<input class="form-control participant_group_email" type="text"
-														placeholder="Email" name="participant_group_email">
+														placeholder="Email" id="participant_group_email"
+														name="participant_group_email">
 												</div>
 												<div class="col-6 mb-2">
 													<input class="form-control contact_person" type="text"
 														placeholder="Contact Person"
+														id="participant_group_contact_person"
 														name="participant_group_contact_person">
 												</div>
 												<div class="col-6 mb-2">
 													<input class="form-control number_of_participants" type="number"
-														placeholder="Number of participants"
+														placeholder="Number of participants" id="number_of_participants"
 														name="number_of_participants">
 												</div>
 											</div>
@@ -814,6 +818,62 @@
 							type: 1,
 							field: 'employment_status'
 						})
+					} else {
+						if (employmentStatus == 'Group') {
+							const groupName = $('input[name=participant_group_name]').val()
+							if (!groupName) {
+								errors.push({
+									type: 1,
+									field: 'participant_group_name'
+								})
+							}
+							const groupEmail = $('input[name=participant_group_email]').val()
+							if (!groupEmail) {
+								errors.push({
+									type: 1,
+									field: 'participant_group_email'
+								})
+							}
+							const groupCP = $('input[name=participant_group_contact_person]').val()
+							if (!groupCP) {
+								errors.push({
+									type: 1,
+									field: 'participant_group_contact_person'
+								})
+							}
+							const groupParticipants = $('input[name=number_of_participants]').val()
+							if (!groupParticipants) {
+								errors.push({
+									type: 1,
+									field: 'number_of_participants'
+								})
+							}
+						} else {
+							$('.participant_name').each(function () {
+								let value = $(this).val()
+								if (!value) {
+									$('<p class="error mt-1 mb-0">This is field required</p>')
+										.insertAfter($(this))
+								}
+							});
+
+							$('.participant_email').each(function () {
+								let value = $(this).val()
+								if (!value) {
+									$('<p class="error mt-1 mb-0">This is field required</p>')
+										.insertAfter($(this))
+								}
+							});
+
+							$('.participant_title').each(function () {
+								let value = $(this).val()
+								if (!value) {
+									$('<p class="error mt-1 mb-0">This is field required</p>')
+										.insertAfter($(this))
+								}
+							});
+
+						}
 					}
 				}
 			} else {
@@ -858,13 +918,13 @@
 				})
 			}
 
-			if(!needDocuments) {
+			if (!needDocuments) {
 				errors.push({
 					type: 2,
 					field: 'need_documents'
 				})
 			} else {
-				if(needDocuments == 'Yes') {
+				if (needDocuments == 'Yes') {
 					const documentDescriptions = $('#document_description').val()
 					if (!documentDescriptions) {
 						errors.push({
@@ -875,19 +935,19 @@
 				}
 			}
 
-			if(!carRental) {
+			if (!carRental) {
 				errors.push({
 					type: 2,
 					field: 'car_rental'
 				})
 			}
-			if(!hotelRes) {
+			if (!hotelRes) {
 				errors.push({
 					type: 2,
 					field: 'hotel_reservations'
 				})
 			} else {
-				if(hotelRes == 'Yes') {
+				if (hotelRes == 'Yes') {
 					const checkIn = $('input[name=hotel_check_in]').val()
 					const checkOut = $('input[name=hotel_check_out]').val()
 					const preferredHotel = $('#preferred_hotel').val()
@@ -912,14 +972,14 @@
 				}
 			}
 
-			if(!otherTran) {
+			if (!otherTran) {
 				errors.push({
 					type: 2,
 					field: 'other_transportation'
 				})
 			}
 
-			if(!specialInstr) {
+			if (!specialInstr) {
 				errors.push({
 					type: 2,
 					field: 'special_instructions'
@@ -936,11 +996,12 @@
 
 		const showErrors = (errors) => {
 			errors.forEach(err => {
-				if(err.type == 1) {
+				if (err.type == 1) {
 					$(`#${err.field}`).parent().append(
-					'<p class="error mt-1 mb-0">This is field required</p>')
-				} else if(err.type == 2){
-					$('<p class="error mt-1 mb-0">This is field required</p>').insertAfter($(`#${err.field}`))
+						'<p class="error mt-1 mb-0">This is field required</p>')
+				} else if (err.type == 2) {
+					$('<p class="error mt-1 mb-0">This is field required</p>').insertAfter($(
+						`#${err.field}`))
 				}
 			})
 		}
@@ -1032,16 +1093,16 @@
 			const html = `
                 <div class="row mb-2 participant-form">
                         <div class="col-4">
-                            <input class="form-control" type="text" placeholder="Name"
-                                class="participant_name" name="participant_name[]">
+                            <input class="form-control participant_name" type="text" placeholder="Name"
+                                 name="participant_name[]">
                         </div>
                         <div class="col-4">
-                            <input class="form-control" type="text" placeholder="Email"
-                                class="participant_email" name="participant_email[]">
+                            <input class="form-control participant_email" type="text" placeholder="Email"
+                                 name="participant_email[]">
                         </div>
                         <div class="col-4">
-                            <input class="form-control" type="text" placeholder="Title"
-                                class="participant_title" name="participant_title[]">
+                            <input class="form-control participant_title" type="text" placeholder="Title"
+                             name="participant_title[]">
                         </div>
                     </div>`;
 			$('.participants-lists').append(html);
