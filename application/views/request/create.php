@@ -395,36 +395,52 @@
 							<div class="kt-wizard-v3__form">
 								<div class="destinations-lists">
 									<div class="destination pb-2 mb-5 border-bottom">
-										<h5 class="mb-3">1st Destination</h5>
+										<h5 class="mb-3"><span>1st</span> Destination</h5>
+										<input type="text" class="d-none destination_order" value="1st" name="destination_order[]">
 										<div class="form-group row">
 											<label for="example-search-input"
 												class="col-md-3 col-form-label">City/country</label>
 											<div class="col-md-9">
-												<input placeholder="Enter city/country" class="form-control" type="text"
+												<input placeholder="Enter city/country"
+													class="form-control destination_city" type="text"
 													name="destination_city[]">
 											</div>
 										</div>
 										<div class="form-group row">
-											<label for="example-search-input" class="col-md-3 col-form-label">Departure
-												date</label>
-											<div class="col-md-9">
-												<input class="form-control" type="date"
-													name="destination_departure_date[]">
+											<label for="example-date-input" class="col-md-3 col-form-label">Date</label>
+											<div class="col-md-4">
+												<label for="departure_date" class="form-label">
+													Departure date
+												</label>
+												<input class="form-control destination_departure_date" type="date"
+												name="destination_departure_date[]">
+											</div>
+											<div class="col-md-1">
+											</div>
+											<div class="col-md-4">
+												<label for="departure_date" class="form-label">
+													Arrival date
+												</label>
+
+												<input class="form-control destination_arrival_date" type="date"
+													name="destination_arrival_date[]">
 											</div>
 										</div>
 										<div class="form-group row">
 											<label for="example-search-input" class="col-md-3 col-form-label">Project
 												Number</label>
 											<div class="col-md-9">
-												<input maxlength="9" placeholder="1297.0446" class="form-control"
-													type="text" name="project_number[]">
+												<input maxlength="9" placeholder="1297.0446"
+													class="form-control project_number" type="text"
+													name="project_number[]">
 											</div>
 										</div>
 										<div class="form-group row">
 											<label for="example-search-input" class="col-md-3 col-form-label">Budget
 												Monitor</label>
 											<div class="col-md-9">
-												<input value="Nico Hardiyanto" class="form-control" type="text"
+												<input value="Nico Hardiyanto"
+													class="form-control destination_budget_monitor" type="text"
 													name="destination_budget_monitor[]">
 											</div>
 										</div>
@@ -448,7 +464,7 @@
 											<label for="example-search-input" class="col-md-3 col-form-label">Total
 												(lodging + meals)</label>
 											<div class="col-md-9">
-												<input readonly class="form-control meals_lodging_total" type="number"
+												<input readonly class="form-control meals_lodging_total readonly-form" type="number"
 													name="meals_lodging_total[]">
 											</div>
 										</div>
@@ -464,7 +480,7 @@
 											<label for="example-search-input"
 												class="col-md-3 col-form-label">Total</label>
 											<div class="col-md-9">
-												<input readonly class="form-control total" type="number" name="total[]">
+												<input readonly class="form-control total readonly-form" type="number" name="total[]">
 											</div>
 										</div>
 									</div>
@@ -550,73 +566,8 @@
 								</div>
 								<div class="step-2-review py-3 border-bottom">
 									<h5 class="mb-3">Destination details :</h5>
-									<div class="row destinations-review-lists">
-										<div class="col-md-6 destination-review border p-3">
-											<h6 class="pb-2 border-bottom font-weight-bold">1st destination </h6>
-											<p class="mb-1">City/country: <span class="destination-city-val">Kota
-													Langsa</span> </p>
-											<p class="mb-1">Arrival date: <span
-													class="destination-arrival-date-val">05/10/2022</span> </p>
-											<p class="mb-1">Departure date: <span
-													class="destination-departure-date-val">10/10/2022</span> </p>
-											<p class="mb-1">Project number: <span
-													class="destination-project-number-val">1232.1232</span> </p>
-											<p class="mb-1">Budget monitor: <span
-													class="destination-project-number-val">Nico Hardiyanto</span> </p>
-											<p class="mb-1">Lodging: <span class="destination-lodging-val">50000</span>
-											</p>
-											<p class="mb-1">Meals: <span class="destination-meals-val">10000</span> </p>
-											<p class="mb-1">Total (lodging+meals): <span
-													class="destination-meals-lodging-total-val">600000</span> </p>
-											<p class="mb-1">Number of nights: <span
-													class="destination-night-val">5</span> </p>
-											<p class="mb-1">Total: <span class="destination-total-val">1000000</span>
-											</p>
-										</div>
-										<div class="col-md-6 destination-review border p-3">
-											<h6 class="pb-2 border-bottom font-weight-bold">2nd destination </h6>
-											<p class="mb-1">City/country: <span class="destination-city-val">Kota
-													Langsa</span> </p>
-											<p class="mb-1">Arrival date: <span
-													class="destination-arrival-date-val">05/10/2022</span> </p>
-											<p class="mb-1">Departure date: <span
-													class="destination-departure-date-val">10/10/2022</span> </p>
-											<p class="mb-1">Project number: <span
-													class="destination-project-number-val">1232.1232</span> </p>
-											<p class="mb-1">Budget monitor: <span
-													class="destination-project-number-val">Nico Hardiyanto</span> </p>
-											<p class="mb-1">Lodging: <span class="destination-lodging-val">50000</span>
-											</p>
-											<p class="mb-1">Meals: <span class="destination-meals-val">10000</span> </p>
-											<p class="mb-1">Total (lodging+meals): <span
-													class="destination-meals-lodging-total-val">600000</span> </p>
-											<p class="mb-1">Number of nights: <span
-													class="destination-night-val">5</span> </p>
-											<p class="mb-1">Total: <span class="destination-total-val">1000000</span>
-											</p>
-										</div>
-										<div class="col-md-6 destination-review border p-3">
-											<h6 class="pb-2 border-bottom font-weight-bold">3rd destination </h6>
-											<p class="mb-1">City/country: <span class="destination-city-val">Kota
-													Langsa</span> </p>
-											<p class="mb-1">Arrival date: <span
-													class="destination-arrival-date-val">05/10/2022</span> </p>
-											<p class="mb-1">Departure date: <span
-													class="destination-departure-date-val">10/10/2022</span> </p>
-											<p class="mb-1">Project number: <span
-													class="destination-project-number-val">1232.1232</span> </p>
-											<p class="mb-1">Budget monitor: <span
-													class="destination-project-number-val">Nico Hardiyanto</span> </p>
-											<p class="mb-1">Lodging: <span class="destination-lodging-val">50000</span>
-											</p>
-											<p class="mb-1">Meals: <span class="destination-meals-val">10000</span> </p>
-											<p class="mb-1">Total (lodging+meals): <span
-													class="destination-meals-lodging-total-val">600000</span> </p>
-											<p class="mb-1">Number of nights: <span
-													class="destination-night-val">5</span> </p>
-											<p class="mb-1">Total: <span class="destination-total-val">1000000</span>
-											</p>
-										</div>
+									<div id="destinations-review-lists" class="row destinations-review-lists">
+										
 									</div>
 								</div>
 							</div>
@@ -721,8 +672,6 @@
 			}
 		});
 
-		let destinations = []
-
 		const updateCosts = (el) => {
 			const parent = el.parent().parent().parent()
 			const lodging = parent.find('.lodging').val()
@@ -736,7 +685,50 @@
 			totalEl.val(total)
 		}
 
-		const updateStepReview = (destinations) => {
+		const updateDestinationsReview = () => {
+			let data = []
+			$('.destinations-review-lists').html('');
+			$('.destination').each(function () {
+				const order = $(this).find('.destination_order').val()
+				const city = $(this).find('.destination_city').val()
+				let arrival = $(this).find('.destination_arrival_date').val()
+				let departure = $(this).find('.destination_departure_date').val()
+				arrival = dayjs(arrival).format('DD MMMM YYYY')
+				departure = dayjs(departure).format('DD MMMM YYYY')
+				const budgetMonitor = $(this).find('.destination_budget_monitor').val()
+				const projectNumber = $(this).find('.project_number').val()
+				const lodging = $(this).find('.lodging').val()
+				const meals = $(this).find('.meals').val()
+				const mealsLodging = $(this).find('.meals_lodging_total').val()
+				const night = $(this).find('.night').val()
+				const total = $(this).find('.total').val()
+				
+				const html = `<div class="col-md-6 destination-review border p-3">
+								<h6 class="pb-2 border-bottom font-weight-bold">${order} destination </h6>
+								<p class="mb-1">City/country: <span class="destination-city-val">${city}</span> </p>
+								<div class="mb-1 d-flex">
+									<p class="mr-3 mb-0">Departure date: ${departure},</p>
+									<p class="mb-0">Arrival date: ${arrival}</p>
+								</div>
+								<p class="mb-1">Project number: <span
+										class="destination-project-number-val">${projectNumber}</span> </p>
+								<p class="mb-1">Budget monitor: <span
+										class="destination-project-number-val">${budgetMonitor}</span> </p>
+								<p class="mb-1">Lodging: <span class="destination-lodging-val">${lodging}</span>
+								</p>
+								<p class="mb-1">Meals: <span class="destination-meals-val">${meals}</span> </p>
+								<p class="mb-1">Total (lodging+meals): <span
+										class="destination-meals-lodging-total-val">${mealsLodging}</span> </p>
+								<p class="mb-1">Number of nights: <span
+										class="destination-night-val">${night}</span> </p>
+								<p class="mb-1">Total: <span class="destination-total-val">${total}</span>
+								</p>
+								</div>`;
+				$('.destinations-review-lists').append(html);
+			});
+		}
+
+		const updateStepReview = () => {
 			// Basic Information
 			const requestBaseValue = $('input[name=request_base]:checked').val()
 			$('.review-request-base-val').text(requestBaseValue)
@@ -762,10 +754,13 @@
 			$('.review-hotel-res-val').text($('input[name=hotel_reservations]:checked').val())
 			$('.review-other-trasnport-val').text($('input[name=other_transportation]:checked').val())
 			$('.review-special-instrc').text($('#special_instructions').val())
+
+			// Destinations 
+			updateDestinationsReview()
 		}
 
 		$(document).on('click', '#btn-next-step, .kt-wizard-v3__nav-item', function (e) {
-			updateStepReview(destinations)
+			updateStepReview()
 		})
 
 		$(document).on('keyup', '.lodging, .meals, .night', function () {
@@ -808,28 +803,41 @@
 			}
 
 			const html = `<div class="destination pb-2 mb-5 border-bottom">
-										<h5 class="mb-3">${order} Destination</h5>
+										<h5 class="mb-3"><span>${order}</span> Destination</h5>
+										<input type="text" class="d-none destination_order" value="${order}" name="destination_order[]">
 										<div class="form-group row">
 											<label for="example-search-input"
 												class="col-md-3 col-form-label">City/country</label>
 											<div class="col-md-9">
-												<input placeholder="Enter city/country" class="form-control" type="text"
+												<input placeholder="Enter city/country" class="form-control destination_city" type="text"
 													name="destination_city[]">
 											</div>
 										</div>
 										<div class="form-group row">
-											<label for="example-search-input" class="col-md-3 col-form-label">Departure
-												date</label>
-											<div class="col-md-9">
-												<input class="form-control" type="date"
+											<label for="example-date-input" class="col-md-3 col-form-label">Date</label>
+											<div class="col-md-4">
+												<label for="departure_date" class="form-label">
+													Departure date
+												</label>
+												<input class="form-control destination_departure_date" type="date"
 													name="destination_departure_date[]">
+											</div>
+											<div class="col-md-1">
+											</div>
+											<div class="col-md-4">
+												<label for="departure_date" class="form-label">
+													Arrival date
+												</label>
+
+												<input class="form-control destination_arrival_date" type="date"
+													name="destination_arrival_date[]">
 											</div>
 										</div>
 										<div class="form-group row">
 											<label for="example-search-input" class="col-md-3 col-form-label">Project
 												Number</label>
 											<div class="col-md-9">
-												<input maxlength="9" placeholder="1297.0446" class="form-control"
+												<input maxlength="9" placeholder="1297.0446" class="form-control project_number"
 													type="text" name="project_number[]">
 											</div>
 										</div>
@@ -837,7 +845,7 @@
 											<label for="example-search-input" class="col-md-3 col-form-label">Budget
 												Monitor</label>
 											<div class="col-md-9">
-												<input value="Nico Hardiyanto" class="form-control" type="text"
+												<input value="Nico Hardiyanto" class="form-control destination_budget_monitor" type="text"
 													name="destination_budget_monitor[]">
 											</div>
 										</div>
@@ -853,14 +861,15 @@
 											<label for="example-search-input"
 												class="col-md-3 col-form-label">Meals</label>
 											<div class="col-md-9">
-												<input placeholder="Input M&IE standard cost" class="form-control meals" type="number" name="meals[]">
+												<input placeholder="Input M&IE standard cost" class="form-control meals"
+													type="number" name="meals[]">
 											</div>
 										</div>
 										<div class="form-group row">
 											<label for="example-search-input" class="col-md-3 col-form-label">Total
 												(lodging + meals)</label>
 											<div class="col-md-9">
-												<input readonly class="form-control meals_lodging_total" type="number"
+												<input readonly class="form-control meals_lodging_total readonly-form" type="number"
 													name="meals_lodging_total[]">
 											</div>
 										</div>
@@ -868,14 +877,15 @@
 											<label for="example-search-input"
 												class="col-md-3 col-form-label">Night</label>
 											<div class="col-md-9">
-												<input placeholder="# of nights" class="form-control night" type="number" name="night[]">
+												<input placeholder="# of nights" class="form-control night"
+													type="number" name="night[]">
 											</div>
 										</div>
 										<div class="form-group row">
 											<label for="example-search-input"
 												class="col-md-3 col-form-label">Total</label>
 											<div class="col-md-9">
-												<input readonly class="form-control total" type="number" name="total[]">
+												<input readonly class="form-control total readonly-form" type="number" name="total[]">
 											</div>
 										</div>
 									</div>`;

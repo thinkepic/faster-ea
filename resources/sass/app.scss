@@ -23,3 +23,8 @@ label {
     margin-top: -5px !important;
     margin-left: -5px !important;
 }
+
+.readonly-form {
+    cursor: not-allowed; 
+    background-color: #eee !important;
+}
