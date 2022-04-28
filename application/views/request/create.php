@@ -20,7 +20,7 @@
 			<div class="kt-grid__item">
 				<!--begin: Form Wizard Nav -->
 				<div class="kt-wizard-v3__nav">
-					<div class="kt-wizard-v3__nav-items gap-5">
+					<div class="kt-wizard-v3__nav-items justify-content-between">
 						<!--doc: Replace A tag with SPAN tag to disable the step link click -->
 						<a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step"
 							data-ktwizard-state="current">
@@ -396,7 +396,8 @@
 								<div class="destinations-lists">
 									<div class="destination pb-2 mb-5 border-bottom">
 										<h5 class="mb-3"><span>1st</span> Destination</h5>
-										<input type="text" class="d-none destination_order" value="1st" name="destination_order[]">
+										<input type="text" class="d-none destination_order" value="1st"
+											name="destination_order[]">
 										<div class="form-group row">
 											<label for="example-search-input"
 												class="col-md-3 col-form-label">City/country</label>
@@ -413,7 +414,7 @@
 													Departure date
 												</label>
 												<input class="form-control destination_departure_date" type="date"
-												name="destination_departure_date[]">
+													name="destination_departure_date[]">
 											</div>
 											<div class="col-md-1">
 											</div>
@@ -464,8 +465,8 @@
 											<label for="example-search-input" class="col-md-3 col-form-label">Total
 												(lodging + meals)</label>
 											<div class="col-md-9">
-												<input readonly class="form-control meals_lodging_total readonly-form" type="number"
-													name="meals_lodging_total[]">
+												<input readonly class="form-control meals_lodging_total readonly-form"
+													type="number" name="meals_lodging_total[]">
 											</div>
 										</div>
 										<div class="form-group row">
@@ -480,7 +481,8 @@
 											<label for="example-search-input"
 												class="col-md-3 col-form-label">Total</label>
 											<div class="col-md-9">
-												<input readonly class="form-control total readonly-form" type="number" name="total[]">
+												<input readonly class="form-control total readonly-form" type="number"
+													name="total[]">
 											</div>
 										</div>
 									</div>
@@ -567,7 +569,7 @@
 								<div class="step-2-review py-3 border-bottom">
 									<h5 class="mb-3">Destination details :</h5>
 									<div id="destinations-review-lists" class="row destinations-review-lists">
-										
+
 									</div>
 								</div>
 							</div>
@@ -577,11 +579,23 @@
 
 					<!--begin: Form Wizard Step 4-->
 					<div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
-						<div class="kt-heading kt-heading--md pb-2 border-bottom">Final step, please submit the data
+						<div class="kt-heading kt-heading--md pb-2 border-bottom">Final step, select head of units and
+							submit the data
 						</div>
 						<div class="kt-form__section kt-form__section--first">
-							<div class="kt-wizard-v3__form">
-
+							<div class="d-flex justify-content-center align-items-center py-5">
+								<div class="mr-5">
+									<img style="width: 10rem; height: auto;" src="<?= site_url('assets/images/undraw_mail_re_duel.svg') ?>" alt="">
+								</div>
+								<div>
+									<div class="form-group">
+										<label>Select head of units</label>
+										<select name="head_of_units" class="form-control" id="head_of_units">
+											<option value="fadelalfayed27@gmail.com">fadelalfayed27@gmail.com</option>
+											<option value="alfayed@mhs.unsyiah.ac.id">alfayed@mhs.unsyiah.ac.id</option>
+										</select>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -702,7 +716,7 @@
 				const mealsLodging = $(this).find('.meals_lodging_total').val()
 				const night = $(this).find('.night').val()
 				const total = $(this).find('.total').val()
-				
+
 				const html = `<div class="col-md-6 destination-review border p-3">
 								<h6 class="pb-2 border-bottom font-weight-bold">${order} destination </h6>
 								<p class="mb-1">City/country: <span class="destination-city-val">${city}</span> </p>
