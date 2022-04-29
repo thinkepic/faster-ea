@@ -30,15 +30,16 @@ class Data_request extends MY_Controller {
 	{	
 
 		$this->form_validation->set_rules('request_base', 'Request base', 'required');
-		// $this->form_validation->set_rules('departure_date', 'Departure date', 'required');
-		// $this->form_validation->set_rules('return_date', 'Return date', 'required');
-		// $this->form_validation->set_rules('originating_city', 'City', 'required');
-		// $this->form_validation->set_rules('country_director_notified', 'Country director notified', 'required');
-		// $this->form_validation->set_rules('travel_advance', 'Travel advance', 'required');
-		// $this->form_validation->set_rules('need_documents', 'Need documents', 'required');
-		// $this->form_validation->set_rules('car_rental', 'Car rental', 'required');
-		// $this->form_validation->set_rules('hotel_reservations', 'Hotel reservations', 'required');
-		// $this->form_validation->set_rules('other_transportation', 'Other trasportation', 'required');
+		$this->form_validation->set_rules('departure_date', 'Departure date', 'required');
+		$this->form_validation->set_rules('return_date', 'Return date', 'required');
+		$this->form_validation->set_rules('originating_city', 'City', 'required');
+		$this->form_validation->set_rules('country_director_notified', 'Country director notified', 'required');
+		$this->form_validation->set_rules('travel_advance', 'Travel advance', 'required');
+		$this->form_validation->set_rules('need_documents', 'Need documents', 'required');
+		$this->form_validation->set_rules('car_rental', 'Car rental', 'required');
+		$this->form_validation->set_rules('hotel_reservations', 'Hotel reservations', 'required');
+		$this->form_validation->set_rules('other_transportation', 'Other trasportation', 'required');
+		$this->form_validation->set_rules('head_of_units_email', 'Head of units email', 'required');
 
 		if ($this->form_validation->run()) {
 
@@ -46,15 +47,23 @@ class Data_request extends MY_Controller {
 			$requestor_data = [
 				'requestor_id' => 999,
 				'requestor_name' => 'Fadel Al Fayed',
+				'requestor_email' => 'fadelalfayed27@gmail.com',
+				'head_of_units_id' => 9999,
 			];
 			$payload = array_merge($this->input->post(), $requestor_data);
 			$saved = $this->request->insert_request($payload);
-			$response['message'] = 'Your request has been saved';
-			$response['data'] = $payload;
-			$status_code = 200;
+			if($saved) {
+				$response['message'] = 'Your request has been sent';
+				$response['data'] = $payload;
+				$status_code = 200;
+			} else {
+				$response['errors'] = $this->form_validation->error_array();
+				$response['message'] = 'Failed to send request';
+				$status_code = 422;
+			}
 		} else {
 			$response['errors'] = $this->form_validation->error_array();
-			$response['message'] = 'Failed to send request';
+			$response['message'] = 'Please fill all required fields';
 			$status_code = 422;
 		}
 

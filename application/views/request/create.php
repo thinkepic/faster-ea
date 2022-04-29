@@ -92,8 +92,8 @@
 								<div class="form-group row tor-form d-none">
 									<label for="example-search-input" class="col-md-3 col-form-label">TOR Number</label>
 									<div class="col-md-9">
-										<input type="text" placeholder="Enter tor number" class="form-control"
-											name="tor_number">
+										<input type="text" placeholder="Enter tor number" id="tor_number"
+											class="form-control" name="tor_number">
 									</div>
 								</div>
 								<div class="form-group row exteral-form d-none">
@@ -339,14 +339,14 @@
 													<label for="hotel_check_in" class="form-label">
 														Check in
 													</label>
-													<input class="form-control" type="time" name="hotel_check_in"
+													<input class="form-control" type="date" name="hotel_check_in"
 														id="hotel_check_in">
 												</div>
 												<div class="col-6">
 													<label for="hotel_check_out" class="form-label">
 														Check out
 													</label>
-													<input class="form-control" type="time" name="hotel_check_out"
+													<input class="form-control" type="date" name="hotel_check_out"
 														id="hotel_check_out">
 												</div>
 												<div class="col-12 mt-3">
@@ -593,8 +593,10 @@
 								</div>
 								<div>
 									<div class="form-group">
-										<label>Select head of units</label>
-										<select name="head_of_units" class="form-control" id="head_of_units">
+										<label>Head of units</label>
+										<select name="head_of_units_email" class="form-control"
+											id="head_of_units_email">
+											<option value="">Select head of units</option>
 											<option value="fadelalfayed27@gmail.com">fadelalfayed27@gmail.com</option>
 											<option value="alfayed@mhs.unsyiah.ac.id">alfayed@mhs.unsyiah.ac.id</option>
 										</select>
@@ -654,28 +656,28 @@
 					updateStepReview()
 					const step = wizardObj.currentStep
 					$('p.error').remove();
-					// if (step == 1) {
-					// 	if (!validateStep1()) {
-					// 		wizardObj.stop();
-					// 		swal.fire({
-					// 			"title": "",
-					// 			"text": "Please fill all required fields",
-					// 			"type": "error",
-					// 			"confirmButtonClass": "btn btn-dark"
-					// 		});
-					// 	}
-					// }
-					// if (step == 2) {
-					// 	if (!validateStep2()) {
-					// 		wizardObj.stop();
-					// 		swal.fire({
-					// 			"title": "",
-					// 			"text": "Please fill all required fields",
-					// 			"type": "error",
-					// 			"confirmButtonClass": "btn btn-dark"
-					// 		});
-					// 	}
-					// }
+					if (step == 1) {
+						if (!validateStep1()) {
+							wizardObj.stop();
+							swal.fire({
+								"title": "",
+								"text": "Please fill all required fields",
+								"type": "error",
+								"confirmButtonClass": "btn btn-dark"
+							});
+						}
+					}
+					if (step == 2) {
+						if (!validateStep2()) {
+							wizardObj.stop();
+							swal.fire({
+								"title": "",
+								"text": "Please fill all required fields",
+								"type": "error",
+								"confirmButtonClass": "btn btn-dark"
+							});
+						}
+					}
 				});
 
 				// Change event
@@ -962,24 +964,24 @@
 					const checkIn = $('input[name=hotel_check_in]').val()
 					const checkOut = $('input[name=hotel_check_out]').val()
 					const preferredHotel = $('#preferred_hotel').val()
-					if (!checkIn) {
-						errors.push({
-							type: 2,
-							field: 'hotel_check_in'
-						})
-					}
-					if (!checkOut) {
-						errors.push({
-							type: 2,
-							field: 'hotel_check_out'
-						})
-					}
-					if (!preferredHotel) {
-						errors.push({
-							type: 1,
-							field: 'preferred_hotel'
-						})
-					}
+					// if (!checkIn) {
+					// 	errors.push({
+					// 		type: 2,
+					// 		field: 'hotel_check_in'
+					// 	})
+					// }
+					// if (!checkOut) {
+					// 	errors.push({
+					// 		type: 2,
+					// 		field: 'hotel_check_out'
+					// 	})
+					// }
+					// if (!preferredHotel) {
+					// 	errors.push({
+					// 		type: 1,
+					// 		field: 'preferred_hotel'
+					// 	})
+					// }
 				}
 			}
 
@@ -990,12 +992,12 @@
 				})
 			}
 
-			if (!specialInstr) {
-				errors.push({
-					type: 2,
-					field: 'special_instructions'
-				})
-			}
+			// if (!specialInstr) {
+			// 	errors.push({
+			// 		type: 2,
+			// 		field: 'special_instructions'
+			// 	})
+			// }
 
 			if (errors.length > 0) {
 				showErrors(errors)
@@ -1235,37 +1237,55 @@
 
 		$("#kt_form").submit(function (e) {
 			e.preventDefault();
-			const formData = new FormData(this);
-			$.ajax({
-				url: $(this).attr("action"),
-				type: 'POST',
-				data: formData,
-				beforeSend: function () {
-					KTApp.progress($('#btn-submit'))
-				},
-				error: function (xhr) {
-					KTApp.unprogress($('#btn-submit'))
-					const response = xhr.responseJSON;
-					swal.fire({
-						"title": "Something went wrong!",
-						"text": response.message,
-						"type": "error",
-						"confirmButtonClass": "btn btn-dark"
-					});
-				},
-				success: function (response) {
-					KTApp.unprogress($('#btn-submit'))
-					swal.fire({
-						"title": "Saved!",
-						"text": response.message,
-						"type": "success",
-						"confirmButtonClass": "btn btn-dark"
-					});
-				},
-				cache: false,
-				contentType: false,
-				processData: false
-			});
+			$('p.error').remove();
+			const headOfUnits = $('#head_of_units_email').val()
+			if (!headOfUnits) {
+				swal.fire({
+					"title": "Please select head of units!",
+					"type": "error",
+					"confirmButtonClass": "btn btn-dark"
+				});
+				$('<p class="error mt-1 mb-0">Please select head of units</p>').insertAfter($('#head_of_units_email'))
+			} else {
+				const formData = new FormData(this);
+				$.ajax({
+					url: $(this).attr("action"),
+					type: 'POST',
+					data: formData,
+					beforeSend: function () {
+						$('p.error').remove();
+						KTApp.progress($('#btn-submit'))
+					},
+					error: function (xhr) {
+						KTApp.unprogress($('#btn-submit'))
+						const response = xhr.responseJSON;
+						console.log(response)
+						swal.fire({
+							"title": "Something went wrong!",
+							"text": response.message,
+							"type": "error",
+							"confirmButtonClass": "btn btn-dark"
+						});
+					},
+					success: function (response) {
+						KTApp.unprogress($('#btn-submit'))
+						swal.fire({
+							"title": "Saved!",
+							"text": response.message,
+							"type": "success",
+							"confirmButtonClass": "btn btn-dark"
+						}).then((result) => {
+							console.log(result)
+							if (result.value) {
+								window.location = base_url + 'request/data-request'
+							}
+						})
+					},
+					cache: false,
+					contentType: false,
+					processData: false
+				});
+			}
 		});
 	});
 
