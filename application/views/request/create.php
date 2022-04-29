@@ -394,7 +394,7 @@
 					<!--begin: Form Wizard Step 2-->
 					<div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
 						<div class="kt-heading kt-heading--md border-bottom pb-2">Please enter destination details</div>
-						<div class="kt-form__section kt-form__section--first">
+						<div id="step-2-form" class="kt-form__section kt-form__section--first">
 							<div class="kt-wizard-v3__form">
 								<div class="destinations-lists">
 									<div class="destination pb-2 mb-5 border-bottom">
@@ -651,20 +651,31 @@
 
 				// Validation before going to next page
 				wizard.on('beforeNext', function (wizardObj) {
+					updateStepReview()
 					const step = wizardObj.currentStep
 					$('p.error').remove();
-					if (step == 1) {
-						const validate = validateStep1()
-						if (!validate) {
-							wizardObj.stop();
-							swal.fire({
-								"title": "",
-								"text": "Please fill all required fields",
-								"type": "error",
-								"confirmButtonClass": "btn btn-dark"
-							});
-						}
-					}
+					// if (step == 1) {
+					// 	if (!validateStep1()) {
+					// 		wizardObj.stop();
+					// 		swal.fire({
+					// 			"title": "",
+					// 			"text": "Please fill all required fields",
+					// 			"type": "error",
+					// 			"confirmButtonClass": "btn btn-dark"
+					// 		});
+					// 	}
+					// }
+					// if (step == 2) {
+					// 	if (!validateStep2()) {
+					// 		wizardObj.stop();
+					// 		swal.fire({
+					// 			"title": "",
+					// 			"text": "Please fill all required fields",
+					// 			"type": "error",
+					// 			"confirmButtonClass": "btn btn-dark"
+					// 		});
+					// 	}
+					// }
 				});
 
 				// Change event
@@ -994,6 +1005,19 @@
 			}
 		}
 
+		const validateStep2 = () => {
+			let valid = true
+			$('#step-2-form input:not([readonly])').each(function () {
+				let value = $(this).val()
+				if (!value) {
+					valid = false
+					$(this).parent().append(
+						'<p class="error mt-1 mb-0">This is field required</p>')
+				}
+			});
+			return valid
+		}
+
 		const showErrors = (errors) => {
 			errors.forEach(err => {
 				if (err.type == 1) {
@@ -1079,10 +1103,6 @@
 			// Destinations 
 			updateDestinationsReview()
 		}
-
-		$(document).on('click', '#btn-next-step, .kt-wizard-v3__nav-item', function (e) {
-			updateStepReview()
-		})
 
 		$(document).on('keyup', '.lodging, .meals, .night', function () {
 			updateCosts($(this))
@@ -1221,14 +1241,26 @@
 				type: 'POST',
 				data: formData,
 				beforeSend: function () {
-					// $('.invalid-feedback').remove()
+					KTApp.progress($('#btn-submit'))
 				},
 				error: function (xhr) {
+					KTApp.unprogress($('#btn-submit'))
 					const response = xhr.responseJSON;
-					console.log(response)
+					swal.fire({
+						"title": "Something went wrong!",
+						"text": response.message,
+						"type": "error",
+						"confirmButtonClass": "btn btn-dark"
+					});
 				},
-				success: function (data) {
-					console.log(data)
+				success: function (response) {
+					KTApp.unprogress($('#btn-submit'))
+					swal.fire({
+						"title": "Saved!",
+						"text": response.message,
+						"type": "success",
+						"confirmButtonClass": "btn btn-dark"
+					});
 				},
 				cache: false,
 				contentType: false,

@@ -361,8 +361,6 @@
 	</script>
 	<script src="<?= site_url('assets/vendors/general/perfect-scrollbar/dist/perfect-scrollbar.js') ?>"
 		type="text/javascript"></script>
-	<script src="<?= site_url('assets/vendors/general/jquery-validation/dist/jquery.validate.js') ?>"
-		type="text/javascript"></script>
 
 	<!--end:: Global Mandatory Vendors -->
 
