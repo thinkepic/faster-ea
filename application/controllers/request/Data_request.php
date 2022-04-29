@@ -14,7 +14,9 @@ class Data_request extends MY_Controller {
 	public function index()
 	{
 		$this->template->set('page', 'Data request');
-		$this->template->render('request/index');
+		$requests = $this->db->select('*')->from('ea_requests')->get()->result();
+		$data['requests'] = $requests;
+		$this->template->render('request/index', $data);
 	}
 
 	public function create()
@@ -69,5 +71,13 @@ class Data_request extends MY_Controller {
 
 		$this->send_json($response, $status_code);
 	}
+
+	public function datatable()
+    {
+        $this->datatable->select('*');
+        $this->datatable->from('ea_requests');
+
+        echo $this->datatable->generate();
+    }
 
 }
