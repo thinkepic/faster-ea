@@ -58,6 +58,26 @@ class Request_Model extends CI_Model
         $this->db->insert('ea_requests', $request_data);
         $request_id =  $this->db->insert_id();
 
+        // Save destinations
+        $destinations_city = $data['destination_city'];
+        for ($i = 0; $i < count($destinations_city); $i++) {
+            $this->db->insert('ea_requests_destinations', [
+                'request_id' => $request_id,
+                'order' => $data['destination_order'][$i],
+                'city' => $data['destination_city'][$i],
+                'departure_date' => date('Y-m-d', strtotime($data['destination_departure_date'][$i])),
+                'arrival_date' => date('Y-m-d', strtotime($data['destination_arrival_date'][$i])),
+                'project_number' => $data['project_number'][$i],
+                'budget_monitor' => $data['destination_budget_monitor'][$i],
+                'lodging' => $data['lodging'][$i],
+                'meals' => $data['meals'][$i],
+                'total_lodging_and_meals' => $data['meals_lodging_total'][$i],
+                'night' => $data['night'][$i],
+                'total' => $data['total'][$i],
+            ]);
+        }
+
+        // Save participants
         if($employment == 'On behalf') {
             if($employment_status == 'Consultant' || $employment_status == 'Other') {
                 $participants_email = $data['participant_email'];
