@@ -6,7 +6,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Faster | <?= (isset($page) ? $page : '') ?></title>
-	<link rel="stylesheet" href="<?= site_url('assets/css/app.css?v=' . ASSETS_VERSION) ?>">
+	<link rel="stylesheet" href="<?= site_url('assets/compiled/css/app.css?v=' . ASSETS_VERSION) ?>">
 	<!--begin::Fonts -->
 	<link rel="stylesheet"
 		href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Roboto:300,400,500,600,700">
@@ -25,16 +25,16 @@
 	<!--end:: Global Mandatory Vendors -->
 
 	<!--begin::Global Theme Styles(used by all pages) -->
-	<link href="<?= site_url('assets/css/demo1/style.bundle.css') ?>" rel="stylesheet" type="text/css" />
+	<link href="<?= site_url('assets/css/demo1/style.bundle.min.css') ?>" rel="stylesheet" type="text/css" />
 	<!--end::Global Theme Styles -->
 
 	<!--begin::Layout Skins(used by all pages) -->
-	<link href="<?= site_url('assets/css/demo1/skins/header/base/light.css') ?>" rel="stylesheet" type="text/css" />
+	<!-- <link href="<?= site_url('assets/css/demo1/skins/header/base/light.css') ?>" rel="stylesheet" type="text/css" />
 	<link href="<?= site_url('assets/css/demo1/skins/header/menu/light.css') ?>" rel="stylesheet" type="text/css" />
 	<link href="<?= site_url('assets/css/demo1/skins/brand/dark.css') ?>" rel="stylesheet" type="text/css" />
-	<link href="<?= site_url('assets/css/demo1/skins/aside/dark.css') ?>" rel="stylesheet" type="text/css" />
+	<link href="<?= site_url('assets/css/demo1/skins/aside/dark.css') ?>" rel="stylesheet" type="text/css" /> -->
 
-	<script src="<?= site_url('assets/js/app.js?v=' . ASSETS_VERSION) ?>"></script>
+	<script src="<?= site_url('assets/compiled/js/app.js?v=' . ASSETS_VERSION) ?>"></script>
 
 	<?php
 	if (isset($assets_css)) {
@@ -184,7 +184,7 @@
 										<li class="kt-menu__item  kt-menu__item--parent" aria-haspopup="true"><span
 												class="kt-menu__link"><span
 													class="kt-menu__link-text">Subheaders</span></span></li>
-										<li class="kt-menu__item" aria-haspopup="true">
+										<li class="kt-menu__item kt-menu__item--active" aria-haspopup="true">
 											<a href="<?= base_url('request/data-request') ?>" class="kt-menu__link"><i
 													class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span
 													class="kt-menu__link-text">

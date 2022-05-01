@@ -6,7 +6,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Faster EA<?= $page ?></title>
-	<link rel="stylesheet" href="<?= site_url('assets/css/app.css?v=' . ASSETS_VERSION) ?>">
+	<link rel="stylesheet" href="<?= site_url('assets/compiled/css/app.css?v=' . ASSETS_VERSION) ?>">
 	<!--begin::Fonts -->
 	<link rel="stylesheet"
 		href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Roboto:300,400,500,600,700">
@@ -34,7 +34,7 @@
 	<link href="<?= site_url('assets/css/demo1/skins/brand/dark.css') ?>" rel="stylesheet" type="text/css" />
 	<link href="<?= site_url('assets/css/demo1/skins/aside/dark.css') ?>" rel="stylesheet" type="text/css" />
 
-	<script src="<?= site_url('assets/js/app.js?v=' . ASSETS_VERSION) ?>"></script>
+	<script src="<?= site_url('assets/compiled/js/app.js?v=' . ASSETS_VERSION) ?>"></script>
 
 	<?php
 	if (isset($assets_css)) {

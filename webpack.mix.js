@@ -4,8 +4,8 @@ const glob = require('glob')
 const path = require('path')
 
 mix.setPublicPath('assets');
-mix.js('resources/js/app.js', 'assets/js')
-   .sass('resources/sass/app.scss', 'assets/css')
+mix.js('resources/js/app.js', 'assets/compiled/js')
+   .sass('resources/sass/app.scss', 'assets/compiled/css')
    .options({
       processCssUrls: false
    })

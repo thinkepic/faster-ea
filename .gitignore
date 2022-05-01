@@ -36,4 +36,5 @@ application/config/database.php
 .vscode
 ./vendor/
 uploads/
+assets/compiled
 .env.*

@@ -414,20 +414,20 @@
 											<label for="example-date-input" class="col-md-3 col-form-label">Date</label>
 											<div class="col-md-4">
 												<label for="departure_date" class="form-label">
-													Departure date
-												</label>
-												<input class="form-control destination_departure_date" type="date"
-													name="destination_departure_date[]">
-											</div>
-											<div class="col-md-1">
-											</div>
-											<div class="col-md-4">
-												<label for="departure_date" class="form-label">
 													Arrival date
 												</label>
 
 												<input class="form-control destination_arrival_date" type="date"
 													name="destination_arrival_date[]">
+											</div>
+											<div class="col-md-1">
+											</div>
+											<div class="col-md-4">
+												<label for="departure_date" class="form-label">
+													Departure date
+												</label>
+												<input class="form-control destination_departure_date" type="date"
+													name="destination_departure_date[]">
 											</div>
 										</div>
 										<div class="form-group row">
@@ -1160,21 +1160,21 @@
 											<label for="example-date-input" class="col-md-3 col-form-label">Date</label>
 											<div class="col-md-4">
 												<label for="departure_date" class="form-label">
-													Departure date
-												</label>
-												<input class="form-control destination_departure_date" type="date"
-													name="destination_departure_date[]">
-											</div>
-											<div class="col-md-1">
-											</div>
-											<div class="col-md-4">
-												<label for="departure_date" class="form-label">
 													Arrival date
 												</label>
 
 												<input class="form-control destination_arrival_date" type="date"
 													name="destination_arrival_date[]">
 											</div>
+											<div class="col-md-1">
+											</div>
+											<div class="col-md-4">
+												<label for="departure_date" class="form-label">
+													Departure date
+												</label>
+												<input class="form-control destination_departure_date" type="date"
+													name="destination_departure_date[]">
+											</div>						
 										</div>
 										<div class="form-group row">
 											<label for="example-search-input" class="col-md-3 col-form-label">Project

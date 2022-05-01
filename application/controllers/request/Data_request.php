@@ -28,6 +28,12 @@ class Data_request extends MY_Controller {
 		$this->template->render('request/create');
 	}
 
+	public function detail()
+	{
+		$this->template->set('page', 'Data request');
+		$this->template->render('request/detail');
+	}
+
 	public function store()
 	{	
 
@@ -73,11 +79,16 @@ class Data_request extends MY_Controller {
 	}
 
 	public function datatable()
-    {
-        $this->datatable->select('*');
+    {	
+        $this->datatable->select('requestor_name, request_base, employment, originating_city, departure_date, return_date', true);
         $this->datatable->from('ea_requests');
 
         echo $this->datatable->generate();
+    }
+
+	public function test()
+    {	
+        echo json_encode($this->cookie);
     }
 
 }

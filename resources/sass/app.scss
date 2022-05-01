@@ -2,30 +2,88 @@
 @import "~bootstrap/scss/bootstrap";
 @import "select2";
 @import "~datatables.net-bs5/css/dataTables.bootstrap5.min.css";
+@import "../css/style.bundle.css";
+@import "../css/dark.css";
+@import "../css/dark-brand.css";
+@import "../css/light.css";
+@import "../css/light-menu.css";
 
 label {
-    color: #212529 !important;
+	color: #212529 !important;
+}
+
+.dataTables_filter input {
+	display: block;
+	width: 100%;
+	height: calc(1.5em + 1.3rem + 2px);
+	padding: 0.65rem 1rem;
+	font-size: 1rem;
+	font-weight: 400;
+	line-height: 1.5;
+	color: #495057;
+	background-color: #fff;
+	background-clip: padding-box;
+	border: 1px solid #e2e5ec;
+	border-radius: 4px;
+	-webkit-transition: border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+	transition: border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+	transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+	transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
 }
 
 .swal2-popup .swal2-icon {
-    margin: 1rem auto 0 !important;
+	margin: 1rem auto 0 !important;
 }
 
 .error {
-    color: rgb(192, 0, 0) !important;
-    margin-top: 5px;
+	color: rgb(192, 0, 0) !important;
+	margin-top: 5px;
 }
 
-.kt-radio > span:after {
-    border: solid #5867dd !important;
-    background: #5867dd !important; 
-    width: 10px !important;
-    height: 10px !important;
-    margin-top: -5px !important;
-    margin-left: -5px !important;
+.kt-radio>span:after {
+	border: solid #5867dd !important;
+	background: #5867dd !important;
+	width: 10px !important;
+	height: 10px !important;
+	margin-top: -5px !important;
+	margin-left: -5px !important;
 }
 
-.readonly-form {
-    cursor: not-allowed; 
-    background-color: #eee !important;
+input:read-only {
+	background-color: #f8f9fa !important;
+	border: none !important;
+}
+
+.fw-bold {
+	font-weight: 500 !important;
+}
+
+.fw-600 {
+	font-weight: 600 !important;
+}
+
+.fw-700 {
+	font-weight: 700 !important;
+}
+
+.fw-800 {
+	font-weight: 700 !important;
+}
+
+.details-container {
+	label {
+		font-size: 1.1rem!important;
+	}
+	span {
+		margin-top: 8px !important;
+	}
+	small {
+		font-size: .9rem!important;
+	}
+}
+
+.details-special-requests {
+	span {
+		margin-top: 0px !important;
+	}
 }
