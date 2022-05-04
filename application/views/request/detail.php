@@ -48,11 +48,12 @@
 							<label class="col-3 col-form-label fw-bold mt-3">Participants</label>
 							<div class="col-9">
 								<div class="kt-datatable kt-datatable--default kt-datatable--brand kt-datatable--loaded">
-									<table class="kt-datatable__table" width="100%"
-										style="display: block;">
+									<table class="kt-datatable__table table-striped" width="100%" style="display: block;">
 										<thead class="kt-datatable__head">
 											<tr class="kt-datatable__row" style="left: 0px;">
 
+												<th class="kt-datatable__cell kt-datatable__cell--sort"><span
+														style="width: 30px;"></span></th>
 												<th class="kt-datatable__cell kt-datatable__cell--sort"><span
 														style="width: 180px;">Name</span></th>
 												<th class="kt-datatable__cell kt-datatable__cell--sort"><span
@@ -63,6 +64,8 @@
 										</thead>
 										<tbody class="kt-datatable__body">
 											<tr class="kt-datatable__row" style="left: 0px;">
+												<td class="kt-datatable__cell"><span
+														style="width: 30px;">1.</span></td>
 												<td class="kt-datatable__cell"><span style="width: 180px;">Yoga
 														Altariz</span></td>
 												<td class="kt-datatable__cell">
@@ -71,6 +74,8 @@
 														style="width: 110px;">Programmer</span></td>
 											</tr>
 											<tr class="kt-datatable__row" style="left: 0px;">
+											<td class="kt-datatable__cell"><span
+														style="width: 30px;">2.</span></td>
 												<td class="kt-datatable__cell"><span style="width: 180px;">Yoga
 														Altariz</span></td>
 												<td class="kt-datatable__cell">
@@ -79,6 +84,8 @@
 														style="width: 110px;">Programmer</span></td>
 											</tr>
 											<tr class="kt-datatable__row" style="left: 0px;">
+											<td class="kt-datatable__cell"><span
+														style="width: 30px;">3.</span></td>
 												<td class="kt-datatable__cell"><span style="width: 180px;">Yoga
 														Altariz</span></td>
 												<td class="kt-datatable__cell">
@@ -92,7 +99,7 @@
 							</div>
 						</div>
 						<!-- If employment status = Group -->
-						<div class="group-info row my-2 pt-1 pb-2 border-bottom border-top">
+						<div class="group-info row my-2 pt-1 pb-3 border-bottom border-top d-none">
 							<label class="col-3 col-form-label fw-bold">Group Info</label>
 							<div class="col-md-4 mt-2">
 								<small class="col-form-label">

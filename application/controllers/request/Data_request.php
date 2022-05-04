@@ -28,10 +28,12 @@ class Data_request extends MY_Controller {
 		$this->template->render('request/create');
 	}
 
-	public function detail()
+	public function detail($id = null)
 	{
-		$this->template->set('page', 'Data request');
-		$this->template->render('request/detail');
+		$id = decrypt($id);
+		$data['detail'] = $this->request->get_request_by_id($id);
+		$this->template->set('page', 'Requests detail');
+		$this->template->render('request/detail', $data);
 	}
 
 	public function store()
@@ -56,7 +58,6 @@ class Data_request extends MY_Controller {
 				'requestor_id' => 999,
 				'requestor_name' => 'Fadel Al Fayed',
 				'requestor_email' => 'fadelalfayed27@gmail.com',
-				'head_of_units_id' => 9999,
 			];
 			$payload = array_merge($this->input->post(), $requestor_data);
 			$saved = $this->request->insert_request($payload);
@@ -80,15 +81,20 @@ class Data_request extends MY_Controller {
 
 	public function datatable()
     {	
-        $this->datatable->select('requestor_name, request_base, employment, originating_city, departure_date, return_date', true);
+        $this->datatable->select('requestor_name, request_base, employment, originating_city,
+		DATE_FORMAT(departure_date, "%d %M %Y") as departure_date, DATE_FORMAT(return_date, "%d %M %Y") as return_date,
+		DATE_FORMAT(created_at, "%d %M %Y") as created_at, id', true);
         $this->datatable->from('ea_requests');
-
+        $this->datatable->order_by('created_at', 'desc');
+		$this->datatable->edit_column('id', "$1", 'encrypt(id)');
         echo $this->datatable->generate();
     }
 
 	public function test()
     {	
-        echo json_encode($this->cookie);
+		$enc = $this->encryption->encrypt(20);
+		$dec = $this->encryption->decrypt($enc);
+        echo json_encode($dec);
     }
 
 }

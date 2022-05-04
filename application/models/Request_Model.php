@@ -28,19 +28,31 @@ class Request_Model extends CI_Model
         "other_transportation",
         "special_instructions",
         "max_budget",
-        "head_of_units_id",
-        "head_of_units_email",
         "requestor_id",
         "requestor_name",
         "requestor_email",
     ];
 
+    function get_request_by_id($id) {
+        $request_data =  $this->db->select('r.id as r_id, r.*, st.*')
+            ->from('ea_requests r')
+            ->join('ea_requests_status st', 'st.request_id = r.id', 'left')
+            ->where('r.id', $id)
+            ->get()->row_array();
+        $destinations = $this->db->select('*')
+        ->from('ea_requests_destinations')
+        ->where('request_id', $id)
+        ->get()->result_array();
+        $request_data['destinations'] = $destinations;
+        return $request_data;
+    }
+
     function insert_request($data)
     {   
         $data['departure_date'] = date('Y-m-d', strtotime($data['departure_date']));
 		$data['return_date'] = date('Y-m-d', strtotime($data['return_date']));
-        $data['hotel_check_in'] = date('Y-m-d', strtotime($data['hotel_check_in']));
-		$data['hotel_check_out'] = date('Y-m-d', strtotime($data['hotel_check_out']));
+        $data['hotel_check_in'] = ($data['hotel_check_in'] == '' ? null : date('Y-m-d', strtotime($data['hotel_check_in'])) );
+        $data['hotel_check_out'] = ($data['hotel_check_out'] == '' ? null : date('Y-m-d', strtotime($data['hotel_check_out'])) );
 
         $employment = $data['employment'];
         
@@ -57,6 +69,13 @@ class Request_Model extends CI_Model
 
         $this->db->insert('ea_requests', $request_data);
         $request_id =  $this->db->insert_id();
+
+        // Request status
+        $this->db->insert('ea_requests_status', [
+            'request_id' => $request_id,
+            'head_of_units_id' => 9999,
+            'head_of_units_email' => $data['head_of_units_email'],
+        ]);
 
         // Save destinations
         $destinations_city = $data['destination_city'];
