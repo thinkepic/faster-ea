@@ -32,6 +32,7 @@ class Data_request extends MY_Controller {
 	{
 		$id = decrypt($id);
 		$data['detail'] = $this->request->get_request_by_id($id);
+		// echo json_encode($data);
 		$this->template->set('page', 'Requests detail');
 		$this->template->render('request/detail', $data);
 	}

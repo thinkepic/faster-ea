@@ -31,6 +31,11 @@ label {
 	transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
 }
 
+.kt-datatable__head th {
+	background-color: #f8f9fa !important;
+	font-weight: 700 !important;
+}
+
 .swal2-popup .swal2-icon {
 	margin: 1rem auto 0 !important;
 }
@@ -49,7 +54,7 @@ label {
 	margin-left: -5px !important;
 }
 
-input:read-only {
+input:read-only, textarea:read-only {
 	background-color: #f8f9fa !important;
 	border: none !important;
 }
@@ -79,6 +84,10 @@ input:read-only {
 	}
 	small {
 		font-size: .9rem!important;
+	}
+
+	.badge {
+		font-size: 1rem!important;
 	}
 }
 

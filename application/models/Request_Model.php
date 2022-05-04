@@ -34,16 +34,31 @@ class Request_Model extends CI_Model
     ];
 
     function get_request_by_id($id) {
-        $request_data =  $this->db->select('r.id as r_id, r.*, st.*')
+        $request_data =  $this->db->select('r.id as r_id, 
+        DATE_FORMAT(r.departure_date, "%d %M %Y") as d_date, DATE_FORMAT(r.return_date, "%d %M %Y") as r_date,
+        r.*, st.*')
             ->from('ea_requests r')
             ->join('ea_requests_status st', 'st.request_id = r.id', 'left')
             ->where('r.id', $id)
             ->get()->row_array();
-        $destinations = $this->db->select('*')
+        $destinations = $this->db->select('*, format(meals,2,"de_DE") as d_meals, format(lodging,2,"de_DE") as d_lodging,
+        format(total_lodging_and_meals,2,"de_DE") as d_total_lodging_and_meals, format(total,2,"de_DE") as d_total,
+        DATE_FORMAT(departure_date, "%d %M %Y") as depar_date, DATE_FORMAT(arrival_date, "%d %M %Y") as arriv_date
+        ')
         ->from('ea_requests_destinations')
         ->where('request_id', $id)
         ->get()->result_array();
+        $participants = $this->db->select('*')
+        ->from('ea_requests_participants')
+        ->where('request_id', $id)
+        ->get()->result_array();
+        $total_destinations_cost = 0;
+        foreach($destinations as $dest) {
+            $total_destinations_cost += $dest['total'];
+        }
+        $request_data['total_destinations_cost'] = $total_destinations_cost;
         $request_data['destinations'] = $destinations;
+        $request_data['participants'] = $participants;
         return $request_data;
     }
 
