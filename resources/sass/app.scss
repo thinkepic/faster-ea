@@ -16,6 +16,17 @@ label {
 	color: #212529 !important;
 }
 
+.avatar-img {
+	height: 4rem;
+	width:4rem;
+	object-fit: cover;
+	border-radius: 8px;
+}
+
+.kt-aside--minimize .hidden-aside {
+	visibility: hidden;
+}
+
 .dataTables_filter input {
 	display: block;
 	width: 100%;

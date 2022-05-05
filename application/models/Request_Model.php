@@ -31,7 +31,7 @@ class Request_Model extends CI_Model
         "requestor_id",
         "requestor_name",
         "requestor_email",
-        "exteral_invitation",
+        "exteral_invitation_file",
         "car_rental_memo",
     ];
 

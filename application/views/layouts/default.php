@@ -9,7 +9,7 @@
 	<!--begin::Global Theme Styles(used by all pages) -->
 	<!--end::Global Theme Styles -->
 	<link rel="stylesheet" href="<?= site_url('assets/compiled/css/app.css?v=' . ASSETS_VERSION) ?>">
-	<link href="<?= site_url('assets/css/demo1/style.bundle.css') ?>" rel="stylesheet" type="text/css" />
+	<!-- <link href="<?= site_url('assets/css/demo1/style.bundle.css') ?>" rel="stylesheet" type="text/css" /> -->
 	<!--begin::Fonts -->
 	<link rel="stylesheet"
 		href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Roboto:300,400,500,600,700">
@@ -26,12 +26,6 @@
 	<link href="<?= site_url('assets/vendors/general/sweetalert2/dist/sweetalert2.min.css') ?>" rel="stylesheet"
 		type="text/css" />
 	<!--end:: Global Mandatory Vendors -->
-
-	<!--begin::Layout Skins(used by all pages) -->
-	<!-- <link href="<?= site_url('assets/css/demo1/skins/header/base/light.css') ?>" rel="stylesheet" type="text/css" />
-	<link href="<?= site_url('assets/css/demo1/skins/header/menu/light.css') ?>" rel="stylesheet" type="text/css" />
-	<link href="<?= site_url('assets/css/demo1/skins/brand/dark.css') ?>" rel="stylesheet" type="text/css" />
-	<link href="<?= site_url('assets/css/demo1/skins/aside/dark.css') ?>" rel="stylesheet" type="text/css" /> -->
 
 	<script src="<?= site_url('assets/compiled/js/app.js?v=' . ASSETS_VERSION) ?>"></script>
 
@@ -95,9 +89,11 @@
 				id="kt_aside">
 				<!-- begin:: Aside -->
 				<div class="kt-aside__brand kt-grid__item " id="kt_aside_brand">
+
+
 					<div class="kt-aside__brand-logo">
-						<a href="<?= base_url('dashboard') ?>">
-							<!-- <img style="height: 3rem; width: auto;" alt="Logo" src="<?= site_url('assets/images/faster.png') ?>" /> -->
+						<a href="demo1/index.html">
+							<!-- <img alt="Logo" src="./assets/media/logos/logo-light.png" /> -->
 							<h3 class="text-light">Faster</h3>
 						</a>
 					</div>
@@ -138,97 +134,159 @@
 				<!-- begin:: Aside Menu -->
 				<div class="kt-aside-menu-wrapper kt-grid__item kt-grid__item--fluid" id="kt_aside_menu_wrapper">
 
-					<div id="kt_aside_menu" class="kt-aside-menu " data-ktmenu-vertical="1" data-ktmenu-scroll="1"
+					<div style="display: flex !important; flex-direction: column !important; justify-content: space-between !important;"
+						id="kt_aside_menu" class="kt-aside-menu " data-ktmenu-vertical="1" data-ktmenu-scroll="1"
 						data-ktmenu-dropdown-timeout="500">
-
-						<ul class="kt-menu__nav ">
-							<li class="kt-menu__item " aria-haspopup="true"><a href="<?= base_url('dashboard') ?>"
-									class="kt-menu__link "><span class="kt-menu__link-icon"><svg
-											xmlns="http://www.w3.org/2000/svg"
-											xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
-											viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
-											<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-												<polygon id="Bound" points="0 0 24 0 24 24 0 24" />
-												<path
-													d="M12.9336061,16.072447 L19.36,10.9564761 L19.5181585,10.8312381 C20.1676248,10.3169571 20.2772143,9.3735535 19.7629333,8.72408713 C19.6917232,8.63415859 19.6104327,8.55269514 19.5206557,8.48129411 L12.9336854,3.24257445 C12.3871201,2.80788259 11.6128799,2.80788259 11.0663146,3.24257445 L4.47482784,8.48488609 C3.82645598,9.00054628 3.71887192,9.94418071 4.23453211,10.5925526 C4.30500305,10.6811601 4.38527899,10.7615046 4.47382636,10.8320511 L4.63,10.9564761 L11.0659024,16.0730648 C11.6126744,16.5077525 12.3871218,16.5074963 12.9336061,16.072447 Z"
-													id="Shape" fill="#000000" fill-rule="nonzero" />
-												<path
-													d="M11.0563554,18.6706981 L5.33593024,14.122919 C4.94553994,13.8125559 4.37746707,13.8774308 4.06710397,14.2678211 C4.06471678,14.2708238 4.06234874,14.2738418 4.06,14.2768747 L4.06,14.2768747 C3.75257288,14.6738539 3.82516916,15.244888 4.22214834,15.5523151 C4.22358765,15.5534297 4.2250303,15.55454 4.22647627,15.555646 L11.0872776,20.8031356 C11.6250734,21.2144692 12.371757,21.2145375 12.909628,20.8033023 L19.7677785,15.559828 C20.1693192,15.2528257 20.2459576,14.6784381 19.9389553,14.2768974 C19.9376429,14.2751809 19.9363245,14.2734691 19.935,14.2717619 L19.935,14.2717619 C19.6266937,13.8743807 19.0546209,13.8021712 18.6572397,14.1104775 C18.654352,14.112718 18.6514778,14.1149757 18.6486172,14.1172508 L12.9235044,18.6705218 C12.377022,19.1051477 11.6029199,19.1052208 11.0563554,18.6706981 Z"
-													id="Path" fill="#000000" opacity="0.3" />
-											</g>
-										</svg></span><span class="kt-menu__link-text">Dashboard</span></a></li>
-							<li class="kt-menu__section ">
-								<h4 class="kt-menu__section-text">Expense Authorization</h4>
-								<i class="kt-menu__section-icon flaticon-more-v2"></i>
-							</li>
-							<li class="kt-menu__item  kt-menu__item--submenu kt-menu__item--open" aria-haspopup="true"
-								data-ktmenu-submenu-toggle="hover"><a href="javascript:;"
-									class="kt-menu__link kt-menu__toggle"><span class="kt-menu__link-icon"><svg
-											xmlns="http://www.w3.org/2000/svg"
-											xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
-											viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
-											<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-												<rect id="bound" x="0" y="0" width="24" height="24" />
-												<path
-													d="M2.56066017,10.6819805 L4.68198052,8.56066017 C5.26776695,7.97487373 6.21751442,7.97487373 6.80330086,8.56066017 L8.9246212,10.6819805 C9.51040764,11.267767 9.51040764,12.2175144 8.9246212,12.8033009 L6.80330086,14.9246212 C6.21751442,15.5104076 5.26776695,15.5104076 4.68198052,14.9246212 L2.56066017,12.8033009 C1.97487373,12.2175144 1.97487373,11.267767 2.56066017,10.6819805 Z M14.5606602,10.6819805 L16.6819805,8.56066017 C17.267767,7.97487373 18.2175144,7.97487373 18.8033009,8.56066017 L20.9246212,10.6819805 C21.5104076,11.267767 21.5104076,12.2175144 20.9246212,12.8033009 L18.8033009,14.9246212 C18.2175144,15.5104076 17.267767,15.5104076 16.6819805,14.9246212 L14.5606602,12.8033009 C13.9748737,12.2175144 13.9748737,11.267767 14.5606602,10.6819805 Z"
-													id="Combined-Shape" fill="#000000" opacity="0.3" />
-												<path
-													d="M8.56066017,16.6819805 L10.6819805,14.5606602 C11.267767,13.9748737 12.2175144,13.9748737 12.8033009,14.5606602 L14.9246212,16.6819805 C15.5104076,17.267767 15.5104076,18.2175144 14.9246212,18.8033009 L12.8033009,20.9246212 C12.2175144,21.5104076 11.267767,21.5104076 10.6819805,20.9246212 L8.56066017,18.8033009 C7.97487373,18.2175144 7.97487373,17.267767 8.56066017,16.6819805 Z M8.56066017,4.68198052 L10.6819805,2.56066017 C11.267767,1.97487373 12.2175144,1.97487373 12.8033009,2.56066017 L14.9246212,4.68198052 C15.5104076,5.26776695 15.5104076,6.21751442 14.9246212,6.80330086 L12.8033009,8.9246212 C12.2175144,9.51040764 11.267767,9.51040764 10.6819805,8.9246212 L8.56066017,6.80330086 C7.97487373,6.21751442 7.97487373,5.26776695 8.56066017,4.68198052 Z"
-													id="Combined-Shape" fill="#000000" />
-											</g>
-										</svg></span><span class="kt-menu__link-text">Request</span><i
-										class="kt-menu__ver-arrow la la-angle-right"></i></a>
-								<div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
-									<ul class="kt-menu__subnav">
-										<li class="kt-menu__item  kt-menu__item--parent" aria-haspopup="true"><span
-												class="kt-menu__link"><span
-													class="kt-menu__link-text">Subheaders</span></span></li>
-										<li class="kt-menu__item kt-menu__item--active" aria-haspopup="true">
-											<a href="<?= base_url('request/data-request') ?>" class="kt-menu__link"><i
-													class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span
-													class="kt-menu__link-text">
-													Data Request</span>
-											</a>
-										</li>
-									</ul>
+						<div>
+							<div class="ml-4 aside-user d-flex align-items-sm-center justify-content-center hidden-aside">
+								<div class="symbol symbol-50px">
+									<div class="mr-2 container-img">
+										<img class="avatar-img"
+											src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJ4AAACeCAMAAAD0W0NJAAAAYFBMVEX///8AAADPz88iIiImJiYeHh7MzMwxMTHo6OiVlZW+vr76+vr29vba2trf39+kpKTu7u5RUVE/Pz9fX1+wsLB7e3sSEhJMTEyFhYU2NjZHR0ednZ3ExMRtbW0rKytkZGTryM8AAAADwklEQVR4nO2ciXaCMBBFjYossipQFbX//5cVrVtF0cx7CT0n9wPae5BMZpIZRiM8QbRUAeHvIphH1V4pFdv26CJOVp5qCW2bdJBmS/XLzLbLA7Odf5ZT9di2zT1JM1W3RLaFbol2e3XPt22lC+lKdbDLbXsdmVV1l51Si8x66IvLzRO5Fu8rSy2Gv7Txn7v94q/KZG5DLqj65Y7sN2FqWi7pXA9PWZRGDRvvI7sD68aYXDLt13nEM7STlC9W6yvq0oRdpifXYiCPEdgZ8IskdvRUIZDZKUUNMPNKqrdj7iFbqR335y3kegXPLpXbMd++EKHHCy7L/n/eDy3PDxYIvQUri07ezPBe4yckvfEEoeexSnSn5/ScHlFvwqo5nJ7Ts6anVX6b03NPz+n9a72p03N6Ts/pOT0Ms49vM7qg1RqiU+8rGccuWmP0FpQD0gYj10K4wAo2OL0N/gxt4Ho55Gj0xJLQaPDZDe5LVng7VFhpYYSWreY96SP1lqAXQLa0lgnl8BsUlZVaM+wwtxotS4oebNvgdD3MUHqMlXEIzCg9TvdXDFobPqexSn4VfoJ1IQ7aN1j9QMIujDOs6/occ2FK64uEvHwVy240RugRO70AlWTNs0OkpIxU9AygzYazo51IxFcHHquToCUXtwEV1HZrcWjhhZUWcR8Qt8EwkeoxX70DwnpoyrWTZvTs7uVEVO3W5N9WuDj4ncGp4PHVBjrnBW+fkb75b107Tvn9l+Tv3NKb7Onr4kSpp2eko/9ArKdnam5orqdnamZo4E9PMy8wtDJ0y3FTc5MDX7ma266pkWLNjJ6bx1/R3NVMDcVqnoGb2XJHsWY1WZgJfLqDB7RRg3vGmgdBZqYQ852enZmB7K3gHKNgnv8cEd69sD+nIBx48bl24osr7uMb9gnVwM/3Bn54CxjzY6ZVgIsDj2cnPnxsoZUcJeZOjZLUxxFkBLHFj+Cp1QzYQnXITKHReZ4AxprvKXAfGhmDbunvqTDpX1BBOlof8Sp5+pwCezIfaWSnufMQtly78UP9VzCnPrkzjWaSkMGXazeFRrdhHEG2iPdYfBqnI2gU7mf5yekaPgr3U7ybKiTahayM3TuCtCjcT3+c7v7emjlWr+J0HsK6a3WZhs/CYJzBOpMl1FlXlIlL8v71Pn75IFh+2Za65es+4Y+A0w4YNjdxWvOigsvlAeawdnMk6/MSxsyfobnMs2FG0tFMnJ4ApyfB6UlwehKcngSnJ+G/6AWDqTJu8S9Fr+Xitpvr5ERsv779yzQ8Vms/U85JaV5npxMAAAAASUVORK5CYII="
+											alt="">
+									</div>
 								</div>
-							</li>
-							<li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true"
-								data-ktmenu-submenu-toggle="hover"><a href="javascript:;"
-									class="kt-menu__link kt-menu__toggle">
-									<span class="kt-menu__link-icon">
-										<svg xmlns="http://www.w3.org/2000/svg"
-											xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
-											viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
-											<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-												<rect id="bound" x="0" y="0" width="24" height="24"></rect>
-												<path
-													d="M13.6855025,18.7082217 C15.9113859,17.8189707 18.682885,17.2495635 22,17 C22,16.9325178 22,13.1012863 22,5.50630526 L21.9999762,5.50630526 C21.9999762,5.23017604 21.7761292,5.00632908 21.5,5.00632908 C21.4957817,5.00632908 21.4915635,5.00638247 21.4873465,5.00648922 C18.658231,5.07811173 15.8291155,5.74261533 13,7 C13,7.04449645 13,10.79246 13,18.2438906 L12.9999854,18.2438906 C12.9999854,18.520041 13.2238496,18.7439052 13.5,18.7439052 C13.5635398,18.7439052 13.6264972,18.7317946 13.6855025,18.7082217 Z"
-													id="Combined-Shape" fill="#000000"></path>
-												<path
-													d="M10.3144829,18.7082217 C8.08859955,17.8189707 5.31710038,17.2495635 1.99998542,17 C1.99998542,16.9325178 1.99998542,13.1012863 1.99998542,5.50630526 L2.00000925,5.50630526 C2.00000925,5.23017604 2.22385621,5.00632908 2.49998542,5.00632908 C2.50420375,5.00632908 2.5084219,5.00638247 2.51263888,5.00648922 C5.34175439,5.07811173 8.17086991,5.74261533 10.9999854,7 C10.9999854,7.04449645 10.9999854,10.79246 10.9999854,18.2438906 L11,18.2438906 C11,18.520041 10.7761358,18.7439052 10.4999854,18.7439052 C10.4364457,18.7439052 10.3734882,18.7317946 10.3144829,18.7082217 Z"
-													id="Path-41-Copy" fill="#000000" opacity="0.3"></path>
-											</g>
-										</svg>
-									</span>
-									<span class="kt-menu__link-text">Report</span><i
-										class="kt-menu__ver-arrow la la-angle-right"></i></a>
-								<div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
-									<ul class="kt-menu__subnav">
-										<li class="kt-menu__item  kt-menu__item--parent" aria-haspopup="true"><span
-												class="kt-menu__link"><span
-													class="kt-menu__link-text">Subheaders</span></span></li>
-										<li class="kt-menu__item " aria-haspopup="true">
-											<a href="demo1/layout/subheader/toolbar.html" class="kt-menu__link "><i
-													class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span
-													class="kt-menu__link-text">
-													Request Report</span>
-											</a>
-										</li>
-									</ul>
+								<div class="aside-user-info flex-row-fluid flex-wrap mt-3 p-2">
+									<div class="d-flex">
+										<div class="flex-grow-1">
+											<span class="text-white fw-bold">
+												Fadel Al Fayed
+											</span>
+											<small class="text-muted fw-bold d-block mb-1">fadelalfayed@gmail.com
+											</small>
+											<small class="d-flex align-items-center text-success">
+												online
+											</small>
+										</div>
+										<div class="me-n2"><a href="#"
+												class="btn btn-icon btn-sm btn-active-color-primary mt-n2"
+												data-kt-menu-trigger="click" data-kt-menu-placement="bottom-start"
+												data-kt-menu-overflow="true"><span class="pulse-ring"></span><span
+													class="svg-icon svg-icon-muted svg-icon-1"><svg
+														xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+														viewBox="0 0 24 24" fill="none">
+														<path opacity="0.3"
+															d="M22.1 11.5V12.6C22.1 13.2 21.7 13.6 21.2 13.7L19.9 13.9C19.7 14.7 19.4 15.5 18.9 16.2L19.7 17.2999C20 17.6999 20 18.3999 19.6 18.7999L18.8 19.6C18.4 20 17.8 20 17.3 19.7L16.2 18.9C15.5 19.3 14.7 19.7 13.9 19.9L13.7 21.2C13.6 21.7 13.1 22.1 12.6 22.1H11.5C10.9 22.1 10.5 21.7 10.4 21.2L10.2 19.9C9.4 19.7 8.6 19.4 7.9 18.9L6.8 19.7C6.4 20 5.7 20 5.3 19.6L4.5 18.7999C4.1 18.3999 4.1 17.7999 4.4 17.2999L5.2 16.2C4.8 15.5 4.4 14.7 4.2 13.9L2.9 13.7C2.4 13.6 2 13.1 2 12.6V11.5C2 10.9 2.4 10.5 2.9 10.4L4.2 10.2C4.4 9.39995 4.7 8.60002 5.2 7.90002L4.4 6.79993C4.1 6.39993 4.1 5.69993 4.5 5.29993L5.3 4.5C5.7 4.1 6.3 4.10002 6.8 4.40002L7.9 5.19995C8.6 4.79995 9.4 4.39995 10.2 4.19995L10.4 2.90002C10.5 2.40002 11 2 11.5 2H12.6C13.2 2 13.6 2.40002 13.7 2.90002L13.9 4.19995C14.7 4.39995 15.5 4.69995 16.2 5.19995L17.3 4.40002C17.7 4.10002 18.4 4.1 18.8 4.5L19.6 5.29993C20 5.69993 20 6.29993 19.7 6.79993L18.9 7.90002C19.3 8.60002 19.7 9.39995 19.9 10.2L21.2 10.4C21.7 10.5 22.1 11 22.1 11.5ZM12.1 8.59998C10.2 8.59998 8.6 10.2 8.6 12.1C8.6 14 10.2 15.6 12.1 15.6C14 15.6 15.6 14 15.6 12.1C15.6 10.2 14 8.59998 12.1 8.59998Z"
+															fill="black"></path>
+														<path
+															d="M17.1 12.1C17.1 14.9 14.9 17.1 12.1 17.1C9.30001 17.1 7.10001 14.9 7.10001 12.1C7.10001 9.29998 9.30001 7.09998 12.1 7.09998C14.9 7.09998 17.1 9.29998 17.1 12.1ZM12.1 10.1C11 10.1 10.1 11 10.1 12.1C10.1 13.2 11 14.1 12.1 14.1C13.2 14.1 14.1 13.2 14.1 12.1C14.1 11 13.2 10.1 12.1 10.1Z"
+															fill="black"></path>
+													</svg></span></a>
+											<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-primary fw-bold py-4 fs-6 w-275px"
+												data-kt-menu="true"></div>
+										</div>
+									</div>
 								</div>
-							</li>
-						</ul>
+							</div>
+							<ul class="kt-menu__nav ">
+								<li class="kt-menu__item " aria-haspopup="true"><a href="<?= base_url('dashboard') ?>"
+										class="kt-menu__link "><span class="kt-menu__link-icon"><svg
+												xmlns="http://www.w3.org/2000/svg"
+												xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
+												viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+												<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+													<polygon id="Bound" points="0 0 24 0 24 24 0 24" />
+													<path
+														d="M12.9336061,16.072447 L19.36,10.9564761 L19.5181585,10.8312381 C20.1676248,10.3169571 20.2772143,9.3735535 19.7629333,8.72408713 C19.6917232,8.63415859 19.6104327,8.55269514 19.5206557,8.48129411 L12.9336854,3.24257445 C12.3871201,2.80788259 11.6128799,2.80788259 11.0663146,3.24257445 L4.47482784,8.48488609 C3.82645598,9.00054628 3.71887192,9.94418071 4.23453211,10.5925526 C4.30500305,10.6811601 4.38527899,10.7615046 4.47382636,10.8320511 L4.63,10.9564761 L11.0659024,16.0730648 C11.6126744,16.5077525 12.3871218,16.5074963 12.9336061,16.072447 Z"
+														id="Shape" fill="#000000" fill-rule="nonzero" />
+													<path
+														d="M11.0563554,18.6706981 L5.33593024,14.122919 C4.94553994,13.8125559 4.37746707,13.8774308 4.06710397,14.2678211 C4.06471678,14.2708238 4.06234874,14.2738418 4.06,14.2768747 L4.06,14.2768747 C3.75257288,14.6738539 3.82516916,15.244888 4.22214834,15.5523151 C4.22358765,15.5534297 4.2250303,15.55454 4.22647627,15.555646 L11.0872776,20.8031356 C11.6250734,21.2144692 12.371757,21.2145375 12.909628,20.8033023 L19.7677785,15.559828 C20.1693192,15.2528257 20.2459576,14.6784381 19.9389553,14.2768974 C19.9376429,14.2751809 19.9363245,14.2734691 19.935,14.2717619 L19.935,14.2717619 C19.6266937,13.8743807 19.0546209,13.8021712 18.6572397,14.1104775 C18.654352,14.112718 18.6514778,14.1149757 18.6486172,14.1172508 L12.9235044,18.6705218 C12.377022,19.1051477 11.6029199,19.1052208 11.0563554,18.6706981 Z"
+														id="Path" fill="#000000" opacity="0.3" />
+												</g>
+											</svg></span><span class="kt-menu__link-text">Dashboard</span></a></li>
+								<li class="kt-menu__section ">
+									<h4 class="kt-menu__section-text">Expense Authorization</h4>
+									<i class="kt-menu__section-icon flaticon-more-v2"></i>
+								</li>
+								<li class="kt-menu__item  kt-menu__item--submenu kt-menu__item--open" aria-haspopup="true"
+									data-ktmenu-submenu-toggle="hover"><a href="javascript:;"
+										class="kt-menu__link kt-menu__toggle"><span class="kt-menu__link-icon"><svg
+												xmlns="http://www.w3.org/2000/svg"
+												xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
+												viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+												<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+													<rect id="bound" x="0" y="0" width="24" height="24" />
+													<path
+														d="M2.56066017,10.6819805 L4.68198052,8.56066017 C5.26776695,7.97487373 6.21751442,7.97487373 6.80330086,8.56066017 L8.9246212,10.6819805 C9.51040764,11.267767 9.51040764,12.2175144 8.9246212,12.8033009 L6.80330086,14.9246212 C6.21751442,15.5104076 5.26776695,15.5104076 4.68198052,14.9246212 L2.56066017,12.8033009 C1.97487373,12.2175144 1.97487373,11.267767 2.56066017,10.6819805 Z M14.5606602,10.6819805 L16.6819805,8.56066017 C17.267767,7.97487373 18.2175144,7.97487373 18.8033009,8.56066017 L20.9246212,10.6819805 C21.5104076,11.267767 21.5104076,12.2175144 20.9246212,12.8033009 L18.8033009,14.9246212 C18.2175144,15.5104076 17.267767,15.5104076 16.6819805,14.9246212 L14.5606602,12.8033009 C13.9748737,12.2175144 13.9748737,11.267767 14.5606602,10.6819805 Z"
+														id="Combined-Shape" fill="#000000" opacity="0.3" />
+													<path
+														d="M8.56066017,16.6819805 L10.6819805,14.5606602 C11.267767,13.9748737 12.2175144,13.9748737 12.8033009,14.5606602 L14.9246212,16.6819805 C15.5104076,17.267767 15.5104076,18.2175144 14.9246212,18.8033009 L12.8033009,20.9246212 C12.2175144,21.5104076 11.267767,21.5104076 10.6819805,20.9246212 L8.56066017,18.8033009 C7.97487373,18.2175144 7.97487373,17.267767 8.56066017,16.6819805 Z M8.56066017,4.68198052 L10.6819805,2.56066017 C11.267767,1.97487373 12.2175144,1.97487373 12.8033009,2.56066017 L14.9246212,4.68198052 C15.5104076,5.26776695 15.5104076,6.21751442 14.9246212,6.80330086 L12.8033009,8.9246212 C12.2175144,9.51040764 11.267767,9.51040764 10.6819805,8.9246212 L8.56066017,6.80330086 C7.97487373,6.21751442 7.97487373,5.26776695 8.56066017,4.68198052 Z"
+														id="Combined-Shape" fill="#000000" />
+												</g>
+											</svg></span><span class="kt-menu__link-text">Request</span><i
+											class="kt-menu__ver-arrow la la-angle-right"></i></a>
+									<div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
+										<ul class="kt-menu__subnav">
+											<li class="kt-menu__item  kt-menu__item--parent" aria-haspopup="true"><span
+													class="kt-menu__link"><span
+														class="kt-menu__link-text">Subheaders</span></span></li>
+											<li class="kt-menu__item kt-menu__item--active" aria-haspopup="true">
+												<a href="<?= base_url('request/data-request') ?>" class="kt-menu__link"><i
+														class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span
+														class="kt-menu__link-text">
+														Data Request</span>
+												</a>
+											</li>
+										</ul>
+									</div>
+								</li>
+								<li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true"
+									data-ktmenu-submenu-toggle="hover"><a href="javascript:;"
+										class="kt-menu__link kt-menu__toggle">
+										<span class="kt-menu__link-icon">
+											<svg xmlns="http://www.w3.org/2000/svg"
+												xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
+												viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+												<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+													<rect id="bound" x="0" y="0" width="24" height="24"></rect>
+													<path
+														d="M13.6855025,18.7082217 C15.9113859,17.8189707 18.682885,17.2495635 22,17 C22,16.9325178 22,13.1012863 22,5.50630526 L21.9999762,5.50630526 C21.9999762,5.23017604 21.7761292,5.00632908 21.5,5.00632908 C21.4957817,5.00632908 21.4915635,5.00638247 21.4873465,5.00648922 C18.658231,5.07811173 15.8291155,5.74261533 13,7 C13,7.04449645 13,10.79246 13,18.2438906 L12.9999854,18.2438906 C12.9999854,18.520041 13.2238496,18.7439052 13.5,18.7439052 C13.5635398,18.7439052 13.6264972,18.7317946 13.6855025,18.7082217 Z"
+														id="Combined-Shape" fill="#000000"></path>
+													<path
+														d="M10.3144829,18.7082217 C8.08859955,17.8189707 5.31710038,17.2495635 1.99998542,17 C1.99998542,16.9325178 1.99998542,13.1012863 1.99998542,5.50630526 L2.00000925,5.50630526 C2.00000925,5.23017604 2.22385621,5.00632908 2.49998542,5.00632908 C2.50420375,5.00632908 2.5084219,5.00638247 2.51263888,5.00648922 C5.34175439,5.07811173 8.17086991,5.74261533 10.9999854,7 C10.9999854,7.04449645 10.9999854,10.79246 10.9999854,18.2438906 L11,18.2438906 C11,18.520041 10.7761358,18.7439052 10.4999854,18.7439052 C10.4364457,18.7439052 10.3734882,18.7317946 10.3144829,18.7082217 Z"
+														id="Path-41-Copy" fill="#000000" opacity="0.3"></path>
+												</g>
+											</svg>
+										</span>
+										<span class="kt-menu__link-text">Report</span><i
+											class="kt-menu__ver-arrow la la-angle-right"></i></a>
+									<div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
+										<ul class="kt-menu__subnav">
+											<li class="kt-menu__item  kt-menu__item--parent" aria-haspopup="true"><span
+													class="kt-menu__link"><span
+														class="kt-menu__link-text">Subheaders</span></span></li>
+											<li class="kt-menu__item " aria-haspopup="true">
+												<a href="demo1/layout/subheader/toolbar.html" class="kt-menu__link "><i
+														class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span
+														class="kt-menu__link-text">
+														Request Report</span>
+												</a>
+											</li>
+										</ul>
+									</div>
+								</li>
+							</ul>
+						</div>
+						<div class="px-3 hidden-aside">
+							<a class="btn btn-dark w-100" href="">
+								<span>
+									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+										fill="none">
+										<rect opacity="0.3" x="8.5" y="11" width="12" height="2" rx="1" fill="white">
+										</rect>
+										<path
+											d="M10.3687 11.6927L12.1244 10.2297C12.5946 9.83785 12.6268 9.12683 12.194 8.69401C11.8043 8.3043 11.1784 8.28591 10.7664 8.65206L7.84084 11.2526C7.39332 11.6504 7.39332 12.3496 7.84084 12.7474L10.7664 15.3479C11.1784 15.7141 11.8043 15.6957 12.194 15.306C12.6268 14.8732 12.5946 14.1621 12.1244 13.7703L10.3687 12.3073C10.1768 12.1474 10.1768 11.8526 10.3687 11.6927Z"
+											fill="white"></path>
+										<path opacity="0.5"
+											d="M16 5V6C16 6.55228 15.5523 7 15 7C14.4477 7 14 6.55228 14 6C14 5.44772 13.5523 5 13 5H6C5.44771 5 5 5.44772 5 6V18C5 18.5523 5.44771 19 6 19H13C13.5523 19 14 18.5523 14 18C14 17.4477 14.4477 17 15 17C15.5523 17 16 17.4477 16 18V19C16 20.1046 15.1046 21 14 21H5C3.89543 21 3 20.1046 3 19V5C3 3.89543 3.89543 3 5 3H14C15.1046 3 16 3.89543 16 5Z"
+											fill="white"></path>
+									</svg>
+								</span>
+								<span style="font-size:  1.1rem !important;">
+									Sign Out
+								</span>
+							</a>
+						</div>
 					</div>
 				</div>
 				<!-- end:: Aside Menu -->
@@ -241,12 +299,9 @@
 					<!-- begin:: Header Menu -->
 					<button class="kt-header-menu-wrapper-close" id="kt_header_menu_mobile_close_btn"><i
 							class="la la-close"></i></button>
-					<div class="kt-header-menu-wrapper d-flex" id="kt_header_menu_wrapper">
-						<h3 class="fw-bolder ml-1 pl-4 mt-4 text-dark">Expense Authorization
-							<!-- <small class="text-muted fs-6 pl-t mt-4">
-								- Inventory Management System 
-							</small>  -->
-						</h3>
+					<div id="kt_header_menu"
+						class="kt-header-menu kt-header-menu-mobile  kt-header-menu--layout-default ">
+						<h3 class="fw-bolder mt-4 text-dark">Expense Authorization</h3>
 					</div>
 					<!-- end:: Header Menu -->
 					<!-- begin:: Header Topbar -->
@@ -283,7 +338,6 @@
 									<a href="" class="kt-subheader__breadcrumbs-link ml-2">
 										<?= (isset($page) ? $page : '') ?>
 									</a>
-									<!-- <span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Active link</span> -->
 								</div>
 							</div>
 							<div class="kt-subheader__toolbar">
