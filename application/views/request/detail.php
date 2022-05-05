@@ -26,9 +26,15 @@
 						</div>
 						<div class="p-2 mb-2 border-bottom"></div>
 						<div class="row">
-							<label class="col-3 col-form-label fw-bold">Request Base</label>
+							<label class="col-3 col-form-label fw-bold">Request base</label>
 							<div class="col-9">
 								<span class="badge badge-light fw-bold"><?= $detail['request_base'] ?></span>
+							</div>
+						</div>
+						<div class="row">
+							<label class="col-3 col-form-label fw-bold">Request date</label>
+							<div class="col-9">
+								<span class="badge badge-light fw-bold"><?= $detail['request_date'] ?></span>
 							</div>
 						</div>
 						<?php if ($detail['request_base'] === 'Internal TOR'): ?>
@@ -118,14 +124,14 @@
 											<?php $no = 1 ?>
 											<?php foreach ($detail['participants'] as $par): ?>
 											<tr class="kt-datatable__row" style="left: 0px;">
-												<td class="kt-datatable__cell"><span
+												<td class="kt-datatable__cell"><span class="text-dark"
 														style="width: 30px;"><?= $no++ ?></span></td>
 												<td class="kt-datatable__cell">
-													<span style="width: 180px;"><?= $par['name'] ?></span>
+													<span class="text-dark" style="width: 180px;"><?= $par['name'] ?></span>
 												</td>
 												<td class="kt-datatable__cell">
-													<span style="width: 180px;"><?= $par['email'] ?></span>
-												<td class="kt-datatable__cell"><span
+													<span class="text-dark" style="width: 180px;"><?= $par['email'] ?></span>
+												<td class="kt-datatable__cell"><span class="text-dark"
 														style="width: 110px;"><?= $par['title'] ?></span></td>
 											</tr>
 											<?php endforeach; ?>
@@ -293,30 +299,32 @@
 							<?php foreach ($detail['destinations'] as $dest): ?>
 							<div class="col-md-6 destination-review border p-3">
 								<h6 class="pb-2 border-bottom font-weight-bold"><?= $dest['order'] ?> destination </h6>
-								<p class="mb-1">City/country: <span
-										class="destination-city-val"><?= $dest['city'] ?></span> </p>
-								<div class="mb-1 d-flex">
-									<p class="mb-0">Arrival date: <?= $dest['arriv_date'] ?></p>
-									<p class="ml-3 mb-0">Departure date: <?= $dest['depar_date'] ?>,</p>
+								<div class="text-dark">
+									<p class="mb-1">City/country: <span
+											class="destination-city-val"><?= $dest['city'] ?></span> </p>
+									<div class="mb-1 d-flex">
+										<p class="mb-0">Arrival date: <?= $dest['arriv_date'] ?></p>
+										<p class="ml-3 mb-0">Departure date: <?= $dest['depar_date'] ?>,</p>
+									</div>
+									<p class="mb-1">Project number: <span
+											class="destination-project-number-val"><?= $dest['project_number'] ?></span>
+									</p>
+									<p class="mb-1">Budget monitor: <span class="destination-project-number-val">
+											<?= $dest['budget_monitor'] ?></span> </p>
+									<p class="mb-1">Lodging: <span class="destination-lodging-val">Rp.
+											<?= $dest['d_lodging'] ?></span>
+									</p>
+									<p class="mb-1">Meals: <span class="destination-meals-val">Rp.
+											<?= $dest['d_meals'] ?></span> </p>
+									<p class="mb-1">Total (lodging+meals): <span
+											class="destination-meals-lodging-total-val">Rp.
+											<?= $dest['d_total_lodging_and_meals'] ?></span> </p>
+									<p class="mb-1">Number of nights: <span
+											class="destination-night-val"><?= $dest['night'] ?></span> </p>
+									<p class="mb-1">Total: <span class="destination-total-val">Rp.
+											<?= $dest['d_total'] ?></span>
+									</p>
 								</div>
-								<p class="mb-1">Project number: <span
-										class="destination-project-number-val"><?= $dest['project_number'] ?></span>
-								</p>
-								<p class="mb-1">Budget monitor: <span class="destination-project-number-val">
-										<?= $dest['budget_monitor'] ?></span> </p>
-								<p class="mb-1">Lodging: <span class="destination-lodging-val">Rp.
-										<?= $dest['d_lodging'] ?></span>
-								</p>
-								<p class="mb-1">Meals: <span class="destination-meals-val">Rp.
-										<?= $dest['d_meals'] ?></span> </p>
-								<p class="mb-1">Total (lodging+meals): <span
-										class="destination-meals-lodging-total-val">Rp.
-										<?= $dest['d_total_lodging_and_meals'] ?></span> </p>
-								<p class="mb-1">Number of nights: <span
-										class="destination-night-val"><?= $dest['night'] ?></span> </p>
-								<p class="mb-1">Total: <span class="destination-total-val">Rp.
-										<?= $dest['d_total'] ?></span>
-								</p>
 							</div>
 							<?php endforeach; ?>
 						</div>
@@ -439,7 +447,7 @@
 								</thead>
 								<tbody class="kt-datatable__body">
 									<tr data-row="0" class="kt-datatable__row" style="left: 0px;">
-										<td data-field="Order ID" class="kt-datatable__cell"><span
+										<td data-field="Order ID" class="kt-datatable__cell fw-bold"><span
 												style="width: 180px;">Yoga
 												Altariz</span></td>
 										<td data-field="Status" data-autohide-disabled="false" class="kt-datatable__cell">
@@ -457,7 +465,7 @@
 												Jan 2022, 14.30</span></td>
 									</tr>
 									<tr data-row="1" class="kt-datatable__row" style="left: 0px;">
-										<td data-field="Order ID" class="kt-datatable__cell"><span
+										<td data-field="Order ID" class="kt-datatable__cell fw-bold"><span
 												style="width: 180px;">Mulqan
 												Megaman</span></td>
 										<td data-field="Status" data-autohide-disabled="false" class="kt-datatable__cell">
@@ -475,7 +483,7 @@
 												Jan 2022, 14.30</span></td>
 									</tr>
 									<tr data-row="2" class="kt-datatable__row" style="left: 0px;">
-										<td data-field="Order ID" class="kt-datatable__cell"><span
+										<td data-field="Order ID" class="kt-datatable__cell fw-bold"><span
 												style="width: 180px;">Furqan
 												hermawan</span></td>
 										<td data-field="Status" data-autohide-disabled="false" class="kt-datatable__cell">
@@ -494,7 +502,7 @@
 												Jan 2022, 14.30</span></td>
 									</tr>
 									<tr data-row="3" class="kt-datatable__row" style="left: 0px;">
-										<td data-field="Order ID" class="kt-datatable__cell"><span
+										<td data-field="Order ID" class="kt-datatable__cell fw-bold"><span
 												style="width: 180px;">Muhammad Fadhil</span></td>
 										<td data-field="Status" data-autohide-disabled="false" class="kt-datatable__cell">
 											<span style="width: 110px;"><span

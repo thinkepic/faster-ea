@@ -31,10 +31,12 @@ class Request_Model extends CI_Model
         "requestor_id",
         "requestor_name",
         "requestor_email",
+        "exteral_invitation",
+        "car_rental_memo",
     ];
 
     function get_request_by_id($id) {
-        $request_data =  $this->db->select('r.id as r_id, 
+        $request_data =  $this->db->select('r.id as r_id, DATE_FORMAT(r.created_at, "%d %M %Y - %H:%i") as request_date,
         DATE_FORMAT(r.departure_date, "%d %M %Y") as d_date, DATE_FORMAT(r.return_date, "%d %M %Y") as r_date,
         r.*, st.*')
             ->from('ea_requests r')

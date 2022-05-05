@@ -54,13 +54,60 @@ class Data_request extends MY_Controller {
 
 		if ($this->form_validation->run()) {
 
+			$payload = $this->input->post();
+			if ($_FILES['exteral_invitation']['name']) {
+				$dir = './uploads/exteral_invitation/';
+				if (!is_dir($dir)) {
+					mkdir($dir, 0777, true);
+				}
+
+				$config['upload_path']          = $dir;
+				$config['allowed_types']        = 'xls|xlsx|pdf|jpg|png|jpeg';
+				$config['max_size']             = 10048;
+				$config['encrypt_name']         = true;
+
+				$this->load->library('upload', $config);
+				$this->upload->initialize($config);
+
+				if ($this->upload->do_upload('exteral_invitation')) {
+					$payload['exteral_invitation'] = $this->upload->data('file_name');
+				} else {
+					$response = ['status' => false, 'message' => strip_tags($this->upload->display_errors())]; die;
+				}
+			} else {
+				$payload['exteral_invitation'] = null;
+			}
+
+			if ($_FILES['car_rental_memo']['name']) {
+				$dir2 = './uploads/car_rental_memo/';
+				if (!is_dir($dir2)) {
+					mkdir($dir2, 0777, true);
+				}
+
+				$config2['upload_path']          = $dir2;
+				$config2['allowed_types']        = 'xls|xlsx|pdf|jpg|png|jpeg';
+				$config2['max_size']             = 10048;
+				$config2['encrypt_name']         = true;
+
+				$this->load->library('upload', $config2);
+				$this->upload->initialize($config2);
+
+				if ($this->upload->do_upload('car_rental_memo')) {
+					$payload['car_rental_memo'] = $this->upload->data('file_name');
+				} else {
+					$response = ['status' => false, 'message' => strip_tags($this->upload->display_errors())]; die;
+				}
+			} else {
+				$payload['car_rental_memo'] = null;
+			}
+
 			// Soon -> Get from session
 			$requestor_data = [
 				'requestor_id' => 999,
 				'requestor_name' => 'Fadel Al Fayed',
 				'requestor_email' => 'fadelalfayed27@gmail.com',
 			];
-			$payload = array_merge($this->input->post(), $requestor_data);
+			$payload = array_merge($payload, $requestor_data);
 			$saved = $this->request->insert_request($payload);
 			if($saved) {
 				$response['message'] = 'Your request has been sent';
@@ -96,6 +143,33 @@ class Data_request extends MY_Controller {
 		$enc = $this->encryption->encrypt(20);
 		$dec = $this->encryption->decrypt($enc);
         echo json_encode($dec);
+    }
+
+	private function exteral_invitation_upload($field)
+    {
+        $dir = './uploads/exteral_invitation/';
+        if (!is_dir($dir)) {
+            mkdir($dir, 0777, true);
+        }
+
+        $config['upload_path']          = $dir;
+        $config['allowed_types']        = 'xls|xlsx|pdf|jpg|png|jpeg';
+        $config['max_size']             = 10048;
+        $config['encrypt_name']         = true;
+
+        $this->load->library('upload', $config);
+
+        if ($this->upload->do_upload($field)) {
+            return (object) [
+                'is_uploaded' => true,
+                'file_name' => $this->upload->data('file_name')
+            ];
+        } else {
+            return (object) [
+                'is_uploaded' => false,
+                'message' => strip_tags($this->upload->display_errors()) 
+            ];
+        }
     }
 
 }

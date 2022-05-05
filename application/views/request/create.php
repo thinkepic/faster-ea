@@ -101,9 +101,8 @@
 										document</label>
 									<div class="col-md-9">
 										<div class="custom-file">
-											<input type="file" class="custom-file-input" name="exteral_invitation"
-												id="exteral_invitation">
-											<label class="custom-file-label" for="customFile">Choose file</label>
+											<input type="file" class="custom-file-input" name="exteral_invitation" id="exteral_invitation">
+											<label class="custom-file-label" for="exteral_invitation">Choose file</label>
 										</div>
 									</div>
 								</div>
@@ -724,8 +723,11 @@
 			const value = $(this).val();
 			if (value == 'On behalf') {
 				$('.on-behalf-form').removeClass('d-none')
+				$('input[name=employment_status]').prop('checked', false);
 			} else {
 				$('.on-behalf-form').addClass('d-none')
+				$('#participants-el').addClass('d-none')
+				$('#participants-group-el').addClass('d-none')
 			}
 		});
 
@@ -1245,7 +1247,8 @@
 					"type": "error",
 					"confirmButtonClass": "btn btn-dark"
 				});
-				$('<p class="error mt-1 mb-0">Please select head of units</p>').insertAfter($('#head_of_units_email'))
+				$('<p class="error mt-1 mb-0">Please select head of units</p>').insertAfter($(
+					'#head_of_units_email'))
 			} else {
 				const formData = new FormData(this);
 				$.ajax({

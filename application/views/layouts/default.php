@@ -6,7 +6,10 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Faster | <?= (isset($page) ? $page : '') ?></title>
+	<!--begin::Global Theme Styles(used by all pages) -->
+	<!--end::Global Theme Styles -->
 	<link rel="stylesheet" href="<?= site_url('assets/compiled/css/app.css?v=' . ASSETS_VERSION) ?>">
+	<link href="<?= site_url('assets/css/demo1/style.bundle.css') ?>" rel="stylesheet" type="text/css" />
 	<!--begin::Fonts -->
 	<link rel="stylesheet"
 		href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Roboto:300,400,500,600,700">
@@ -23,10 +26,6 @@
 	<link href="<?= site_url('assets/vendors/general/sweetalert2/dist/sweetalert2.min.css') ?>" rel="stylesheet"
 		type="text/css" />
 	<!--end:: Global Mandatory Vendors -->
-
-	<!--begin::Global Theme Styles(used by all pages) -->
-	<link href="<?= site_url('assets/css/demo1/style.bundle.min.css') ?>" rel="stylesheet" type="text/css" />
-	<!--end::Global Theme Styles -->
 
 	<!--begin::Layout Skins(used by all pages) -->
 	<!-- <link href="<?= site_url('assets/css/demo1/skins/header/base/light.css') ?>" rel="stylesheet" type="text/css" />
