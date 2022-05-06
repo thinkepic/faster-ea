@@ -149,4 +149,11 @@ class Request_Model extends CI_Model
         $this->db->where('id', $request_id)->delete('ea_requests');
         return $this->db->affected_rows() === 1;
     }
+
+    function update_status($request_id, $status, $status_field) {
+        $this->db->where('request_id', $request_id)->update('ea_requests_status', [
+            $status_field => $status,
+        ]);
+        return $this->db->affected_rows() === 1;
+    }
 }

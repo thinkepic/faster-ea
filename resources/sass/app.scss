@@ -42,7 +42,6 @@ label {
 
 }
 
-
 .kt-aside--minimize .hidden-aside {
 	visibility: hidden;
 }
@@ -138,4 +137,11 @@ input:read-only, textarea:read-only {
 	span {
 		margin-top: 0px !important;
 	}
+}
+
+.btn-status {
+	padding: 0.3rem .6rem !important;
+    font-size: 0.75rem !important;
+    line-height: 1.5 !important;
+    border-radius: 0.2rem !important;
 }

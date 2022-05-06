@@ -227,7 +227,7 @@
 													class="kt-menu__link"><span
 														class="kt-menu__link-text">Subheaders</span></span></li>
 											<li class="kt-menu__item" aria-haspopup="true">
-												<a href="<?= base_url('request/outcoming-requests/requests-for-review') ?>"
+												<a href="<?= base_url('request/incoming-requests/requests-for-review') ?>"
 													class="kt-menu__link"><i
 														class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span
 														class="kt-menu__link-text">
@@ -235,7 +235,7 @@
 												</a>
 											</li>
 											<li class="kt-menu__item" aria-haspopup="true">
-												<a href="<?= base_url('request/outcoming-requests/pending') ?>"
+												<a href="<?= base_url('request/incoming-requests/pending') ?>"
 													class="kt-menu__link"><i
 														class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span
 														class="kt-menu__link-text">
@@ -243,7 +243,7 @@
 												</a>
 											</li>
 											<li class="kt-menu__item" aria-haspopup="true">
-												<a href="<?= base_url('request/outcoming-requests/rejected') ?>"
+												<a href="<?= base_url('request/incoming-requests/rejected') ?>"
 													class="kt-menu__link"><i
 														class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span
 														class="kt-menu__link-text">
@@ -251,7 +251,7 @@
 												</a>
 											</li>
 											<li class="kt-menu__item" aria-haspopup="true">
-												<a href="<?= base_url('request/outcoming-requests/done') ?>"
+												<a href="<?= base_url('request/incoming-requests/done') ?>"
 													class="kt-menu__link"><i
 														class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span
 														class="kt-menu__link-text">

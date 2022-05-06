@@ -1280,7 +1280,7 @@
 						}).then((result) => {
 							console.log(result)
 							if (result.value) {
-								window.location = base_url + 'request/data-request'
+								window.location = base_url + 'request/outcoming-requests/pending'
 							}
 						})
 					},

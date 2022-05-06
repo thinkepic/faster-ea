@@ -385,7 +385,9 @@
 									</div>
 									<div class="mt-3">
 										<h6 class="fw-bold">Exteral invitation</h6>
-										<a target="_blank" href="<?= base_url('uploads/exteral_invitation/') ?><?= $detail['exteral_invitation_file'] ?>" class="badge badge-primary"><span class="mr-1"><svg
+										<a target="_blank"
+											href="<?= base_url('uploads/exteral_invitation/') ?><?= $detail['exteral_invitation_file'] ?>"
+											class="badge badge-primary"><span class="mr-1"><svg
 													xmlns="http://www.w3.org/2000/svg" width="10" height="10"
 													fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
 													<path
@@ -411,7 +413,9 @@
 									</div>
 									<div class="mt-3">
 										<h6 class="fw-bold">Car rental memo</h6>
-										<a target="_blank" href="<?= base_url('uploads/car_rental_memo/') ?><?= $detail['car_rental_memo'] ?>" class="badge badge-primary"><span class="mr-1"><svg
+										<a target="_blank"
+											href="<?= base_url('uploads/car_rental_memo/') ?><?= $detail['car_rental_memo'] ?>"
+											class="badge badge-primary"><span class="mr-1"><svg
 													xmlns="http://www.w3.org/2000/svg" width="10" height="10"
 													fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
 													<path
@@ -439,16 +443,16 @@
 							<table class="kt-datatable__table" id="html_table" width="100%" style="display: block;">
 								<thead class="kt-datatable__head">
 									<tr class="kt-datatable__row" style="left: 0px;">
-										<th data-field="Order ID" class="kt-datatable__cell kt-datatable__cell--sort"><span
+										<th class="kt-datatable__cell kt-datatable__cell--sort"><span
 												style="width: 180px;">Name</span></th>
-										<th data-field="Car Make" class="kt-datatable__cell kt-datatable__cell--sort"><span
+										<th class="kt-datatable__cell kt-datatable__cell--sort"><span
 												style="width: 110px;">Role</span></th>
-										<th data-field="Car Make" class="kt-datatable__cell kt-datatable__cell--sort"><span
-												style="width: 110px;">Unit</span></th>
-										<th data-field="Car Model" class="kt-datatable__cell kt-datatable__cell--sort">
+										<th class="kt-datatable__cell kt-datatable__cell--sort">
 											<span style="width: 110px;">Status</span></th>
-										<th data-field="Car Model" class="kt-datatable__cell kt-datatable__cell--sort">
+										<th class="kt-datatable__cell kt-datatable__cell--sort">
 											<span style="width: 110px;">Approved on</span></th>
+										<th class="kt-datatable__cell kt-datatable__cell--sort">
+											<span style="width: 110px;">Action</span></th>
 									</tr>
 								</thead>
 								<tbody class="kt-datatable__body">
@@ -460,8 +464,6 @@
 											<span style="width: 110px;"><span
 													class="kt-badge kt-badge--dark kt-badge--inline kt-badge--pill">Head Of
 													Units</span></span>
-										<td data-field="Car Model" class="kt-datatable__cell"><span
-												style="width: 110px;">Epic</span></td>
 										<td data-field="Status" data-autohide-disabled="false" class="kt-datatable__cell">
 											<span style="width: 110px;"><span
 													class="kt-badge kt-badge--brand kt-badge--inline kt-badge--pill">Pending</span></span>
@@ -469,6 +471,32 @@
 										<td data-field="Car Model" class="kt-datatable__cell"><span
 												style="width: 110px;">22
 												Jan 2022, 14.30</span></td>
+										<td class="kt-datatable__cell">
+											<div style="width: 110px;" class="d-flex">
+												<button data-level='head_of_units_status' data-id=<?= $detail['r_id'] ?>
+													data-status="2" class="btn btn-status btn-success mr-1">
+													<div class="d-flex align-items-center justify-content-center">
+														<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+															fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+															<path
+																d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+														</svg>
+														Approve
+													</div>
+												</button>
+												<button data-level='head_of_units_status' data-id=<?= $detail['r_id'] ?>
+													data-status="3" class="btn btn-status btn-danger">
+													<div class="d-flex align-items-center justify-content-center">
+														<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+															fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+															<path
+																d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+														</svg>
+														Reject
+													</div>
+												</button>
+											</div>
+										</td>
 									</tr>
 									<tr data-row="1" class="kt-datatable__row" style="left: 0px;">
 										<td data-field="Order ID" class="kt-datatable__cell fw-bold"><span
@@ -476,10 +504,8 @@
 												Megaman</span></td>
 										<td data-field="Status" data-autohide-disabled="false" class="kt-datatable__cell">
 											<span style="width: 110px;"><span
-													class="kt-badge kt-badge--dark kt-badge--inline kt-badge--pill">EA
-													Assosiate</span></span>
-										<td data-field="Car Model" class="kt-datatable__cell"><span
-												style="width: 110px;">Eclipse</span></td>
+													class="kt-badge kt-badge--dark kt-badge--inline kt-badge--pill">
+													EA Assosiate</span></span>
 										<td data-field="Status" data-autohide-disabled="false" class="kt-datatable__cell">
 											<span style="width: 110px;"><span
 													class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill">Approved</span></span>
@@ -487,6 +513,32 @@
 										<td data-field="Car Model" class="kt-datatable__cell"><span
 												style="width: 110px;">22
 												Jan 2022, 14.30</span></td>
+										<td class="kt-datatable__cell">
+											<div style="width: 110px;" class="d-flex">
+												<button data-level='EA Assosiate' data-id=<?= $detail['r_id'] ?>
+													data-status="2" class="btn btn-status btn-success mr-1">
+													<div class="d-flex align-items-center justify-content-center">
+														<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+															fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+															<path
+																d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+														</svg>
+														Approve
+													</div>
+												</button>
+												<button data-level='EA Assosiate' data-id=<?= $detail['r_id'] ?>
+													data-status="3" class="btn btn-status btn-danger">
+													<div class="d-flex align-items-center justify-content-center">
+														<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+															fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+															<path
+																d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+														</svg>
+														Reject
+													</div>
+												</button>
+											</div>
+										</td>
 									</tr>
 									<tr data-row="2" class="kt-datatable__row" style="left: 0px;">
 										<td data-field="Order ID" class="kt-datatable__cell fw-bold"><span
@@ -496,9 +548,6 @@
 											<span style="width: 110px;"><span
 													class="kt-badge kt-badge--dark kt-badge--inline kt-badge--pill">FCO
 													Monitor</span></span>
-
-										<td data-field="Car Model" class="kt-datatable__cell"><span
-												style="width: 110px;">Epic</span></td>
 										<td data-field="Status" data-autohide-disabled="false" class="kt-datatable__cell">
 											<span style="width: 110px;"><span
 													class="kt-badge kt-badge--danger kt-badge--inline kt-badge--pill">Rejected</span></span>
@@ -506,6 +555,32 @@
 										<td data-field="Car Model" class="kt-datatable__cell"><span
 												style="width: 110px;">22
 												Jan 2022, 14.30</span></td>
+										<td class="kt-datatable__cell">
+											<div style="width: 110px;" class="d-flex">
+												<button data-level='FCO Monitor' data-id=<?= $detail['r_id'] ?>
+													data-status="2" class="btn btn-status btn-success mr-1">
+													<div class="d-flex align-items-center justify-content-center">
+														<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+															fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+															<path
+																d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+														</svg>
+														Approve
+													</div>
+												</button>
+												<button data-level='FCO Monitor' data-id=<?= $detail['r_id'] ?>
+													data-status="3" class="btn btn-status btn-danger">
+													<div class="d-flex align-items-center justify-content-center">
+														<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+															fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+															<path
+																d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+														</svg>
+														Reject
+													</div>
+												</button>
+											</div>
+										</td>
 									</tr>
 									<tr data-row="3" class="kt-datatable__row" style="left: 0px;">
 										<td data-field="Order ID" class="kt-datatable__cell fw-bold"><span
@@ -514,8 +589,6 @@
 											<span style="width: 110px;"><span
 													class="kt-badge kt-badge--dark kt-badge--inline kt-badge--pill">Finance
 													teams</span></span>
-										<td data-field="Car Model" class="kt-datatable__cell"><span
-												style="width: 110px;">ICT4</span></td>
 										<td data-field="Status" data-autohide-disabled="false" class="kt-datatable__cell">
 											<span style="width: 110px;"><span
 													class="kt-badge kt-badge--brand kt-badge--inline kt-badge--pill">Pending</span></span>
@@ -523,6 +596,32 @@
 										<td data-field="Car Model" class="kt-datatable__cell"><span
 												style="width: 110px;">22
 												Jan 2022, 14.30</span></td>
+										<td class="kt-datatable__cell">
+											<div style="width: 110px;" class="d-flex">
+												<button data-level='Finance' data-id=<?= $detail['r_id'] ?> data-status="2"
+													class="btn btn-status btn-success mr-1">
+													<div class="d-flex align-items-center justify-content-center">
+														<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+															fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+															<path
+																d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+														</svg>
+														Approve
+													</div>
+												</button>
+												<button data-level='Finance' data-id=<?= $detail['r_id'] ?> data-status="3"
+													class="btn btn-status btn-danger">
+													<div class="d-flex align-items-center justify-content-center">
+														<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+															fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+															<path
+																d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+														</svg>
+														Reject
+													</div>
+												</button>
+											</div>
+										</td>
 									</tr>
 								</tbody>
 							</table>
@@ -532,3 +631,77 @@
 			</div>
 		</div>
 	</div>
+
+	<script>
+		$(document).ready(function () {
+			$(document).on('click', '.btn-status', function (e) {
+				e.preventDefault()
+				const id = $(this).attr('data-id')
+				const status = $(this).attr('data-status')
+				const level = $(this).attr('data-level')
+				let statusText = 'approve'
+				if (status == 3) {
+					statusText = 'reject'
+				}
+				const loader = `<div style="width: 5rem; height: 5rem;" class="spinner-border mb-5" role="status"></div>
+				<h5 class="mt-2">Please wait</h5>
+				<p>Updating status and send email to requestor...</p>				
+				`
+				Swal.fire({
+					title: 'Are you sure?',
+					text: "Update status and send email to requestor?",
+					type: 'warning',
+					showCancelButton: true,
+					confirmButtonColor: '#3085d6',
+					cancelButtonColor: '#d33',
+					confirmButtonText: `Yes, ${statusText} it!`
+				}).then((result) => {
+					const formData = {
+						id: id,
+						status: status,
+						level: level
+					}
+					if (result.value) {
+						$.ajax({
+							type: 'POST',
+							dataType: 'JSON',
+							url: base_url + 'request/outcoming_requests/set_status',
+							data: formData,
+							beforeSend: function () {
+								Swal.fire({
+									html: loader,
+									showConfirmButton: false,
+									allowEscapeKey: false,
+									allowOutsideClick: false,
+								});
+							},
+							error: function (xhr) {
+								const response = xhr.responseJSON;
+								console.log(response)
+								Swal.fire({
+									"title": "Something went wrong!",
+									"text": response.message,
+									"type": "error",
+									"confirmButtonClass": "btn btn-dark"
+								});
+							},
+							success: function (response) {
+								console.log(response)
+								Swal.fire({
+									"title": "Success!",
+									"text": response.message,
+									"type": "success",
+									"confirmButtonClass": "btn btn-dark"
+								}).then((result) => {
+									if (result.value) {
+										window.location.reload();
+									}
+								})
+							},
+						});
+					}
+				})
+			});
+		});
+
+	</script>

@@ -75,12 +75,12 @@ class Outcoming_requests extends MY_Controller {
 				$this->upload->initialize($config);
 
 				if ($this->upload->do_upload('exteral_invitation')) {
-					$payload['exteral_invitation'] = $this->upload->data('file_name');
+					$payload['exteral_invitation_file'] = $this->upload->data('file_name');
 				} else {
 					$response = ['status' => false, 'message' => strip_tags($this->upload->display_errors())]; die;
 				}
 			} else {
-				$payload['exteral_invitation'] = null;
+				$payload['exteral_invitation_file'] = null;
 			}
 
 			if ($_FILES['car_rental_memo']['name']) {
@@ -143,38 +143,26 @@ class Outcoming_requests extends MY_Controller {
         echo $this->datatable->generate();
     }
 
-	public function test()
-    {	
-		$enc = $this->encryption->encrypt(20);
-		$dec = $this->encryption->decrypt($enc);
-        echo json_encode($dec);
-    }
-
-	private function exteral_invitation_upload($field)
-    {
-        $dir = './uploads/exteral_invitation/';
-        if (!is_dir($dir)) {
-            mkdir($dir, 0777, true);
-        }
-
-        $config['upload_path']          = $dir;
-        $config['allowed_types']        = 'xls|xlsx|pdf|jpg|png|jpeg';
-        $config['max_size']             = 10048;
-        $config['encrypt_name']         = true;
-
-        $this->load->library('upload', $config);
-
-        if ($this->upload->do_upload($field)) {
-            return (object) [
-                'is_uploaded' => true,
-                'file_name' => $this->upload->data('file_name')
-            ];
-        } else {
-            return (object) [
-                'is_uploaded' => false,
-                'message' => strip_tags($this->upload->display_errors()) 
-            ];
-        }
-    }
+	public function set_status() {
+		if ($this->input->is_ajax_request() && $this->input->server('REQUEST_METHOD') === 'POST') {
+			$id =  $this->input->post('id');
+			$status =  $this->input->post('status');
+			$status_field =  $this->input->post('level');
+			$updated = $this->request->update_status($id, $status, $status_field);
+			if($updated) {
+				$response['success'] = true;
+				$response['message'] = 'Status has been updated!';
+				$status_code = 200;
+				$this->send_json($response, $status_code);
+			} else {
+				$response['success'] = false;
+				$response['message'] = 'Failed to update status!';
+				$status_code = 400;
+				$this->send_json($response, $status_code);
+			}
+		} else {
+			exit('No direct script access allowed');
+		}
+	}
 
 }
