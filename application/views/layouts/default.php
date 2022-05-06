@@ -9,7 +9,7 @@
 	<!--begin::Global Theme Styles(used by all pages) -->
 	<!--end::Global Theme Styles -->
 	<link rel="stylesheet" href="<?= site_url('assets/compiled/css/app.css?v=' . ASSETS_VERSION) ?>">
-	<!-- <link href="<?= site_url('assets/css/demo1/style.bundle.css') ?>" rel="stylesheet" type="text/css" /> -->
+	<link href="<?= site_url('assets/css/demo1/style.bundle.css') ?>" rel="stylesheet" type="text/css" />
 	<!--begin::Fonts -->
 	<link rel="stylesheet"
 		href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Roboto:300,400,500,600,700">
@@ -91,7 +91,7 @@
 				<div class="kt-aside__brand kt-grid__item " id="kt_aside_brand">
 
 
-					<div class="kt-aside__brand-logo">
+					<div class="kt-aside__brand-logo hidden-aside">
 						<a href="demo1/index.html">
 							<!-- <img alt="Logo" src="./assets/media/logos/logo-light.png" /> -->
 							<h3 class="text-light">Faster</h3>
@@ -138,7 +138,8 @@
 						id="kt_aside_menu" class="kt-aside-menu " data-ktmenu-vertical="1" data-ktmenu-scroll="1"
 						data-ktmenu-dropdown-timeout="500">
 						<div>
-							<div class="ml-4 aside-user d-flex align-items-sm-center justify-content-center hidden-aside">
+							<div
+								class="ml-4 aside-user d-flex align-items-sm-center justify-content-center hidden-aside">
 								<div class="symbol symbol-50px">
 									<div class="mr-2 container-img">
 										<img class="avatar-img"
@@ -149,16 +150,23 @@
 								<div class="aside-user-info flex-row-fluid flex-wrap mt-3 p-2">
 									<div class="d-flex">
 										<div class="flex-grow-1">
-											<span class="text-white fw-bold">
+											<span class="text-white fw-bold username">
 												Fadel Al Fayed
 											</span>
-											<small class="text-muted fw-bold d-block mb-1">fadelalfayed@gmail.com
+											<small
+												class="text-muted fw-bold d-block mb-1 user-email">fadelalfayed@gmail.com
 											</small>
-											<small class="d-flex align-items-center text-success">
-												online
+											<small class="d-flex align-items-center text-success online-status">
+												<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+													fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+													<path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+												</svg>
+												<span>
+													online
+												</span>
 											</small>
 										</div>
-										<div class="me-n2"><a href="#"
+										<div class="pb-2 pr-2"><a href="#"
 												class="btn btn-icon btn-sm btn-active-color-primary mt-n2"
 												data-kt-menu-trigger="click" data-kt-menu-placement="bottom-start"
 												data-kt-menu-overflow="true"><span class="pulse-ring"></span><span
@@ -167,10 +175,10 @@
 														viewBox="0 0 24 24" fill="none">
 														<path opacity="0.3"
 															d="M22.1 11.5V12.6C22.1 13.2 21.7 13.6 21.2 13.7L19.9 13.9C19.7 14.7 19.4 15.5 18.9 16.2L19.7 17.2999C20 17.6999 20 18.3999 19.6 18.7999L18.8 19.6C18.4 20 17.8 20 17.3 19.7L16.2 18.9C15.5 19.3 14.7 19.7 13.9 19.9L13.7 21.2C13.6 21.7 13.1 22.1 12.6 22.1H11.5C10.9 22.1 10.5 21.7 10.4 21.2L10.2 19.9C9.4 19.7 8.6 19.4 7.9 18.9L6.8 19.7C6.4 20 5.7 20 5.3 19.6L4.5 18.7999C4.1 18.3999 4.1 17.7999 4.4 17.2999L5.2 16.2C4.8 15.5 4.4 14.7 4.2 13.9L2.9 13.7C2.4 13.6 2 13.1 2 12.6V11.5C2 10.9 2.4 10.5 2.9 10.4L4.2 10.2C4.4 9.39995 4.7 8.60002 5.2 7.90002L4.4 6.79993C4.1 6.39993 4.1 5.69993 4.5 5.29993L5.3 4.5C5.7 4.1 6.3 4.10002 6.8 4.40002L7.9 5.19995C8.6 4.79995 9.4 4.39995 10.2 4.19995L10.4 2.90002C10.5 2.40002 11 2 11.5 2H12.6C13.2 2 13.6 2.40002 13.7 2.90002L13.9 4.19995C14.7 4.39995 15.5 4.69995 16.2 5.19995L17.3 4.40002C17.7 4.10002 18.4 4.1 18.8 4.5L19.6 5.29993C20 5.69993 20 6.29993 19.7 6.79993L18.9 7.90002C19.3 8.60002 19.7 9.39995 19.9 10.2L21.2 10.4C21.7 10.5 22.1 11 22.1 11.5ZM12.1 8.59998C10.2 8.59998 8.6 10.2 8.6 12.1C8.6 14 10.2 15.6 12.1 15.6C14 15.6 15.6 14 15.6 12.1C15.6 10.2 14 8.59998 12.1 8.59998Z"
-															fill="black"></path>
+															fill="gray"></path>
 														<path
 															d="M17.1 12.1C17.1 14.9 14.9 17.1 12.1 17.1C9.30001 17.1 7.10001 14.9 7.10001 12.1C7.10001 9.29998 9.30001 7.09998 12.1 7.09998C14.9 7.09998 17.1 9.29998 17.1 12.1ZM12.1 10.1C11 10.1 10.1 11 10.1 12.1C10.1 13.2 11 14.1 12.1 14.1C13.2 14.1 14.1 13.2 14.1 12.1C14.1 11 13.2 10.1 12.1 10.1Z"
-															fill="black"></path>
+															fill="gray"></path>
 													</svg></span></a>
 											<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-primary fw-bold py-4 fs-6 w-275px"
 												data-kt-menu="true"></div>
@@ -198,68 +206,113 @@
 									<h4 class="kt-menu__section-text">Expense Authorization</h4>
 									<i class="kt-menu__section-icon flaticon-more-v2"></i>
 								</li>
-								<li class="kt-menu__item  kt-menu__item--submenu kt-menu__item--open" aria-haspopup="true"
-									data-ktmenu-submenu-toggle="hover"><a href="javascript:;"
-										class="kt-menu__link kt-menu__toggle"><span class="kt-menu__link-icon"><svg
-												xmlns="http://www.w3.org/2000/svg"
-												xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
-												viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
-												<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-													<rect id="bound" x="0" y="0" width="24" height="24" />
-													<path
-														d="M2.56066017,10.6819805 L4.68198052,8.56066017 C5.26776695,7.97487373 6.21751442,7.97487373 6.80330086,8.56066017 L8.9246212,10.6819805 C9.51040764,11.267767 9.51040764,12.2175144 8.9246212,12.8033009 L6.80330086,14.9246212 C6.21751442,15.5104076 5.26776695,15.5104076 4.68198052,14.9246212 L2.56066017,12.8033009 C1.97487373,12.2175144 1.97487373,11.267767 2.56066017,10.6819805 Z M14.5606602,10.6819805 L16.6819805,8.56066017 C17.267767,7.97487373 18.2175144,7.97487373 18.8033009,8.56066017 L20.9246212,10.6819805 C21.5104076,11.267767 21.5104076,12.2175144 20.9246212,12.8033009 L18.8033009,14.9246212 C18.2175144,15.5104076 17.267767,15.5104076 16.6819805,14.9246212 L14.5606602,12.8033009 C13.9748737,12.2175144 13.9748737,11.267767 14.5606602,10.6819805 Z"
-														id="Combined-Shape" fill="#000000" opacity="0.3" />
-													<path
-														d="M8.56066017,16.6819805 L10.6819805,14.5606602 C11.267767,13.9748737 12.2175144,13.9748737 12.8033009,14.5606602 L14.9246212,16.6819805 C15.5104076,17.267767 15.5104076,18.2175144 14.9246212,18.8033009 L12.8033009,20.9246212 C12.2175144,21.5104076 11.267767,21.5104076 10.6819805,20.9246212 L8.56066017,18.8033009 C7.97487373,18.2175144 7.97487373,17.267767 8.56066017,16.6819805 Z M8.56066017,4.68198052 L10.6819805,2.56066017 C11.267767,1.97487373 12.2175144,1.97487373 12.8033009,2.56066017 L14.9246212,4.68198052 C15.5104076,5.26776695 15.5104076,6.21751442 14.9246212,6.80330086 L12.8033009,8.9246212 C12.2175144,9.51040764 11.267767,9.51040764 10.6819805,8.9246212 L8.56066017,6.80330086 C7.97487373,6.21751442 7.97487373,5.26776695 8.56066017,4.68198052 Z"
-														id="Combined-Shape" fill="#000000" />
-												</g>
-											</svg></span><span class="kt-menu__link-text">Request</span><i
+								<li class="kt-menu__item  kt-menu__item--submenu <?= ($pageParent == 'Incoming Requests' ? 'kt-menu__item--open' : '') ?>"
+									aria-haspopup="true" data-ktmenu-submenu-toggle="hover"><a href="javascript:;"
+										class="kt-menu__link kt-menu__toggle">
+										<span class="kt-menu__link-icon">
+											<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+												fill="gray" class="bi bi-file-earmark-arrow-down"
+												viewBox="0 0 16 16">
+												<path
+													d="M8.5 6.5a.5.5 0 0 0-1 0v3.793L6.354 9.146a.5.5 0 1 0-.708.708l2 2a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0-.708-.708L8.5 10.293V6.5z" />
+												<path
+													d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z" />
+											</svg>
+										</span>
+										<span class="kt-menu__link-text">Incoming Requests</span><i
 											class="kt-menu__ver-arrow la la-angle-right"></i></a>
 									<div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
 										<ul class="kt-menu__subnav">
 											<li class="kt-menu__item  kt-menu__item--parent" aria-haspopup="true"><span
 													class="kt-menu__link"><span
 														class="kt-menu__link-text">Subheaders</span></span></li>
-											<li class="kt-menu__item kt-menu__item--active" aria-haspopup="true">
-												<a href="<?= base_url('request/data-request') ?>" class="kt-menu__link"><i
+											<li class="kt-menu__item" aria-haspopup="true">
+												<a href="<?= base_url('request/outcoming-requests/requests-for-review') ?>"
+													class="kt-menu__link"><i
 														class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span
 														class="kt-menu__link-text">
-														Data Request</span>
+														Requests For Review</span>
+												</a>
+											</li>
+											<li class="kt-menu__item" aria-haspopup="true">
+												<a href="<?= base_url('request/outcoming-requests/pending') ?>"
+													class="kt-menu__link"><i
+														class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span
+														class="kt-menu__link-text">
+														Pending</span>
+												</a>
+											</li>
+											<li class="kt-menu__item" aria-haspopup="true">
+												<a href="<?= base_url('request/outcoming-requests/rejected') ?>"
+													class="kt-menu__link"><i
+														class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span
+														class="kt-menu__link-text">
+														Rejected</span>
+												</a>
+											</li>
+											<li class="kt-menu__item" aria-haspopup="true">
+												<a href="<?= base_url('request/outcoming-requests/done') ?>"
+													class="kt-menu__link"><i
+														class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span
+														class="kt-menu__link-text">
+														Done</span>
 												</a>
 											</li>
 										</ul>
 									</div>
 								</li>
-								<li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true"
-									data-ktmenu-submenu-toggle="hover"><a href="javascript:;"
+								<li class="kt-menu__item  kt-menu__item--submenu <?= ($pageParent == 'Outcoming Requests' ? 'kt-menu__item--open' : '') ?>"
+									aria-haspopup="true" data-ktmenu-submenu-toggle="hover"><a href="javascript:;"
 										class="kt-menu__link kt-menu__toggle">
 										<span class="kt-menu__link-icon">
-											<svg xmlns="http://www.w3.org/2000/svg"
-												xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
-												viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
-												<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-													<rect id="bound" x="0" y="0" width="24" height="24"></rect>
-													<path
-														d="M13.6855025,18.7082217 C15.9113859,17.8189707 18.682885,17.2495635 22,17 C22,16.9325178 22,13.1012863 22,5.50630526 L21.9999762,5.50630526 C21.9999762,5.23017604 21.7761292,5.00632908 21.5,5.00632908 C21.4957817,5.00632908 21.4915635,5.00638247 21.4873465,5.00648922 C18.658231,5.07811173 15.8291155,5.74261533 13,7 C13,7.04449645 13,10.79246 13,18.2438906 L12.9999854,18.2438906 C12.9999854,18.520041 13.2238496,18.7439052 13.5,18.7439052 C13.5635398,18.7439052 13.6264972,18.7317946 13.6855025,18.7082217 Z"
-														id="Combined-Shape" fill="#000000"></path>
-													<path
-														d="M10.3144829,18.7082217 C8.08859955,17.8189707 5.31710038,17.2495635 1.99998542,17 C1.99998542,16.9325178 1.99998542,13.1012863 1.99998542,5.50630526 L2.00000925,5.50630526 C2.00000925,5.23017604 2.22385621,5.00632908 2.49998542,5.00632908 C2.50420375,5.00632908 2.5084219,5.00638247 2.51263888,5.00648922 C5.34175439,5.07811173 8.17086991,5.74261533 10.9999854,7 C10.9999854,7.04449645 10.9999854,10.79246 10.9999854,18.2438906 L11,18.2438906 C11,18.520041 10.7761358,18.7439052 10.4999854,18.7439052 C10.4364457,18.7439052 10.3734882,18.7317946 10.3144829,18.7082217 Z"
-														id="Path-41-Copy" fill="#000000" opacity="0.3"></path>
-												</g>
+											<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+												fill="gray" class="bi bi-file-earmark-arrow-up"
+												viewBox="0 0 16 16">
+												<path
+													d="M8.5 11.5a.5.5 0 0 1-1 0V7.707L6.354 8.854a.5.5 0 1 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 7.707V11.5z" />
+												<path
+													d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z" />
 											</svg>
 										</span>
-										<span class="kt-menu__link-text">Report</span><i
+										<span class="kt-menu__link-text">Outcoming Requests</span><i
 											class="kt-menu__ver-arrow la la-angle-right"></i></a>
 									<div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
 										<ul class="kt-menu__subnav">
 											<li class="kt-menu__item  kt-menu__item--parent" aria-haspopup="true"><span
 													class="kt-menu__link"><span
 														class="kt-menu__link-text">Subheaders</span></span></li>
-											<li class="kt-menu__item " aria-haspopup="true">
-												<a href="demo1/layout/subheader/toolbar.html" class="kt-menu__link "><i
+											<li class="kt-menu__item <?= ($page == 'Create request' ? 'kt-menu__item--active' : '') ?>"
+												aria-haspopup="true">
+												<a href="<?= base_url('request/outcoming-requests/create') ?>"
+													class="kt-menu__link"><i
 														class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span
 														class="kt-menu__link-text">
-														Request Report</span>
+														Create new request</span>
+												</a>
+											</li>
+											<li class="kt-menu__item <?= ($page == 'Pending requests' ? 'kt-menu__item--active' : '') ?>"
+												aria-haspopup="true">
+												<a href="<?= base_url('request/outcoming-requests/pending') ?>"
+													class="kt-menu__link"><i
+														class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span
+														class="kt-menu__link-text">
+														Pending</span>
+												</a>
+											</li>
+											<li class="kt-menu__item" aria-haspopup="true">
+												<a href="<?= base_url('request/outcoming-requests/rejected') ?>"
+													class="kt-menu__link"><i
+														class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span
+														class="kt-menu__link-text">
+														Rejected</span>
+												</a>
+											</li>
+											<li class="kt-menu__item" aria-haspopup="true">
+												<a href="<?= base_url('request/incoming-requests/done') ?>"
+													class="kt-menu__link"><i
+														class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span
+														class="kt-menu__link-text">
+														Done</span>
 												</a>
 											</li>
 										</ul>
@@ -294,34 +347,28 @@
 			<!-- end:: Aside -->
 			<div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
 				<!-- begin:: Header -->
-				<div id="kt_header" class="kt-header kt-grid__item  kt-header--fixed ">
+				<div id="kt_header" class="kt-header kt-grid__item  kt-header--fixed">
 
 					<!-- begin:: Header Menu -->
 					<button class="kt-header-menu-wrapper-close" id="kt_header_menu_mobile_close_btn"><i
 							class="la la-close"></i></button>
 					<div id="kt_header_menu"
-						class="kt-header-menu kt-header-menu-mobile  kt-header-menu--layout-default ">
-						<h3 class="fw-bolder mt-4 text-dark">Expense Authorization</h3>
+						class="kt-header-menu kt-header-menu-mobile  kt-header-menu--layout-default d-flex flex-column">
+						<h4 class="fw-bold mt-3 mb-1 text-dark"><?= (isset($pageParent) ? $pageParent : '') ?></h4>
+						<span class="fw-bold text-muted"><?= (isset($page) ? $page : '') ?></span>
 					</div>
 					<!-- end:: Header Menu -->
 					<!-- begin:: Header Topbar -->
 					<div class="kt-header__topbar">
 						<!--begin: User Bar -->
-						<div class="d-flex align-items-center justify-content-center fw-bold text-dark">
-							<span class="mx-2">
-								Hi, Fadel Al Fayed
-							</span>
-						</div>
-						<div class="d-flex align-items-center justify-content-center ml-2">
-							<a class="btn btn-dark" href="">Logout</a>
-						</div>
+
 						<!--end: User Bar -->
 					</div>
 					<!-- end:: Header Topbar -->
 				</div>
 				<!-- end:: Header -->
 				<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
-					<div class="kt-subheader   kt-grid__item" id="kt_subheader">
+					<!-- <div class="kt-subheader   kt-grid__item" id="kt_subheader">
 						<div class="kt-container  kt-container--fluid ">
 							<div class="kt-subheader__main">
 								<h3 class="kt-subheader__title">
@@ -346,7 +393,7 @@
 								</div>
 							</div>
 						</div>
-					</div>
+					</div> -->
 
 					<!-- begin:: Content -->
 					<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">

@@ -2,7 +2,6 @@
 @import "~bootstrap/scss/bootstrap";
 @import "select2";
 @import "~datatables.net-bs5/css/dataTables.bootstrap5.min.css";
-@import "../css/style.bundle.css";
 @import "../css/dark.css";
 @import "../css/dark-brand.css";
 @import "../css/light.css";
@@ -16,15 +15,44 @@ label {
 	color: #212529 !important;
 }
 
-.avatar-img {
-	height: 4rem;
-	width:4rem;
-	object-fit: cover;
-	border-radius: 8px;
+.aside-user {
+	.avatar-img {
+		height: 4rem;
+		width:4rem;
+		object-fit: cover;
+		border-radius: 4px;
+	}
+
+	.username {
+		font-size: 1.075rem !important;
+	}
+
+	.user-email {
+		font-size: .85rem !important;
+	}
+
+	.online-status {
+		font-size: .75rem !important;
+		margin-left: -6px !important;
+		color: #50cd89!important;
+		span {
+			margin-left: -3px !important;
+		}
+	}
+
 }
+
 
 .kt-aside--minimize .hidden-aside {
 	visibility: hidden;
+}
+
+.kt-aside--minimize .kt-aside__brand-tools {
+	padding-right: 5rem !important;
+}
+
+.kt-header--fixed.kt-subheader--fixed.kt-subheader--enabled .kt-wrapper {
+	padding-top: 80px !important;
 }
 
 .dataTables_filter input {

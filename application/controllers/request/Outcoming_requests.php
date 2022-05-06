@@ -1,19 +1,19 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Data_request extends MY_Controller {
+class Outcoming_requests extends MY_Controller {
 
 	function __construct()
 	{
 		parent::__construct();
 		$this->load->model('Request_Model', 'request');
-		$this->template->set('pageParent', 'Request');
+		$this->template->set('pageParent', 'Outcoming Requests');
 		$this->template->set_default_layout('layouts/default');
 	}
 
-	public function index()
+	public function pending()
 	{
-		$this->template->set('page', 'Data request');
+		$this->template->set('page', 'Pending requests');
 		$requests = $this->db->select('*')->from('ea_requests')->get()->result();
 		$data['requests'] = $requests;
 		$this->template->render('request/index', $data);
@@ -31,10 +31,15 @@ class Data_request extends MY_Controller {
 	public function detail($id = null)
 	{
 		$id = decrypt($id);
-		$data['detail'] = $this->request->get_request_by_id($id);
-		// echo json_encode($data);
-		$this->template->set('page', 'Requests detail');
-		$this->template->render('request/detail', $data);
+		$detail = $this->request->get_request_by_id($id);
+		if($detail) {
+			// echo json_encode($data);
+			$data['detail'] = $detail;
+			$this->template->set('page', 'Requests detail');
+			$this->template->render('request/detail', $data);
+		} else {
+			show_404();
+		}
 	}
 
 	public function store()

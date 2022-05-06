@@ -9,7 +9,7 @@
 		<div class="kt-portlet__head-toolbar">
 			<div class="kt-portlet__head-wrapper">
 				<div class="kt-portlet__head-actions">
-					<a class="btn btn-primary" href="<?= base_url('request/data-request') ?>">Data request</a>
+					<a class="btn btn-primary" href="<?= base_url('request/outcoming-requests/pending') ?>">Data request</a>
 				</div>
 			</div>
 		</div>
@@ -62,7 +62,7 @@
 			<div class="kt-grid__item kt-grid__item--fluid kt-wizard-v3__wrapper">
 				<!--begin: Form Wizard Form-->
 				<form style="width: 100% !important; padding-top: 1.2rem !important;" enctype="multipart/form-data"
-					method="POST" action="<?= base_url('request/data-request/store') ?>" class="kt-form px-5 w-full"
+					method="POST" action="<?= base_url('request/outcoming-requests/store') ?>" class="kt-form px-5 w-full"
 					id="kt_form">
 					<!--begin: Form Wizard Step 1-->
 					<div class="kt-wizard-v3__content" data-ktwizard-type="step-content" data-ktwizard-state="current">

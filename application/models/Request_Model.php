@@ -43,6 +43,9 @@ class Request_Model extends CI_Model
             ->join('ea_requests_status st', 'st.request_id = r.id', 'left')
             ->where('r.id', $id)
             ->get()->row_array();
+        if(!$request_data) {
+            return false;
+        }
         $destinations = $this->db->select('*, format(meals,2,"de_DE") as d_meals, format(lodging,2,"de_DE") as d_lodging,
         format(total_lodging_and_meals,2,"de_DE") as d_total_lodging_and_meals, format(total,2,"de_DE") as d_total,
         DATE_FORMAT(departure_date, "%d %M %Y") as depar_date, DATE_FORMAT(arrival_date, "%d %M %Y") as arriv_date
