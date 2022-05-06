@@ -151,10 +151,10 @@
 									<div class="d-flex">
 										<div class="flex-grow-1">
 											<span class="text-white fw-bold username">
-												Fadel Al Fayed
+												<?= $this->user_data->fullName ?>
 											</span>
 											<small
-												class="text-muted fw-bold d-block mb-1 user-email">fadelalfayed@gmail.com
+												class="text-muted fw-bold d-block mb-1 user-email"><?= $this->user_data->email ?>
 											</small>
 											<small class="d-flex align-items-center text-success online-status">
 												<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"

@@ -12,7 +12,9 @@
 	},
 	"require": {
 		"php": ">=5.3.7",
-		"phpoffice/phpspreadsheet": "^1.18"
+		"phpoffice/phpspreadsheet": "^1.18",
+		"vlucas/phpdotenv": "^3.6",
+		"firebase/php-jwt": "^6.1"
 	},
 	"suggest": {
 		"paragonie/random_compat": "Provides better randomness in PHP 5.x"

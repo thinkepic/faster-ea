@@ -466,7 +466,8 @@
 													Units</span></span>
 										<td data-field="Status" data-autohide-disabled="false" class="kt-datatable__cell">
 											<span style="width: 110px;"><span
-													class="kt-badge kt-badge--brand kt-badge--inline kt-badge--pill">Pending</span></span>
+													class="kt-badge kt-badge--inline kt-badge--pill status-badge"><?= $detail['head_of_units_status_text'] ?></span>
+											</span>
 										</td>
 										<td data-field="Car Model" class="kt-datatable__cell"><span
 												style="width: 110px;">22
@@ -507,15 +508,16 @@
 													class="kt-badge kt-badge--dark kt-badge--inline kt-badge--pill">
 													EA Assosiate</span></span>
 										<td data-field="Status" data-autohide-disabled="false" class="kt-datatable__cell">
-											<span style="width: 110px;"><span
-													class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill">Approved</span></span>
+											<span style="width: 110px;">
+												<span
+													class="kt-badge kt-badge--inline kt-badge--pill status-badge"><?= $detail['ea_assosiate_status_text'] ?></span></span>
 										</td>
 										<td data-field="Car Model" class="kt-datatable__cell"><span
 												style="width: 110px;">22
 												Jan 2022, 14.30</span></td>
 										<td class="kt-datatable__cell">
 											<div style="width: 110px;" class="d-flex">
-												<button data-level='EA Assosiate' data-id=<?= $detail['r_id'] ?>
+												<button data-level='ea_assosiate_status' data-id=<?= $detail['r_id'] ?>
 													data-status="2" class="btn btn-status btn-success mr-1">
 													<div class="d-flex align-items-center justify-content-center">
 														<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -526,7 +528,7 @@
 														Approve
 													</div>
 												</button>
-												<button data-level='EA Assosiate' data-id=<?= $detail['r_id'] ?>
+												<button data-level='ea_assosiate_status' data-id=<?= $detail['r_id'] ?>
 													data-status="3" class="btn btn-status btn-danger">
 													<div class="d-flex align-items-center justify-content-center">
 														<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -550,14 +552,14 @@
 													Monitor</span></span>
 										<td data-field="Status" data-autohide-disabled="false" class="kt-datatable__cell">
 											<span style="width: 110px;"><span
-													class="kt-badge kt-badge--danger kt-badge--inline kt-badge--pill">Rejected</span></span>
+													class="kt-badge kt-badge--inline kt-badge--pill status-badge"><?= $detail['fco_monitor_status_text'] ?></span></span>
 										</td>
 										<td data-field="Car Model" class="kt-datatable__cell"><span
 												style="width: 110px;">22
 												Jan 2022, 14.30</span></td>
 										<td class="kt-datatable__cell">
 											<div style="width: 110px;" class="d-flex">
-												<button data-level='FCO Monitor' data-id=<?= $detail['r_id'] ?>
+												<button data-level='fco_monitor_status' data-id=<?= $detail['r_id'] ?>
 													data-status="2" class="btn btn-status btn-success mr-1">
 													<div class="d-flex align-items-center justify-content-center">
 														<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -568,7 +570,7 @@
 														Approve
 													</div>
 												</button>
-												<button data-level='FCO Monitor' data-id=<?= $detail['r_id'] ?>
+												<button data-level='fco_monitor_status' data-id=<?= $detail['r_id'] ?>
 													data-status="3" class="btn btn-status btn-danger">
 													<div class="d-flex align-items-center justify-content-center">
 														<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -590,16 +592,18 @@
 													class="kt-badge kt-badge--dark kt-badge--inline kt-badge--pill">Finance
 													teams</span></span>
 										<td data-field="Status" data-autohide-disabled="false" class="kt-datatable__cell">
-											<span style="width: 110px;"><span
-													class="kt-badge kt-badge--brand kt-badge--inline kt-badge--pill">Pending</span></span>
+											<span style="width: 110px;">
+												<span
+													class="kt-badge kt-badge--brand kt-badge--inline kt-badge--pill status-badge"><?= $detail['finance_status_text'] ?></span>
+											</span>
 										</td>
 										<td data-field="Car Model" class="kt-datatable__cell"><span
 												style="width: 110px;">22
 												Jan 2022, 14.30</span></td>
 										<td class="kt-datatable__cell">
 											<div style="width: 110px;" class="d-flex">
-												<button data-level='Finance' data-id=<?= $detail['r_id'] ?> data-status="2"
-													class="btn btn-status btn-success mr-1">
+												<button data-level='finance_status' data-id=<?= $detail['r_id'] ?>
+													data-status="2" class="btn btn-status btn-success mr-1">
 													<div class="d-flex align-items-center justify-content-center">
 														<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
 															fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
@@ -609,8 +613,8 @@
 														Approve
 													</div>
 												</button>
-												<button data-level='Finance' data-id=<?= $detail['r_id'] ?> data-status="3"
-													class="btn btn-status btn-danger">
+												<button data-level='finance_status' data-id=<?= $detail['r_id'] ?>
+													data-status="3" class="btn btn-status btn-danger">
 													<div class="d-flex align-items-center justify-content-center">
 														<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
 															fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
@@ -702,6 +706,17 @@
 					}
 				})
 			});
+		});
+
+		$('.status-badge').each(function () {
+			const status = $(this).text()
+			if (status == 'Pending') {
+				$(this).addClass('kt-badge--brand')
+			} else if (status == 'Approved') {
+				$(this).addClass('kt-badge--success')
+			} else {
+				$(this).addClass('kt-badge--danger')
+			}
 		});
 
 	</script>

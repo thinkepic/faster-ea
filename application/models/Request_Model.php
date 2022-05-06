@@ -38,7 +38,32 @@ class Request_Model extends CI_Model
     function get_request_by_id($id) {
         $request_data =  $this->db->select('r.id as r_id, DATE_FORMAT(r.created_at, "%d %M %Y - %H:%i") as request_date,
         DATE_FORMAT(r.departure_date, "%d %M %Y") as d_date, DATE_FORMAT(r.return_date, "%d %M %Y") as r_date,
-        r.*, st.*')
+        r.*, st.*,
+        (
+            CASE 
+                WHEN head_of_units_status = "1" THEN "Pending"
+                WHEN head_of_units_status = "2" THEN "Approved"
+                WHEN head_of_units_status = "3" THEN "Rejected"
+            END) AS head_of_units_status_text,
+        (
+            CASE 
+                WHEN ea_assosiate_status = "1" THEN "Pending"
+                WHEN ea_assosiate_status = "2" THEN "Approved"
+                WHEN ea_assosiate_status = "3" THEN "Rejected"
+            END) AS ea_assosiate_status_text,
+        (
+            CASE 
+                WHEN fco_monitor_status = "1" THEN "Pending"
+                WHEN fco_monitor_status = "2" THEN "Approved"
+                WHEN fco_monitor_status = "3" THEN "Rejected"
+            END) AS fco_monitor_status_text,
+        (
+            CASE 
+                WHEN finance_status = "1" THEN "Pending"
+                WHEN finance_status = "2" THEN "Approved"
+                WHEN finance_status = "3" THEN "Rejected"
+            END) AS finance_status_text,
+        ')
             ->from('ea_requests r')
             ->join('ea_requests_status st', 'st.request_id = r.id', 'left')
             ->where('r.id', $id)
@@ -153,6 +178,7 @@ class Request_Model extends CI_Model
     function update_status($request_id, $status, $status_field) {
         $this->db->where('request_id', $request_id)->update('ea_requests_status', [
             $status_field => $status,
+            $status_field . '_at' => date("Y-m-d H:i:s"),
         ]);
         return $this->db->affected_rows() === 1;
     }

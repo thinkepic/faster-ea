@@ -165,4 +165,8 @@ class Outcoming_requests extends MY_Controller {
 		}
 	}
 
+	public function test() {
+		echo json_encode($this->user_data);
+	}
+
 }
