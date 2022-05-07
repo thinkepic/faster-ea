@@ -29,9 +29,6 @@ class Request_Model extends CI_Model
         "special_instructions",
         "max_budget",
         "requestor_id",
-        "requestor_name",
-        "requestor_email",
-        "requestor_purpose",
         "exteral_invitation_file",
         "car_rental_memo",
     ];
@@ -91,6 +88,15 @@ class Request_Model extends CI_Model
         $request_data['destinations'] = $destinations;
         $request_data['participants'] = $participants;
         return $request_data;
+    }
+
+    function get_requestor_data($user_id) {
+        return $this->db->select('u.id, u.username, u.email, p.project_name, un.unit_name')
+        ->from('tb_userapp u')
+        ->join('tb_project p', 'u.project_id = p.project_id')
+        ->join('tb_units un', 'u.unit_id = un.id')
+        ->where('u.id', $user_id)
+        ->get()->row_array();
     }
 
     function insert_request($data)

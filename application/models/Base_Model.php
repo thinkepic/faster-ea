@@ -10,6 +10,6 @@ class Base_Model extends CI_Model
         ->join('tb_userapp u', 'u.id = pr.kepala_unit_id')
         ->join('tb_pr_approver_members pm', 'pm.pr_approver_id = pr.id')
         ->where('pm.member_id', $user_id)
-        ->get()->row_array();
+        ->get()->result_array();
     }
 }

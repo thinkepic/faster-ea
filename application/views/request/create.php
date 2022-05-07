@@ -9,7 +9,8 @@
 		<div class="kt-portlet__head-toolbar">
 			<div class="kt-portlet__head-wrapper">
 				<div class="kt-portlet__head-actions">
-					<a class="btn btn-primary" href="<?= base_url('request/outcoming-requests/pending') ?>">Data request</a>
+					<a class="btn btn-primary" href="<?= base_url('request/outcoming-requests/pending') ?>">Data
+						request</a>
 				</div>
 			</div>
 		</div>
@@ -62,8 +63,8 @@
 			<div class="kt-grid__item kt-grid__item--fluid kt-wizard-v3__wrapper">
 				<!--begin: Form Wizard Form-->
 				<form style="width: 100% !important; padding-top: 1.2rem !important;" enctype="multipart/form-data"
-					method="POST" action="<?= base_url('request/outcoming-requests/store') ?>" class="kt-form px-5 w-full"
-					id="kt_form">
+					method="POST" action="<?= base_url('request/outcoming-requests/store') ?>"
+					class="kt-form px-5 w-full" id="kt_form">
 					<!--begin: Form Wizard Step 1-->
 					<div class="kt-wizard-v3__content" data-ktwizard-type="step-content" data-ktwizard-state="current">
 						<div class="kt-heading kt-heading--md border-bottom pb-2">Please enter basic information</div>
@@ -89,6 +90,8 @@
 										</div>
 									</div>
 								</div>
+								<input type="text" value="<?= $requestor_data['id'] ?>" id="requestor_id"
+											class="d-none" name="requestor_id">
 								<div class="form-group row tor-form d-none">
 									<label for="example-search-input" class="col-md-3 col-form-label">TOR Number</label>
 									<div class="col-md-9">
@@ -101,8 +104,10 @@
 										document</label>
 									<div class="col-md-9">
 										<div class="custom-file">
-											<input type="file" class="custom-file-input" name="exteral_invitation" id="exteral_invitation">
-											<label class="custom-file-label" for="exteral_invitation">Choose file</label>
+											<input type="file" class="custom-file-input" name="exteral_invitation"
+												id="exteral_invitation">
+											<label class="custom-file-label" for="exteral_invitation">Choose
+												file</label>
 										</div>
 									</div>
 								</div>
@@ -509,11 +514,10 @@
 									<!--  Data dari session -->
 									<h5 class="mb-3">Basic information :</h5>
 									<div class="pb-2 mb-2 border-bottom">
-										<p class="mb-1">Fadel Al Fayed</p>
-										<p class="mb-1">Date of birth: 05/10/1998</p>
-										<p class="mb-1">Address: Jln peutua bayeun matang seulimeng</p>
-										<p class="mb-1">Division: Epic</p>
-										<p class="mb-1">Employee status: Programmatic</p>
+										<p class="mb-1"><?= $requestor_data['username'] ?></p>
+										<p class="mb-1">Email: <?= $requestor_data['email'] ?></p>
+										<p class="mb-1">Division: <?= $requestor_data['project_name'] ?></p>
+										<p class="mb-1">Purpose: <?= $requestor_data['unit_name'] ?></p>
 									</div>
 									<div class="pt-2 mb-2 pb-2">
 										<p class="mb-1">Request base: <span class="review-request-base-val"></span>
@@ -592,12 +596,12 @@
 								</div>
 								<div>
 									<div class="form-group">
-										<label>Head of units</label>
-										<select name="head_of_units_email" class="form-control"
-											id="head_of_units_email">
-											<option value="">Select head of units</option>
-											<option value="fadelalfayed27@gmail.com">fadelalfayed27@gmail.com</option>
-											<option value="alfayed@mhs.unsyiah.ac.id">alfayed@mhs.unsyiah.ac.id</option>
+										<label class="d-block">Please select head of units</label>
+										<select name="head_of_units_id" class="form-control"
+											id="head_of_units_id">
+											<?php foreach ($head_of_units as $item): ?>
+												<option value="<?= $item['id'] ?>"><?= $item['username'] ?> (<?= $item['email'] ?>)</option>
+											<?php endforeach; ?>
 										</select>
 									</div>
 								</div>
@@ -717,6 +721,10 @@
 					}
 				}
 			}
+		})
+
+		$('#head_of_units_id').select2({
+			placeholder: 'Select head of units',
 		})
 
 		$('input[name=employment]').change(function () {
@@ -1240,7 +1248,7 @@
 		$("#kt_form").submit(function (e) {
 			e.preventDefault();
 			$('p.error').remove();
-			const headOfUnits = $('#head_of_units_email').val()
+			const headOfUnits = $('#head_of_units_id').val()
 			if (!headOfUnits) {
 				swal.fire({
 					"title": "Please select head of units!",
@@ -1280,7 +1288,8 @@
 						}).then((result) => {
 							console.log(result)
 							if (result.value) {
-								window.location = base_url + 'request/outcoming-requests/pending'
+								window.location = base_url +
+									'request/outcoming-requests/pending'
 							}
 						})
 					},

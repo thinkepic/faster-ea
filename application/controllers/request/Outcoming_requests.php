@@ -25,8 +25,9 @@ class Outcoming_requests extends MY_Controller {
 		$this->template->set('assets_css', [
 			site_url('assets/css/demo1/pages/wizard/wizard-3.css')
 		]);
-		$data['head_of_units'] = $this->base_model->get_head_of_units($this->user_data->userId);
-		$data['requestor_data'] = $this->user_data;
+		$user_id = $this->user_data->userId;
+		$data['head_of_units'] = $this->base_model->get_head_of_units($user_id);
+		$data['requestor_data'] = $this->request->get_requestor_data($user_id);
 		$this->template->set('page', 'Create request');
 		$this->template->render('request/create', $data);
 	}
@@ -36,8 +37,9 @@ class Outcoming_requests extends MY_Controller {
 		$id = decrypt($id);
 		$detail = $this->request->get_request_by_id($id);
 		if($detail) {
-			// echo json_encode($data);
+			$requestor_data = $this->request->get_requestor_data($detail['requestor_id']);
 			$data['detail'] = $detail;
+			$data['requestor_data'] = $requestor_data;
 			$this->template->set('page', 'Requests detail');
 			$this->template->render('request/detail', $data);
 		} else {
@@ -58,7 +60,7 @@ class Outcoming_requests extends MY_Controller {
 		$this->form_validation->set_rules('car_rental', 'Car rental', 'required');
 		$this->form_validation->set_rules('hotel_reservations', 'Hotel reservations', 'required');
 		$this->form_validation->set_rules('other_transportation', 'Other trasportation', 'required');
-		$this->form_validation->set_rules('head_of_units_email', 'Head of units email', 'required');
+		$this->form_validation->set_rules('head_of_units_id', 'Head of units', 'required');
 
 		if ($this->form_validation->run()) {
 
@@ -108,14 +110,6 @@ class Outcoming_requests extends MY_Controller {
 			} else {
 				$payload['car_rental_memo'] = null;
 			}
-
-			// // Soon -> Get from session
-			// $requestor_data = [
-			// 	'requestor_id' => 999,
-			// 	'requestor_name' => 'Fadel Al Fayed',
-			// 	'requestor_email' => 'fadelalfayed27@gmail.com',
-			// ];
-			// $payload = array_merge($payload, $requestor_data);
 			$saved = $this->request->insert_request($payload);
 			if($saved) {
 				$response['message'] = 'Your request has been sent';
@@ -137,10 +131,11 @@ class Outcoming_requests extends MY_Controller {
 
 	public function datatable()
     {	
-        $this->datatable->select('requestor_name, request_base, employment, originating_city,
-		DATE_FORMAT(departure_date, "%d %M %Y") as departure_date, DATE_FORMAT(return_date, "%d %M %Y") as return_date,
-		DATE_FORMAT(created_at, "%d %M %Y") as created_at, id', true);
-        $this->datatable->from('ea_requests');
+        $this->datatable->select('u.username as requestor_name, ea.request_base, ea.employment, ea.originating_city,
+		DATE_FORMAT(ea.departure_date, "%d %M %Y") as departure_date, DATE_FORMAT(ea.return_date, "%d %M %Y") as return_date,
+		DATE_FORMAT(ea.created_at, "%d %M %Y") as created_at, ea.id', true);
+        $this->datatable->from('ea_requests ea');
+        $this->datatable->join('tb_userapp u', 'u.id = ea.requestor_id');
         $this->datatable->order_by('created_at', 'desc');
 		$this->datatable->edit_column('id', "$1", 'encrypt(id)');
         echo $this->datatable->generate();

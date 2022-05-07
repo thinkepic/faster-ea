@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 07, 2022 at 07:31 AM
+-- Generation Time: May 07, 2022 at 08:11 AM
 -- Server version: 10.4.19-MariaDB
 -- PHP Version: 7.4.28
 
@@ -573,8 +573,6 @@ CREATE TABLE `ea_requests` (
   `special_instructions` varchar(255) DEFAULT NULL,
   `max_budget` decimal(14,2) DEFAULT NULL,
   `requestor_id` int(11) NOT NULL,
-  `requestor_name` varchar(255) NOT NULL,
-  `requestor_email` varchar(255) NOT NULL,
   `exteral_invitation_file` text DEFAULT NULL,
   `car_rental_memo` text DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
