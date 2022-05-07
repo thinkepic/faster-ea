@@ -36,7 +36,11 @@ class Request_Model extends CI_Model
     function get_request_by_id($id) {
         $request_data =  $this->db->select('r.id as r_id, DATE_FORMAT(r.created_at, "%d %M %Y - %H:%i") as request_date,
         DATE_FORMAT(r.departure_date, "%d %M %Y") as d_date, DATE_FORMAT(r.return_date, "%d %M %Y") as r_date,
-        r.*, st.*,
+        r.*, st.*, uh.username as head_of_units_name, uea.username as ea_assosiate_name, ufc.username as fco_monitor_name,
+        ufi.username as finance_name, DATE_FORMAT(st.head_of_units_status_at, "%d %M %Y - %H:%i") as head_of_units_status_at,
+        DATE_FORMAT(st.ea_assosiate_status_at, "%d %M %Y - %H:%i") as ea_assosiate_status_at,
+        DATE_FORMAT(st.fco_monitor_status_at, "%d %M %Y - %H:%i") as fco_monitor_status_at,
+        DATE_FORMAT(st.finance_status_at, "%d %M %Y - %H:%i") as finance_status_at,
         (
             CASE 
                 WHEN head_of_units_status = "1" THEN "Pending"
@@ -64,6 +68,10 @@ class Request_Model extends CI_Model
         ')
             ->from('ea_requests r')
             ->join('ea_requests_status st', 'st.request_id = r.id', 'left')
+            ->join('tb_userapp uh', 'st.head_of_units_id = uh.id', 'left')
+            ->join('tb_userapp uea', 'st.ea_assosiate_id = uea.id', 'left')
+            ->join('tb_userapp ufc', 'st.fco_monitor_id = ufc.id', 'left')
+            ->join('tb_userapp ufi', 'st.finance_id = ufi.id', 'left')
             ->where('r.id', $id)
             ->get()->row_array();
         if(!$request_data) {
@@ -181,10 +189,11 @@ class Request_Model extends CI_Model
         return $this->db->affected_rows() === 1;
     }
 
-    function update_status($request_id, $status, $status_field) {
+    function update_status($request_id, $status, $level) {
         $this->db->where('request_id', $request_id)->update('ea_requests_status', [
-            $status_field => $status,
-            $status_field . '_at' => date("Y-m-d H:i:s"),
+            $level . '_status' => $status,
+            $level . '_status_at' => date("Y-m-d H:i:s"),
+            $level . '_id' => $this->user_data->userId,
         ]);
         return $this->db->affected_rows() === 1;
     }

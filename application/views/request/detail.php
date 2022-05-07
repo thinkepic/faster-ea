@@ -9,19 +9,20 @@
 						<div class="row">
 							<label class="col-3 col-form-label fw-bold">Requestor name</label>
 							<div class="col-9">
-								<span style="font-size: 1rem;" class="badge badge-light fw-bold">Fadel Al Fayed</span>
+								<span style="font-size: 1rem;"
+									class="badge badge-light fw-bold"><?= $requestor_data['username'] ?></span>
 							</div>
 						</div>
 						<div class="row">
 							<label class="col-3 col-form-label fw-bold">Division</label>
 							<div class="col-9">
-								<span class="badge badge-dark fw-bold">Epic</span>
+								<span class="badge badge-dark fw-bold"><?= $requestor_data['project_name'] ?></span>
 							</div>
 						</div>
 						<div class="row">
-							<label class="col-3 col-form-label fw-bold">Employee status</label>
+							<label class="col-3 col-form-label fw-bold">Purpose</label>
 							<div class="col-9">
-								<span class="badge badge-info fw-bold">Procurement Officer</span>
+								<span class="badge badge-info fw-bold"><?= $requestor_data['unit_name'] ?></span>
 							</div>
 						</div>
 						<div class="p-2 mb-2 border-bottom"></div>
@@ -444,7 +445,7 @@
 								<thead class="kt-datatable__head">
 									<tr class="kt-datatable__row" style="left: 0px;">
 										<th class="kt-datatable__cell kt-datatable__cell--sort"><span
-												style="width: 180px;">Name</span></th>
+												style="width: 150px;">Name</span></th>
 										<th class="kt-datatable__cell kt-datatable__cell--sort"><span
 												style="width: 110px;">Role</span></th>
 										<th class="kt-datatable__cell kt-datatable__cell--sort">
@@ -457,9 +458,11 @@
 								</thead>
 								<tbody class="kt-datatable__body">
 									<tr data-row="0" class="kt-datatable__row" style="left: 0px;">
-										<td data-field="Order ID" class="kt-datatable__cell fw-bold"><span
-												style="width: 180px;">Yoga
-												Altariz</span></td>
+										<td data-field="Order ID" class="kt-datatable__cell fw-bold">
+											<span style="width: 150px;">
+											<?= $detail['head_of_units_name'] ?>
+											</span>
+										</td>
 										<td data-field="Status" data-autohide-disabled="false" class="kt-datatable__cell">
 											<span style="width: 110px;"><span
 													class="kt-badge kt-badge--dark kt-badge--inline kt-badge--pill">Head Of
@@ -470,11 +473,10 @@
 											</span>
 										</td>
 										<td data-field="Car Model" class="kt-datatable__cell"><span
-												style="width: 110px;">22
-												Jan 2022, 14.30</span></td>
+												style="width: 110px;"><?= $detail['head_of_units_status_at'] ?></span></td>
 										<td class="kt-datatable__cell">
 											<div style="width: 110px;" class="d-flex">
-												<button data-level='head_of_units_status' data-id=<?= $detail['r_id'] ?>
+												<button data-level='head_of_units' data-id=<?= $detail['r_id'] ?>
 													data-status="2" class="btn btn-status btn-success mr-1">
 													<div class="d-flex align-items-center justify-content-center">
 														<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -485,7 +487,7 @@
 														Approve
 													</div>
 												</button>
-												<button data-level='head_of_units_status' data-id=<?= $detail['r_id'] ?>
+												<button data-level='head_of_units' data-id=<?= $detail['r_id'] ?>
 													data-status="3" class="btn btn-status btn-danger">
 													<div class="d-flex align-items-center justify-content-center">
 														<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -501,8 +503,7 @@
 									</tr>
 									<tr data-row="1" class="kt-datatable__row" style="left: 0px;">
 										<td data-field="Order ID" class="kt-datatable__cell fw-bold"><span
-												style="width: 180px;">Mulqan
-												Megaman</span></td>
+												style="width: 150px;"><?= $detail['ea_assosiate_name'] ?></span></td>
 										<td data-field="Status" data-autohide-disabled="false" class="kt-datatable__cell">
 											<span style="width: 110px;"><span
 													class="kt-badge kt-badge--dark kt-badge--inline kt-badge--pill">
@@ -513,11 +514,10 @@
 													class="kt-badge kt-badge--inline kt-badge--pill status-badge"><?= $detail['ea_assosiate_status_text'] ?></span></span>
 										</td>
 										<td data-field="Car Model" class="kt-datatable__cell"><span
-												style="width: 110px;">22
-												Jan 2022, 14.30</span></td>
+												style="width: 110px;"><?= $detail['ea_assosiate_status_at'] ?></span></td>
 										<td class="kt-datatable__cell">
 											<div style="width: 110px;" class="d-flex">
-												<button data-level='ea_assosiate_status' data-id=<?= $detail['r_id'] ?>
+												<button data-level='ea_assosiate' data-id=<?= $detail['r_id'] ?>
 													data-status="2" class="btn btn-status btn-success mr-1">
 													<div class="d-flex align-items-center justify-content-center">
 														<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -528,7 +528,7 @@
 														Approve
 													</div>
 												</button>
-												<button data-level='ea_assosiate_status' data-id=<?= $detail['r_id'] ?>
+												<button data-level='ea_assosiate' data-id=<?= $detail['r_id'] ?>
 													data-status="3" class="btn btn-status btn-danger">
 													<div class="d-flex align-items-center justify-content-center">
 														<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -544,8 +544,7 @@
 									</tr>
 									<tr data-row="2" class="kt-datatable__row" style="left: 0px;">
 										<td data-field="Order ID" class="kt-datatable__cell fw-bold"><span
-												style="width: 180px;">Furqan
-												hermawan</span></td>
+												style="width: 150px;"><?= $detail['fco_monitor_name'] ?></span></td>
 										<td data-field="Status" data-autohide-disabled="false" class="kt-datatable__cell">
 											<span style="width: 110px;"><span
 													class="kt-badge kt-badge--dark kt-badge--inline kt-badge--pill">FCO
@@ -555,11 +554,10 @@
 													class="kt-badge kt-badge--inline kt-badge--pill status-badge"><?= $detail['fco_monitor_status_text'] ?></span></span>
 										</td>
 										<td data-field="Car Model" class="kt-datatable__cell"><span
-												style="width: 110px;">22
-												Jan 2022, 14.30</span></td>
+												style="width: 110px;"><?= $detail['fco_monitor_status_at'] ?></span></td>
 										<td class="kt-datatable__cell">
 											<div style="width: 110px;" class="d-flex">
-												<button data-level='fco_monitor_status' data-id=<?= $detail['r_id'] ?>
+												<button data-level='fco_monitor' data-id=<?= $detail['r_id'] ?>
 													data-status="2" class="btn btn-status btn-success mr-1">
 													<div class="d-flex align-items-center justify-content-center">
 														<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -570,7 +568,7 @@
 														Approve
 													</div>
 												</button>
-												<button data-level='fco_monitor_status' data-id=<?= $detail['r_id'] ?>
+												<button data-level='fco_monitor' data-id=<?= $detail['r_id'] ?>
 													data-status="3" class="btn btn-status btn-danger">
 													<div class="d-flex align-items-center justify-content-center">
 														<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -586,7 +584,7 @@
 									</tr>
 									<tr data-row="3" class="kt-datatable__row" style="left: 0px;">
 										<td data-field="Order ID" class="kt-datatable__cell fw-bold"><span
-												style="width: 180px;">Muhammad Fadhil</span></td>
+												style="width: 150px;"><?= $detail['finance_name'] ?></span></td>
 										<td data-field="Status" data-autohide-disabled="false" class="kt-datatable__cell">
 											<span style="width: 110px;"><span
 													class="kt-badge kt-badge--dark kt-badge--inline kt-badge--pill">Finance
@@ -598,11 +596,10 @@
 											</span>
 										</td>
 										<td data-field="Car Model" class="kt-datatable__cell"><span
-												style="width: 110px;">22
-												Jan 2022, 14.30</span></td>
+												style="width: 110px;"><?= $detail['finance_status_at'] ?></span></td>
 										<td class="kt-datatable__cell">
 											<div style="width: 110px;" class="d-flex">
-												<button data-level='finance_status' data-id=<?= $detail['r_id'] ?>
+												<button data-level='finance' data-id=<?= $detail['r_id'] ?>
 													data-status="2" class="btn btn-status btn-success mr-1">
 													<div class="d-flex align-items-center justify-content-center">
 														<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -613,7 +610,7 @@
 														Approve
 													</div>
 												</button>
-												<button data-level='finance_status' data-id=<?= $detail['r_id'] ?>
+												<button data-level='finance' data-id=<?= $detail['r_id'] ?>
 													data-status="3" class="btn btn-status btn-danger">
 													<div class="d-flex align-items-center justify-content-center">
 														<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"

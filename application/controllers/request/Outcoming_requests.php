@@ -40,6 +40,7 @@ class Outcoming_requests extends MY_Controller {
 			$requestor_data = $this->request->get_requestor_data($detail['requestor_id']);
 			$data['detail'] = $detail;
 			$data['requestor_data'] = $requestor_data;
+			// echo json_encode($data);
 			$this->template->set('page', 'Requests detail');
 			$this->template->render('request/detail', $data);
 		} else {
@@ -133,7 +134,7 @@ class Outcoming_requests extends MY_Controller {
     {	
         $this->datatable->select('u.username as requestor_name, ea.request_base, ea.employment, ea.originating_city,
 		DATE_FORMAT(ea.departure_date, "%d %M %Y") as departure_date, DATE_FORMAT(ea.return_date, "%d %M %Y") as return_date,
-		DATE_FORMAT(ea.created_at, "%d %M %Y") as created_at, ea.id', true);
+		DATE_FORMAT(ea.created_at, "%d %M %Y - %H:%i") as created_at, ea.id', true);
         $this->datatable->from('ea_requests ea');
         $this->datatable->join('tb_userapp u', 'u.id = ea.requestor_id');
         $this->datatable->order_by('created_at', 'desc');
@@ -145,8 +146,8 @@ class Outcoming_requests extends MY_Controller {
 		if ($this->input->is_ajax_request() && $this->input->server('REQUEST_METHOD') === 'POST') {
 			$id =  $this->input->post('id');
 			$status =  $this->input->post('status');
-			$status_field =  $this->input->post('level');
-			$updated = $this->request->update_status($id, $status, $status_field);
+			$level =  $this->input->post('level');
+			$updated = $this->request->update_status($id, $status, $level);
 			if($updated) {
 				$response['success'] = true;
 				$response['message'] = 'Status has been updated!';
@@ -166,9 +167,4 @@ class Outcoming_requests extends MY_Controller {
 	public function test() {
 		echo json_encode($this->user_data);
 	}
-
-	public function get_head_of_units() {
-		echo json_encode($this->base_model->get_head_of_units($this->user_data->userId));
-	}
-
 }
