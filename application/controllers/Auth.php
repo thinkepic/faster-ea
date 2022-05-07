@@ -12,7 +12,6 @@ class Auth extends CI_Controller {
 	public function logout()
 	{   
         delete_cookie('fast_token');
-		delete_cookie('user');
 		session_destroy();
 		redirect($_ENV['loginUrl']);
 	}
