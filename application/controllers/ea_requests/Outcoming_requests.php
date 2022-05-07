@@ -67,7 +67,7 @@ class Outcoming_requests extends MY_Controller {
 			} else if (is_fco_monitor()) {
 				$this->datatable->where('st.ea_assosiate_status =', 2);
 				$this->datatable->where('st.fco_monitor_status =', 1);
-			} else if (is_procurement_officer()) {
+			} else if (is_finance_teams()) {
 				$this->datatable->where('st.fco_monitor_status =', 2);
 				$this->datatable->where('st.finance_status =', 1);
 			} else {
@@ -86,7 +86,7 @@ class Outcoming_requests extends MY_Controller {
 				$fco_monitor_btn = 'invisible';
 			}
 			$finance_btn = '';
-			if($detail['finance_status'] != 1 || $detail['fco_monitor_status'] != 2  || !is_procurement_officer()) {
+			if($detail['finance_status'] != 1 || $detail['fco_monitor_status'] != 2  || !is_finance_teams()) {
 				$finance_btn = 'invisible';
 			}
 			$data = [

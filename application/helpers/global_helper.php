@@ -100,12 +100,12 @@ if (!function_exists('is_ea_assosiate')) {
     }
 }
 
-if (!function_exists('is_procurement_officer')) {
-    function is_procurement_officer()
+if (!function_exists('is_finance_teams')) {
+    function is_finance_teams()
     {   
         $ci = &get_instance();
-
-        if($ci->user_data->isProcurementOfficer == 1) {
+        // If units = Finance
+        if($ci->user_data->unitsId == 3) {
             return true;
         }
 

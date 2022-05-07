@@ -80,7 +80,7 @@ class Incoming_requests extends MY_Controller {
 			} else if (is_fco_monitor()) {
 				$this->datatable->where('st.ea_assosiate_status =', 2);
 				$this->datatable->where('st.fco_monitor_status =', 1);
-			} else if (is_procurement_officer()) {
+			} else if (is_finance_teams()) {
 				$this->datatable->where('st.fco_monitor_status =', 2);
 				$this->datatable->where('st.finance_status =', 1);
 			} else {

@@ -92,7 +92,7 @@
 
 
 					<div class="kt-aside__brand-logo hidden-aside">
-						<a href="demo1/index.html">
+						<a href="<?= base_url('dashboard') ?>">
 							<!-- <img alt="Logo" src="./assets/media/logos/logo-light.png" /> -->
 							<h3 class="text-light">Faster</h3>
 						</a>
@@ -206,7 +206,7 @@
 									<h4 class="kt-menu__section-text">Expense Authorization</h4>
 									<i class="kt-menu__section-icon flaticon-more-v2"></i>
 								</li>
-								<?php if (is_ea_assosiate() || is_fco_monitor() || is_procurement_officer() || is_head_of_units()): ?>
+								<?php if (is_ea_assosiate() || is_fco_monitor() || is_finance_teams() || is_head_of_units()): ?>
 
 								<li class="kt-menu__item  kt-menu__item--submenu <?= ($pageParent == 'Incoming Requests' ? 'kt-menu__item--open' : '') ?>"
 									aria-haspopup="true" data-ktmenu-submenu-toggle="hover"><a href="javascript:;"
