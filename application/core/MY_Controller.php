@@ -12,7 +12,7 @@ class MY_Controller extends CI_Controller
         $this->load->helper('cookie');
         $token = get_cookie('fast_token');
         if (!$token) {
-            redirect($_ENV['stagingUrl']);
+            redirect($_ENV['loginUrl']);
         } else {
             $key = $_ENV['secretKey'];
             $user_data = JWT::decode($token, new Key($key, 'HS256'));

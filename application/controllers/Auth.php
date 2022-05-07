@@ -9,13 +9,11 @@ class Auth extends CI_Controller {
 		$this->template->set_default_layout('layouts/blank');
 	}
 
-	public function login()
+	public function logout()
 	{   
-        $this->template->set('assets_css', [
-			site_url('assets/css/demo1/pages/login/login-6.css')
-		]);
-        $this->template->set('page', 'Login');
-		$this->template->render('auth/login');
-
+        delete_cookie('fast_token');
+		delete_cookie('user');
+		session_destroy();
+		redirect($_ENV['loginUrl']);
 	}
 }

@@ -321,7 +321,7 @@
 							</ul>
 						</div>
 						<div class="px-3 hidden-aside">
-							<a class="btn btn-dark w-100" href="">
+							<a class="btn btn-dark w-100" href="<?= base_url('auth/logout') ?>">
 								<span>
 									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
 										fill="none">
