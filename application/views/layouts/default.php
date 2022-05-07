@@ -299,7 +299,7 @@
 														Pending</span>
 												</a>
 											</li>
-											<li class="kt-menu__item" aria-haspopup="true">
+											<li class="kt-menu__item <?= ($page == 'Rejected requests' ? 'kt-menu__item--active' : '') ?>" aria-haspopup="true">
 												<a href="<?= base_url('request/outcoming-requests/rejected') ?>"
 													class="kt-menu__link"><i
 														class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span
@@ -307,8 +307,8 @@
 														Rejected</span>
 												</a>
 											</li>
-											<li class="kt-menu__item" aria-haspopup="true">
-												<a href="<?= base_url('request/incoming-requests/done') ?>"
+											<li class="kt-menu__item <?= ($page == 'Done requests' ? 'kt-menu__item--active' : '') ?>" aria-haspopup="true">
+												<a href="<?= base_url('request/outcoming-requests/done') ?>"
 													class="kt-menu__link"><i
 														class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span
 														class="kt-menu__link-text">

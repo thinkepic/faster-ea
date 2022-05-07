@@ -2,8 +2,8 @@
 	<div class="kt-portlet__head kt-portlet__head--lg">
 		<div class="kt-portlet__head-label">
 			<h3 class="kt-portlet__head-title">
-				Data Request
-				<!-- <small>initialized from remote json file</small> -->
+				Pending Requests
+				<small>Requests in progress</small>
 			</h3>
 		</div>
 		<div class="kt-portlet__head-toolbar">
@@ -20,7 +20,7 @@
 
 	<div class="kt-portlet__body">
 		<table id="table-requests" class="table table-striped"
-			data-url="<?= base_url('request/outcoming-requests/datatable') ?>">
+			data-url="<?= base_url('request/outcoming-requests/datatable') ?>/<?= $status ?>">
 			<thead>
 				<tr>
 					<th>Requestor</th>

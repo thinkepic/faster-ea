@@ -17,7 +17,26 @@ class Outcoming_requests extends MY_Controller {
 		$this->template->set('page', 'Pending requests');
 		$requests = $this->db->select('*')->from('ea_requests')->get()->result();
 		$data['requests'] = $requests;
-		$this->template->render('request/index', $data);
+		$data['status'] = 'pending';
+		$this->template->render('outcoming_requests/pending', $data);
+	}
+
+	public function rejected()
+	{
+		$this->template->set('page', 'Rejected requests');
+		$requests = $this->db->select('*')->from('ea_requests')->get()->result();
+		$data['requests'] = $requests;
+		$data['status'] = 'rejected';
+		$this->template->render('outcoming_requests/rejected', $data);
+	}
+
+	public function done()
+	{
+		$this->template->set('page', 'Done requests');
+		$requests = $this->db->select('*')->from('ea_requests')->get()->result();
+		$data['requests'] = $requests;
+		$data['status'] = 'done';
+		$this->template->render('outcoming_requests/done', $data);
 	}
 
 	public function create()
@@ -29,7 +48,7 @@ class Outcoming_requests extends MY_Controller {
 		$data['head_of_units'] = $this->base_model->get_head_of_units($user_id);
 		$data['requestor_data'] = $this->request->get_requestor_data($user_id);
 		$this->template->set('page', 'Create request');
-		$this->template->render('request/create', $data);
+		$this->template->render('outcoming_requests/create', $data);
 	}
 
 	public function detail($id = null)
@@ -42,7 +61,7 @@ class Outcoming_requests extends MY_Controller {
 			$data['requestor_data'] = $requestor_data;
 			// echo json_encode($data);
 			$this->template->set('page', 'Requests detail');
-			$this->template->render('request/detail', $data);
+			$this->template->render('outcoming_requests/detail', $data);
 		} else {
 			show_404();
 		}
@@ -130,13 +149,33 @@ class Outcoming_requests extends MY_Controller {
 		$this->send_json($response, $status_code);
 	}
 
-	public function datatable()
+	public function datatable($status = null)
     {	
         $this->datatable->select('u.username as requestor_name, ea.request_base, ea.employment, ea.originating_city,
 		DATE_FORMAT(ea.departure_date, "%d %M %Y") as departure_date, DATE_FORMAT(ea.return_date, "%d %M %Y") as return_date,
 		DATE_FORMAT(ea.created_at, "%d %M %Y - %H:%i") as created_at, ea.id', true);
         $this->datatable->from('ea_requests ea');
         $this->datatable->join('tb_userapp u', 'u.id = ea.requestor_id');
+        $this->datatable->join('ea_requests_status st', 'ea.id = st.request_id');
+		if($status == 'pending') {
+			$this->datatable->where('st.head_of_units_status !=', 3);
+			$this->datatable->where('st.ea_assosiate_status !=', 3);
+			$this->datatable->where('st.fco_monitor_status !=', 3);
+			$this->datatable->where('st.finance_status !=', 3);
+			$this->datatable->where('st.finance_status !=', 2);
+		}
+		if($status == 'rejected') {
+			$this->datatable->where('st.head_of_units_status =', 3);
+			$this->datatable->or_where('st.ea_assosiate_status =', 3);
+			$this->datatable->or_where('st.fco_monitor_status =', 3);
+			$this->datatable->or_where('st.finance_status =', 3);
+		}
+		if($status == 'done') {
+			$this->datatable->where('st.head_of_units_status =', 2);
+			$this->datatable->where('st.ea_assosiate_status =', 2);
+			$this->datatable->where('st.fco_monitor_status =', 2);
+			$this->datatable->where('st.finance_status =', 2);
+		}
         $this->datatable->order_by('created_at', 'desc');
 		$this->datatable->edit_column('id', "$1", 'encrypt(id)');
         echo $this->datatable->generate();
