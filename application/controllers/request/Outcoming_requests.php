@@ -7,6 +7,7 @@ class Outcoming_requests extends MY_Controller {
 	{
 		parent::__construct();
 		$this->load->model('Request_Model', 'request');
+		$this->load->model('Base_Model', 'base_model');
 		$this->template->set('pageParent', 'Outcoming Requests');
 		$this->template->set_default_layout('layouts/default');
 	}
@@ -24,8 +25,10 @@ class Outcoming_requests extends MY_Controller {
 		$this->template->set('assets_css', [
 			site_url('assets/css/demo1/pages/wizard/wizard-3.css')
 		]);
+		$data['head_of_units'] = $this->base_model->get_head_of_units($this->user_data->userId);
+		$data['requestor_data'] = $this->user_data;
 		$this->template->set('page', 'Create request');
-		$this->template->render('request/create');
+		$this->template->render('request/create', $data);
 	}
 
 	public function detail($id = null)
@@ -106,13 +109,13 @@ class Outcoming_requests extends MY_Controller {
 				$payload['car_rental_memo'] = null;
 			}
 
-			// Soon -> Get from session
-			$requestor_data = [
-				'requestor_id' => 999,
-				'requestor_name' => 'Fadel Al Fayed',
-				'requestor_email' => 'fadelalfayed27@gmail.com',
-			];
-			$payload = array_merge($payload, $requestor_data);
+			// // Soon -> Get from session
+			// $requestor_data = [
+			// 	'requestor_id' => 999,
+			// 	'requestor_name' => 'Fadel Al Fayed',
+			// 	'requestor_email' => 'fadelalfayed27@gmail.com',
+			// ];
+			// $payload = array_merge($payload, $requestor_data);
 			$saved = $this->request->insert_request($payload);
 			if($saved) {
 				$response['message'] = 'Your request has been sent';
@@ -167,6 +170,10 @@ class Outcoming_requests extends MY_Controller {
 
 	public function test() {
 		echo json_encode($this->user_data);
+	}
+
+	public function get_head_of_units() {
+		echo json_encode($this->base_model->get_head_of_units($this->user_data->userId));
 	}
 
 }

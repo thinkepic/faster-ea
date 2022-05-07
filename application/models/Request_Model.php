@@ -31,6 +31,7 @@ class Request_Model extends CI_Model
         "requestor_id",
         "requestor_name",
         "requestor_email",
+        "requestor_purpose",
         "exteral_invitation_file",
         "car_rental_memo",
     ];
@@ -118,8 +119,7 @@ class Request_Model extends CI_Model
         // Request status
         $this->db->insert('ea_requests_status', [
             'request_id' => $request_id,
-            'head_of_units_id' => 9999,
-            'head_of_units_email' => $data['head_of_units_email'],
+            'head_of_units_id' => $data['head_of_units_id'],
         ]);
 
         // Save destinations
