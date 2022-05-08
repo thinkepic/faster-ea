@@ -475,7 +475,7 @@
 										<td data-field="Car Model" class="kt-datatable__cell"><span
 												style="width: 110px;"><?= $detail['head_of_units_status_at'] ?></span></td>
 										<td class="kt-datatable__cell">
-											<div style="width: 110px;" class="d-flex">
+											<div style="width: 110px;" class="d-flex <?= $head_of_units_btn ?>">
 												<button data-level='head_of_units' data-id=<?= $detail['r_id'] ?>
 													data-status="2" class="btn btn-status btn-success mr-1">
 													<div class="d-flex align-items-center justify-content-center">
@@ -516,7 +516,7 @@
 										<td data-field="Car Model" class="kt-datatable__cell"><span
 												style="width: 110px;"><?= $detail['ea_assosiate_status_at'] ?></span></td>
 										<td class="kt-datatable__cell">
-											<div style="width: 110px;" class="d-flex">
+											<div style="width: 110px;" class="d-flex <?= $ea_assosiate_btn ?>">
 												<button data-level='ea_assosiate' data-id=<?= $detail['r_id'] ?>
 													data-status="2" class="btn btn-status btn-success mr-1">
 													<div class="d-flex align-items-center justify-content-center">
@@ -556,7 +556,7 @@
 										<td data-field="Car Model" class="kt-datatable__cell"><span
 												style="width: 110px;"><?= $detail['fco_monitor_status_at'] ?></span></td>
 										<td class="kt-datatable__cell">
-											<div style="width: 110px;" class="d-flex">
+											<div style="width: 110px;" class="d-flex <?= $fco_monitor_btn ?>">
 												<button data-level='fco_monitor' data-id=<?= $detail['r_id'] ?>
 													data-status="2" class="btn btn-status btn-success mr-1">
 													<div class="d-flex align-items-center justify-content-center">
@@ -598,7 +598,7 @@
 										<td data-field="Car Model" class="kt-datatable__cell"><span
 												style="width: 110px;"><?= $detail['finance_status_at'] ?></span></td>
 										<td class="kt-datatable__cell">
-											<div style="width: 110px;" class="d-flex">
+											<div style="width: 110px;" class="d-flex <?= $finance_btn ?>">
 												<button data-level='finance' data-id=<?= $detail['r_id'] ?>
 													data-status="2" class="btn btn-status btn-success mr-1">
 													<div class="d-flex align-items-center justify-content-center">
@@ -687,7 +687,6 @@
 								});
 							},
 							success: function (response) {
-								console.log(response)
 								Swal.fire({
 									"title": "Success!",
 									"text": response.message,

@@ -56,9 +56,47 @@ class Outcoming_requests extends MY_Controller {
 		$id = decrypt($id);
 		$detail = $this->request->get_request_by_id($id);
 		if($detail) {
+			$user_id = $this->user_data->userId;
 			$requestor_data = $this->request->get_requestor_data($detail['requestor_id']);
-			$data['detail'] = $detail;
-			$data['requestor_data'] = $requestor_data;
+			if (is_head_of_units()) {
+				$this->datatable->where('st.head_of_units_status =', 1);
+				$this->datatable->where('st.head_of_units_id =', $user_id);
+			} else if (is_ea_assosiate()) {
+				$this->datatable->where('st.head_of_units_status =', 2);
+				$this->datatable->where('st.ea_assosiate_status =', 1);
+			} else if (is_fco_monitor()) {
+				$this->datatable->where('st.ea_assosiate_status =', 2);
+				$this->datatable->where('st.fco_monitor_status =', 1);
+			} else if (is_procurement_officer()) {
+				$this->datatable->where('st.fco_monitor_status =', 2);
+				$this->datatable->where('st.finance_status =', 1);
+			} else {
+				$this->datatable->where('st.head_of_units_id =', null);
+			}
+			$head_of_units_btn = '';
+			if($detail['head_of_units_status'] != 1 || $detail['head_of_units_id'] != $user_id) {
+				$head_of_units_btn = 'invisible';
+			}
+			$ea_assosiate_btn = '';
+			if($detail['ea_assosiate_status'] != 1 || $detail['head_of_units_status'] != 2  || !is_ea_assosiate()) {
+				$ea_assosiate_btn = 'invisible';
+			}
+			$fco_monitor_btn = '';
+			if($detail['fco_monitor_status'] != 1 || $detail['ea_assosiate_status'] != 2  || !is_fco_monitor()) {
+				$fco_monitor_btn = 'invisible';
+			}
+			$finance_btn = '';
+			if($detail['finance_status'] != 1 || $detail['fco_monitor_status'] != 2  || !is_procurement_officer()) {
+				$finance_btn = 'invisible';
+			}
+			$data = [
+				'detail' => $detail,
+				'requestor_data' => $requestor_data,
+				'head_of_units_btn' => $head_of_units_btn,
+				'ea_assosiate_btn' => $ea_assosiate_btn,
+				'fco_monitor_btn' => $fco_monitor_btn,
+				'finance_btn' => $finance_btn,
+			];
 			// echo json_encode($data);
 			$this->template->set('pageParent', 'Requests');
 			$this->template->set('page', 'Requests detail');
