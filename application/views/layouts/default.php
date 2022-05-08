@@ -206,13 +206,14 @@
 									<h4 class="kt-menu__section-text">Expense Authorization</h4>
 									<i class="kt-menu__section-icon flaticon-more-v2"></i>
 								</li>
+								<?php if (is_ea_assosiate() || is_tor_approver() || is_budget_reviewer() || is_head_of_units()): ?>
+
 								<li class="kt-menu__item  kt-menu__item--submenu <?= ($pageParent == 'Incoming Requests' ? 'kt-menu__item--open' : '') ?>"
 									aria-haspopup="true" data-ktmenu-submenu-toggle="hover"><a href="javascript:;"
 										class="kt-menu__link kt-menu__toggle">
 										<span class="kt-menu__link-icon">
-											<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-												fill="gray" class="bi bi-file-earmark-arrow-down"
-												viewBox="0 0 16 16">
+											<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="gray"
+												class="bi bi-file-earmark-arrow-down" viewBox="0 0 16 16">
 												<path
 													d="M8.5 6.5a.5.5 0 0 0-1 0v3.793L6.354 9.146a.5.5 0 1 0-.708.708l2 2a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0-.708-.708L8.5 10.293V6.5z" />
 												<path
@@ -227,7 +228,7 @@
 													class="kt-menu__link"><span
 														class="kt-menu__link-text">Subheaders</span></span></li>
 											<li class="kt-menu__item" aria-haspopup="true">
-												<a href="<?= base_url('request/incoming-requests/requests-for-review') ?>"
+												<a href="<?= base_url('ea_requests/incoming-requests/requests-for-review') ?>"
 													class="kt-menu__link"><i
 														class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span
 														class="kt-menu__link-text">
@@ -235,7 +236,7 @@
 												</a>
 											</li>
 											<li class="kt-menu__item" aria-haspopup="true">
-												<a href="<?= base_url('request/incoming-requests/pending') ?>"
+												<a href="<?= base_url('ea_requests/incoming-requests/pending') ?>"
 													class="kt-menu__link"><i
 														class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span
 														class="kt-menu__link-text">
@@ -243,7 +244,7 @@
 												</a>
 											</li>
 											<li class="kt-menu__item" aria-haspopup="true">
-												<a href="<?= base_url('request/incoming-requests/rejected') ?>"
+												<a href="<?= base_url('ea_requests/incoming-requests/rejected') ?>"
 													class="kt-menu__link"><i
 														class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span
 														class="kt-menu__link-text">
@@ -251,7 +252,7 @@
 												</a>
 											</li>
 											<li class="kt-menu__item" aria-haspopup="true">
-												<a href="<?= base_url('request/incoming-requests/done') ?>"
+												<a href="<?= base_url('ea_requests/incoming-requests/done') ?>"
 													class="kt-menu__link"><i
 														class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span
 														class="kt-menu__link-text">
@@ -261,13 +262,14 @@
 										</ul>
 									</div>
 								</li>
+
+								<?php endif; ?>
 								<li class="kt-menu__item  kt-menu__item--submenu <?= ($pageParent == 'Outcoming Requests' ? 'kt-menu__item--open' : '') ?>"
 									aria-haspopup="true" data-ktmenu-submenu-toggle="hover"><a href="javascript:;"
 										class="kt-menu__link kt-menu__toggle">
 										<span class="kt-menu__link-icon">
-											<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-												fill="gray" class="bi bi-file-earmark-arrow-up"
-												viewBox="0 0 16 16">
+											<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="gray"
+												class="bi bi-file-earmark-arrow-up" viewBox="0 0 16 16">
 												<path
 													d="M8.5 11.5a.5.5 0 0 1-1 0V7.707L6.354 8.854a.5.5 0 1 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 7.707V11.5z" />
 												<path
@@ -283,7 +285,7 @@
 														class="kt-menu__link-text">Subheaders</span></span></li>
 											<li class="kt-menu__item <?= ($page == 'Create request' ? 'kt-menu__item--active' : '') ?>"
 												aria-haspopup="true">
-												<a href="<?= base_url('request/outcoming-requests/create') ?>"
+												<a href="<?= base_url('ea_requests/outcoming-requests/create') ?>"
 													class="kt-menu__link"><i
 														class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span
 														class="kt-menu__link-text">
@@ -292,23 +294,25 @@
 											</li>
 											<li class="kt-menu__item <?= ($page == 'Pending requests' ? 'kt-menu__item--active' : '') ?>"
 												aria-haspopup="true">
-												<a href="<?= base_url('request/outcoming-requests/pending') ?>"
+												<a href="<?= base_url('ea_requests/outcoming-requests/pending') ?>"
 													class="kt-menu__link"><i
 														class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span
 														class="kt-menu__link-text">
 														Pending</span>
 												</a>
 											</li>
-											<li class="kt-menu__item <?= ($page == 'Rejected requests' ? 'kt-menu__item--active' : '') ?>" aria-haspopup="true">
-												<a href="<?= base_url('request/outcoming-requests/rejected') ?>"
+											<li class="kt-menu__item <?= ($page == 'Rejected requests' ? 'kt-menu__item--active' : '') ?>"
+												aria-haspopup="true">
+												<a href="<?= base_url('ea_requests/outcoming-requests/rejected') ?>"
 													class="kt-menu__link"><i
 														class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span
 														class="kt-menu__link-text">
 														Rejected</span>
 												</a>
 											</li>
-											<li class="kt-menu__item <?= ($page == 'Done requests' ? 'kt-menu__item--active' : '') ?>" aria-haspopup="true">
-												<a href="<?= base_url('request/outcoming-requests/done') ?>"
+											<li class="kt-menu__item <?= ($page == 'Done requests' ? 'kt-menu__item--active' : '') ?>"
+												aria-haspopup="true">
+												<a href="<?= base_url('ea_requests/outcoming-requests/done') ?>"
 													class="kt-menu__link"><i
 														class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span
 														class="kt-menu__link-text">

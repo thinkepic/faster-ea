@@ -176,6 +176,7 @@ class Outcoming_requests extends MY_Controller {
 			$this->datatable->where('st.fco_monitor_status =', 2);
 			$this->datatable->where('st.finance_status =', 2);
 		}
+		$this->datatable->where('ea.requestor_id =', $this->user_data->userId);
         $this->datatable->order_by('created_at', 'desc');
 		$this->datatable->edit_column('id', "$1", 'encrypt(id)');
         echo $this->datatable->generate();

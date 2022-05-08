@@ -666,7 +666,7 @@
 						$.ajax({
 							type: 'POST',
 							dataType: 'JSON',
-							url: base_url + 'request/outcoming_requests/set_status',
+							url: base_url + 'ea_requests/outcoming_requests/set_status',
 							data: formData,
 							beforeSend: function () {
 								Swal.fire({
