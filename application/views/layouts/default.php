@@ -206,7 +206,7 @@
 									<h4 class="kt-menu__section-text">Expense Authorization</h4>
 									<i class="kt-menu__section-icon flaticon-more-v2"></i>
 								</li>
-								<?php if (is_ea_assosiate() || is_tor_approver() || is_budget_reviewer() || is_head_of_units()): ?>
+								<?php if (is_ea_assosiate() || is_fco_monitor() || is_procurement_officer() || is_head_of_units()): ?>
 
 								<li class="kt-menu__item  kt-menu__item--submenu <?= ($pageParent == 'Incoming Requests' ? 'kt-menu__item--open' : '') ?>"
 									aria-haspopup="true" data-ktmenu-submenu-toggle="hover"><a href="javascript:;"
@@ -227,7 +227,7 @@
 											<li class="kt-menu__item  kt-menu__item--parent" aria-haspopup="true"><span
 													class="kt-menu__link"><span
 														class="kt-menu__link-text">Subheaders</span></span></li>
-											<li class="kt-menu__item" aria-haspopup="true">
+											<li class="kt-menu__item <?= ($page == 'Requests for review' ? 'kt-menu__item--active' : '') ?>"" aria-haspopup="true">
 												<a href="<?= base_url('ea_requests/incoming-requests/requests-for-review') ?>"
 													class="kt-menu__link"><i
 														class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span
@@ -235,7 +235,7 @@
 														Requests For Review</span>
 												</a>
 											</li>
-											<li class="kt-menu__item" aria-haspopup="true">
+											<li class="kt-menu__item <?= ($page == 'Pending requests' ? 'kt-menu__item--active' : '') ?>"" aria-haspopup="true">
 												<a href="<?= base_url('ea_requests/incoming-requests/pending') ?>"
 													class="kt-menu__link"><i
 														class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span
@@ -243,7 +243,7 @@
 														Pending</span>
 												</a>
 											</li>
-											<li class="kt-menu__item" aria-haspopup="true">
+											<li class="kt-menu__item <?= ($page == 'Rejected requests' ? 'kt-menu__item--active' : '') ?>" aria-haspopup="true">
 												<a href="<?= base_url('ea_requests/incoming-requests/rejected') ?>"
 													class="kt-menu__link"><i
 														class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span
@@ -251,7 +251,7 @@
 														Rejected</span>
 												</a>
 											</li>
-											<li class="kt-menu__item" aria-haspopup="true">
+											<li class="kt-menu__item <?= ($page == 'Done requests' ? 'kt-menu__item--active' : '') ?>" aria-haspopup="true">
 												<a href="<?= base_url('ea_requests/incoming-requests/done') ?>"
 													class="kt-menu__link"><i
 														class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span

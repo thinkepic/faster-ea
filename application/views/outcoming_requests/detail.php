@@ -695,7 +695,7 @@
 									"confirmButtonClass": "btn btn-dark"
 								}).then((result) => {
 									if (result.value) {
-										window.location.reload();
+										window.location.replace(base_url + 'ea_requests/incoming-requests/requests-for-review')
 									}
 								})
 							},

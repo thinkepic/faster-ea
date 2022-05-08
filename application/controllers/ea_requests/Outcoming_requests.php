@@ -60,6 +60,7 @@ class Outcoming_requests extends MY_Controller {
 			$data['detail'] = $detail;
 			$data['requestor_data'] = $requestor_data;
 			// echo json_encode($data);
+			$this->template->set('pageParent', 'Requests');
 			$this->template->set('page', 'Requests detail');
 			$this->template->render('outcoming_requests/detail', $data);
 		} else {

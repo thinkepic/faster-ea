@@ -48,6 +48,19 @@ if (!function_exists('is_budget_reviewer')) {
     }
 }
 
+if (!function_exists('is_fco_monitor')) {
+    function is_fco_monitor()
+    {   
+        $ci = &get_instance();
+
+        if($ci->user_data->isBudgetRiviewer == 1) {
+            return true;
+        }
+
+        return false;
+    }
+}
+
 if (!function_exists('is_tor_approver')) {
     function is_tor_approver()
     {   
