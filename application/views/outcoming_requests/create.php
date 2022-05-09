@@ -457,7 +457,7 @@
 												class="col-md-3 col-form-label">Lodging</label>
 											<div class="col-md-9">
 												<input placeholder="Estimate lodging cost" class="form-control lodging"
-													type="number" name="lodging[]">
+													type="text" name="lodging[]">
 											</div>
 										</div>
 										<div class="form-group row">
@@ -465,7 +465,7 @@
 												class="col-md-3 col-form-label">Meals</label>
 											<div class="col-md-9">
 												<input placeholder="Input M&IE standard cost" class="form-control meals"
-													type="number" name="meals[]">
+													type="text" name="meals[]">
 											</div>
 										</div>
 										<div class="form-group row">
@@ -473,7 +473,7 @@
 												(lodging + meals)</label>
 											<div class="col-md-9">
 												<input readonly class="form-control meals_lodging_total readonly-form"
-													type="number" name="meals_lodging_total[]">
+													type="text" name="meals_lodging_total[]">
 											</div>
 										</div>
 										<div class="form-group row">
@@ -488,7 +488,7 @@
 											<label for="example-search-input"
 												class="col-md-3 col-form-label">Total</label>
 											<div class="col-md-9">
-												<input readonly class="form-control total readonly-form" type="number"
+												<input readonly class="form-control total readonly-form" type="text"
 													name="total[]">
 											</div>
 										</div>
@@ -787,6 +787,11 @@
 				$('.hotel-reservations-el').addClass('d-none')
 			}
 		});
+
+		$('.lodging').number( true, 0, '', '.' );
+		$('.meals').number( true, 0, '', '.' );
+		$('.meals_lodging_total').number( true, 0, '', '.');
+		$('.total').number( true, 0, '', '.');
 
 		const updateCosts = (el) => {
 			const parent = el.parent().parent().parent()
@@ -1207,7 +1212,7 @@
 												class="col-md-3 col-form-label">Lodging</label>
 											<div class="col-md-9">
 												<input placeholder="Estimate lodging cost" class="form-control lodging"
-													type="number" name="lodging[]">
+													type="text" name="lodging[]">
 											</div>
 										</div>
 										<div class="form-group row">
@@ -1215,14 +1220,14 @@
 												class="col-md-3 col-form-label">Meals</label>
 											<div class="col-md-9">
 												<input placeholder="Input M&IE standard cost" class="form-control meals"
-													type="number" name="meals[]">
+													type="text" name="meals[]">
 											</div>
 										</div>
 										<div class="form-group row">
 											<label for="example-search-input" class="col-md-3 col-form-label">Total
 												(lodging + meals)</label>
 											<div class="col-md-9">
-												<input readonly class="form-control meals_lodging_total readonly-form" type="number"
+												<input readonly class="form-control meals_lodging_total readonly-form" type="text"
 													name="meals_lodging_total[]">
 											</div>
 										</div>
@@ -1238,11 +1243,15 @@
 											<label for="example-search-input"
 												class="col-md-3 col-form-label">Total</label>
 											<div class="col-md-9">
-												<input readonly class="form-control total readonly-form" type="number" name="total[]">
+												<input readonly class="form-control total readonly-form" type="text" name="total[]">
 											</div>
 										</div>
 									</div>`;
 			$('.destinations-lists').append(html);
+			$('.lodging').number( true, 0, '', '.' );
+			$('.meals').number( true, 0, '', '.' );
+			$('.meals_lodging_total').number( true, 0, '', '.');
+			$('.total').number( true, 0, '', '.');
 		})
 
 		$("#kt_form").submit(function (e) {
@@ -1279,6 +1288,7 @@
 						});
 					},
 					success: function (response) {
+						console.log(response)
 						KTApp.unprogress($('#btn-submit'))
 						swal.fire({
 							"title": "Saved!",

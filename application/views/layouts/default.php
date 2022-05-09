@@ -206,7 +206,7 @@
 									<h4 class="kt-menu__section-text">Expense Authorization</h4>
 									<i class="kt-menu__section-icon flaticon-more-v2"></i>
 								</li>
-								<?php if (is_ea_assosiate() || is_fco_monitor() || is_finance_teams() || is_head_of_units()): ?>
+								<?php if (is_ea_assosiate() || is_fco_monitor() || is_finance_teams() || is_head_of_units() || $this->user_data->username == 'root'): ?>
 
 								<li class="kt-menu__item  kt-menu__item--submenu <?= ($pageParent == 'Incoming Requests' ? 'kt-menu__item--open' : '') ?>"
 									aria-haspopup="true" data-ktmenu-submenu-toggle="hover"><a href="javascript:;"
@@ -459,6 +459,7 @@
 
 	<!--begin:: Global Mandatory Vendors -->
 	<script src="<?= site_url('assets/vendors/general/js-cookie/src/js.cookie.js') ?>" type="text/javascript"></script>
+	<script src="<?= site_url('assets/vendors/general/jquery-number/jquery.number.min.js') ?>" type="text/javascript"></script>
 	<script src="<?= site_url('assets/vendors/general/sweetalert2/dist/sweetalert2.min.js') ?>" type="text/javascript">
 	</script>
 	<script src="<?= site_url('assets/vendors/general/sticky-js/dist/sticky.min.js') ?>" type="text/javascript">

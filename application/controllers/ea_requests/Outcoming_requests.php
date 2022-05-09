@@ -109,6 +109,8 @@ class Outcoming_requests extends MY_Controller {
 	public function store()
 	{	
 
+		// echo json_encode($this->input->post());
+
 		$this->form_validation->set_rules('request_base', 'Request base', 'required');
 		$this->form_validation->set_rules('departure_date', 'Departure date', 'required');
 		$this->form_validation->set_rules('return_date', 'Return date', 'required');

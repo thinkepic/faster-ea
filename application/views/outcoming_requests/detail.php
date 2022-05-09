@@ -248,7 +248,7 @@
 													Check in
 												</label>
 												<input readonly class="form-control" type="text"
-													value="<?= $detail['hotel_check_in'] ?>" name="hotel_check_in"
+													value="<?= date("d M Y", strtotime($detail['hotel_check_in'])) ?>" name="hotel_check_in"
 													id="hotel_check_in">
 											</div>
 											<div class="col-6">
@@ -256,7 +256,7 @@
 													Check out
 												</label>
 												<input readonly class="form-control" type="text"
-													value="<?= $detail['hotel_check_out'] ?>" name="hotel_check_out"
+													value="<?= date("d M Y", strtotime($detail['hotel_check_out'])) ?>" name="hotel_check_out"
 													id="hotel_check_out">
 											</div>
 											<div class="col-12 mt-3">

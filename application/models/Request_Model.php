@@ -139,6 +139,11 @@ class Request_Model extends CI_Model
         // Save destinations
         $destinations_city = $data['destination_city'];
         for ($i = 0; $i < count($destinations_city); $i++) {
+            // Remove number formatting
+            $clean_lodging = str_replace('.', '',  $data['lodging'][$i]);
+            $clean_meals = str_replace('.', '',  $data['meals'][$i]);
+            $clean_meals_lodging_total = str_replace('.', '',  $data['meals_lodging_total'][$i]);
+            $clean_total = str_replace('.', '',  $data['total'][$i]);
             $this->db->insert('ea_requests_destinations', [
                 'request_id' => $request_id,
                 'order' => $data['destination_order'][$i],
@@ -147,11 +152,11 @@ class Request_Model extends CI_Model
                 'arrival_date' => date('Y-m-d', strtotime($data['destination_arrival_date'][$i])),
                 'project_number' => $data['project_number'][$i],
                 'budget_monitor' => $data['destination_budget_monitor'][$i],
-                'lodging' => $data['lodging'][$i],
-                'meals' => $data['meals'][$i],
-                'total_lodging_and_meals' => $data['meals_lodging_total'][$i],
+                'lodging' => $clean_lodging,
+                'meals' => $clean_meals,
+                'total_lodging_and_meals' => $clean_meals_lodging_total,
                 'night' => $data['night'][$i],
-                'total' => $data['total'][$i],
+                'total' => $clean_total,
             ]);
         }
 
