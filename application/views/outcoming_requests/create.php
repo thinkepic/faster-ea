@@ -90,8 +90,8 @@
 										</div>
 									</div>
 								</div>
-								<input type="text" value="<?= $requestor_data['id'] ?>" id="requestor_id"
-											class="d-none" name="requestor_id">
+								<input type="text" value="<?= $requestor_data['id'] ?>" id="requestor_id" class="d-none"
+									name="requestor_id">
 								<div class="form-group row tor-form d-none">
 									<label for="example-search-input" class="col-md-3 col-form-label">TOR Number</label>
 									<div class="col-md-9">
@@ -597,10 +597,10 @@
 								<div>
 									<div class="form-group">
 										<label class="d-block">Please select head of units</label>
-										<select name="head_of_units_id" class="form-control"
-											id="head_of_units_id">
+										<select name="head_of_units_id" class="form-control" id="head_of_units_id">
 											<?php foreach ($head_of_units as $item): ?>
-												<option value="<?= $item['id'] ?>"><?= $item['username'] ?> (<?= $item['email'] ?>)</option>
+											<option value="<?= $item['id'] ?>"><?= $item['username'] ?>
+												(<?= $item['email'] ?>)</option>
 											<?php endforeach; ?>
 										</select>
 									</div>
@@ -788,10 +788,10 @@
 			}
 		});
 
-		$('.lodging').number( true, 0, '', '.' );
-		$('.meals').number( true, 0, '', '.' );
-		$('.meals_lodging_total').number( true, 0, '', '.');
-		$('.total').number( true, 0, '', '.');
+		$('.lodging').number(true, 0, '', '.');
+		$('.meals').number(true, 0, '', '.');
+		$('.meals_lodging_total').number(true, 0, '', '.');
+		$('.total').number(true, 0, '', '.');
 
 		const updateCosts = (el) => {
 			const parent = el.parent().parent().parent()
@@ -828,6 +828,13 @@
 						errors.push({
 							type: 1,
 							field: 'tor_number'
+						})
+					}
+				} else {
+					if ($('#exteral_invitation').get(0).files.length === 0) {
+						errors.push({
+							type: 1,
+							field: 'exteral_invitation'
 						})
 					}
 				}
@@ -968,6 +975,15 @@
 					type: 2,
 					field: 'car_rental'
 				})
+			} else {
+				if (carRental == 'Yes') {
+					if ($('#car_rental_memo').get(0).files.length === 0) {
+						errors.push({
+							type: 1,
+							field: 'car_rental_memo'
+						})
+					}
+				}
 			}
 			if (!hotelRes) {
 				errors.push({
@@ -1248,10 +1264,10 @@
 										</div>
 									</div>`;
 			$('.destinations-lists').append(html);
-			$('.lodging').number( true, 0, '', '.' );
-			$('.meals').number( true, 0, '', '.' );
-			$('.meals_lodging_total').number( true, 0, '', '.');
-			$('.total').number( true, 0, '', '.');
+			$('.lodging').number(true, 0, '', '.');
+			$('.meals').number(true, 0, '', '.');
+			$('.meals_lodging_total').number(true, 0, '', '.');
+			$('.total').number(true, 0, '', '.');
 		})
 
 		$("#kt_form").submit(function (e) {

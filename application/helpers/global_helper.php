@@ -87,6 +87,19 @@ if (!function_exists('is_head_of_units')) {
     }
 }
 
+if (!function_exists('is_line_supervisor')) {
+    function is_line_supervisor()
+    {   
+        $ci = &get_instance();
+
+        if($ci->user_data->isDirectSupervisor == 1) {
+            return true;
+        }
+
+        return false;
+    }
+}
+
 if (!function_exists('is_ea_assosiate')) {
     function is_ea_assosiate()
     {   

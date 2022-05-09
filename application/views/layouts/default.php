@@ -206,7 +206,7 @@
 									<h4 class="kt-menu__section-text">Expense Authorization</h4>
 									<i class="kt-menu__section-icon flaticon-more-v2"></i>
 								</li>
-								<?php if (is_ea_assosiate() || is_fco_monitor() || is_finance_teams() || is_head_of_units() || $this->user_data->username == 'root'): ?>
+								<?php if (is_ea_assosiate() || is_fco_monitor() || is_finance_teams() || is_head_of_units() || is_line_supervisor() ||$this->user_data->username == 'root'): ?>
 
 								<li class="kt-menu__item  kt-menu__item--submenu <?= ($pageParent == 'Incoming Requests' ? 'kt-menu__item--open' : '') ?>"
 									aria-haspopup="true" data-ktmenu-submenu-toggle="hover"><a href="javascript:;"

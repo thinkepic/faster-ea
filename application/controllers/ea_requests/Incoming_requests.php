@@ -71,7 +71,7 @@ class Incoming_requests extends MY_Controller {
         $this->datatable->join('tb_userapp u', 'u.id = ea.requestor_id');
         $this->datatable->join('ea_requests_status st', 'ea.id = st.request_id');
 		if($status == 'requests_for_review') {
-			if (is_head_of_units()) {
+			if (is_head_of_units() || is_line_supervisor()) {
 				$this->datatable->where('st.head_of_units_status =', 1);
 				$this->datatable->where('st.head_of_units_id =', $user_id);
 			} else if (is_ea_assosiate()) {

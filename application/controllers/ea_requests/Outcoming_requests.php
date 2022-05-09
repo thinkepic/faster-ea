@@ -45,7 +45,11 @@ class Outcoming_requests extends MY_Controller {
 			site_url('assets/css/demo1/pages/wizard/wizard-3.css')
 		]);
 		$user_id = $this->user_data->userId;
-		$data['head_of_units'] = $this->base_model->get_head_of_units($user_id);
+		if(is_head_of_units()){
+			$data['head_of_units'] = $this->base_model->get_line_supervisor($user_id);
+		} else {
+			$data['head_of_units'] = $this->base_model->get_head_of_units($user_id);
+		}
 		$data['requestor_data'] = $this->request->get_requestor_data($user_id);
 		$this->template->set('page', 'Create request');
 		$this->template->render('outcoming_requests/create', $data);
@@ -108,8 +112,6 @@ class Outcoming_requests extends MY_Controller {
 
 	public function store()
 	{	
-
-		// echo json_encode($this->input->post());
 
 		$this->form_validation->set_rules('request_base', 'Request base', 'required');
 		$this->form_validation->set_rules('departure_date', 'Departure date', 'required');
