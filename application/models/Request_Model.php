@@ -188,7 +188,6 @@ class Request_Model extends CI_Model
         return $this->db->affected_rows() === 1;
     }
 
-
     function delete_request($request_id)
     {
         $this->db->where('id', $request_id)->delete('ea_requests');

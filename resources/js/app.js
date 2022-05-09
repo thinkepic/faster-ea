@@ -19,6 +19,5 @@ window.dayjs = dayjs
 
 
 import { initFormAjax, initDatatable, initSelect2 } from "./helpers";
-window.initFormAjax = initFormAjax
 window.initDatatable = initDatatable
 window.initSelect2 = initSelect2

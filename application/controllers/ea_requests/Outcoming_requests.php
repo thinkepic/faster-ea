@@ -93,6 +93,8 @@ class Outcoming_requests extends MY_Controller {
 			if($detail['finance_status'] != 1 || $detail['fco_monitor_status'] != 2  || !is_finance_teams()) {
 				$finance_btn = 'invisible';
 			}
+			$detail['clean_max_budget_idr'] = $detail['max_budget_idr'] + 0;
+			$detail['clean_max_budget_usd'] = $detail['max_budget_usd'] + 0;
 			$data = [
 				'detail' => $detail,
 				'requestor_data' => $requestor_data,

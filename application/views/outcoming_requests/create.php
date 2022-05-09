@@ -1045,7 +1045,7 @@
 				if (!value) {
 					valid = false
 					$(this).parent().append(
-						'<p class="error mt-1 mb-0">This is field required</p>')
+						'<p class="error mt-1 mb-0">This field is required</p>')
 				}
 			});
 			return valid
@@ -1055,9 +1055,9 @@
 			errors.forEach(err => {
 				if (err.type == 1) {
 					$(`#${err.field}`).parent().append(
-						'<p class="error mt-1 mb-0">This is field required</p>')
+						'<p class="error mt-1 mb-0">This field is required</p>')
 				} else if (err.type == 2) {
-					$('<p class="error mt-1 mb-0">This is field required</p>').insertAfter($(
+					$('<p class="error mt-1 mb-0">This field is required</p>').insertAfter($(
 						`#${err.field}`))
 				}
 			})

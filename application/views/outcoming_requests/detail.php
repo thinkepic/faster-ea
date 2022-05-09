@@ -186,6 +186,39 @@
 							</div>
 						</div>
 
+						<form id="max-budget-form" class="mt-3" method="POST"
+							action="<?= base_url('ea_requests/incoming-requests/update_budget') ?>">
+							<input value="<?= $detail['r_id'] ?>" class="d-none" type="text" id="r_id" name="r_id">
+							<div class="row mb-2">
+								<label class="col-3 col-form-label fw-bold">Max budget</label>
+								<div class="col-md-4 mt-2">
+									<small for="max_budget_idr" class="col-form-label">
+										IDR
+									</small>
+									<input <?= (!is_ea_assosiate() ? 'readonly' : '') ?>
+										value="<?= $detail['clean_max_budget_idr'] ?>" class="form-control mt-2"
+										type="text" id="max_budget_idr" name="max_budget_idr">
+								</div>
+								<div class="col-md-1">
+								</div>
+								<div class="col-md-4 mt-2">
+									<small for="departure_date" class="col-form-label">
+										USD
+									</small>
+									<input <?= (!is_ea_assosiate() ? 'readonly' : '') ?>
+										value="<?= $detail['clean_max_budget_usd'] ?>" class="form-control mt-2"
+										type="text" id="max_budget_usd" name="max_budget_usd">
+								</div>
+							</div>
+							<div class="justify-content-end mt-3 <?= (!is_ea_assosiate() ? 'd-none' : 'd-flex') ?>">
+								<button id="btn-update-budget" type="submit"
+									class="btn btn-success btn-sm kt-font-bold kt-font-transform-u"
+									data-ktwizard-type="action-submit">
+									Update max budget
+								</button>
+							</div>
+						</form>
+
 					</div>
 				</div>
 			</div>
@@ -248,16 +281,16 @@
 													Check in
 												</label>
 												<input readonly class="form-control" type="text"
-													value="<?= date("d M Y", strtotime($detail['hotel_check_in'])) ?>" name="hotel_check_in"
-													id="hotel_check_in">
+													value="<?= date("d M Y", strtotime($detail['hotel_check_in'])) ?>"
+													name="hotel_check_in" id="hotel_check_in">
 											</div>
 											<div class="col-6">
 												<label for="hotel_check_out" class="form-label">
 													Check out
 												</label>
 												<input readonly class="form-control" type="text"
-													value="<?= date("d M Y", strtotime($detail['hotel_check_out'])) ?>" name="hotel_check_out"
-													id="hotel_check_out">
+													value="<?= date("d M Y", strtotime($detail['hotel_check_out'])) ?>"
+													name="hotel_check_out" id="hotel_check_out">
 											</div>
 											<div class="col-12 mt-3">
 												<label for="preferred_hotel">Preferred Hotel</label>
@@ -460,13 +493,15 @@
 									<tr data-row="0" class="kt-datatable__row" style="left: 0px;">
 										<td data-field="Order ID" class="kt-datatable__cell fw-bold">
 											<span style="width: 150px;">
-											<?= $detail['head_of_units_name'] ?>
+												<?= $detail['head_of_units_name'] ?>
 											</span>
 										</td>
 										<td data-field="Status" data-autohide-disabled="false" class="kt-datatable__cell">
-											<span style="width: 110px;"><span
-													class="kt-badge kt-badge--dark kt-badge--inline kt-badge--pill">Head Of
-													Units</span></span>
+											<span style="width: 110px;">
+												<span class="kt-badge kt-badge--dark kt-badge--inline kt-badge--pill">
+													Head Of Units
+												</span>
+											</span>
 										<td data-field="Status" data-autohide-disabled="false" class="kt-datatable__cell">
 											<span style="width: 110px;"><span
 													class="kt-badge kt-badge--inline kt-badge--pill status-badge"><?= $detail['head_of_units_status_text'] ?></span>
@@ -599,8 +634,8 @@
 												style="width: 110px;"><?= $detail['finance_status_at'] ?></span></td>
 										<td class="kt-datatable__cell">
 											<div style="width: 110px;" class="d-flex <?= $finance_btn ?>">
-												<button data-level='finance' data-id=<?= $detail['r_id'] ?>
-													data-status="2" class="btn btn-status btn-success mr-1">
+												<button data-level='finance' data-id=<?= $detail['r_id'] ?> data-status="2"
+													class="btn btn-status btn-success mr-1">
 													<div class="d-flex align-items-center justify-content-center">
 														<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
 															fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
@@ -610,8 +645,8 @@
 														Approve
 													</div>
 												</button>
-												<button data-level='finance' data-id=<?= $detail['r_id'] ?>
-													data-status="3" class="btn btn-status btn-danger">
+												<button data-level='finance' data-id=<?= $detail['r_id'] ?> data-status="3"
+													class="btn btn-status btn-danger">
 													<div class="d-flex align-items-center justify-content-center">
 														<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
 															fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
@@ -635,6 +670,7 @@
 
 	<script>
 		$(document).ready(function () {
+			$('#max_budget_idr, #max_budget_usd').number(true, 0, '', '.');
 			$(document).on('click', '.btn-status', function (e) {
 				e.preventDefault()
 				const id = $(this).attr('data-id')
@@ -694,7 +730,9 @@
 									"confirmButtonClass": "btn btn-dark"
 								}).then((result) => {
 									if (result.value) {
-										window.location.replace(base_url + 'ea_requests/incoming-requests/requests-for-review')
+										window.location.replace(base_url +
+											'ea_requests/incoming-requests/requests-for-review'
+										)
 									}
 								})
 							},
@@ -713,6 +751,66 @@
 			} else {
 				$(this).addClass('kt-badge--danger')
 			}
+		});
+
+		$(document).on("submit", '#max-budget-form', function (e) {
+			e.preventDefault()
+			const loader = `<div style="width: 5rem; height: 5rem;" class="spinner-border mb-5" role="status"></div>
+				<h5 class="mt-2">Please wait</h5>
+				<p>Updating max budget...</p>				
+				`
+			Swal.fire({
+				title: 'Update max budget?',
+				text: "",
+				type: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: `Yes!`
+			}).then((result) => {
+				if (result.value) {
+					$.ajax({
+						type: 'POST',
+						dataType: 'JSON',
+						url: $(this).attr("action"),
+						data: $(this).serialize(),
+						beforeSend: function () {
+							$('p.error').remove();
+							Swal.fire({
+								html: loader,
+								showConfirmButton: false,
+								allowEscapeKey: false,
+								allowOutsideClick: false,
+							});
+						},
+						error: function (xhr) {
+							const response = xhr.responseJSON;
+							for (const err in response.errors) {
+								$(`#${err}`).parent().append(
+									'<p class="error mt-1 mb-0">This field is required</p>')
+							}
+							Swal.fire({
+								"title": response.message,
+								"text": '',
+								"type": "error",
+								"confirmButtonClass": "btn btn-dark"
+							});
+						},
+						success: function (response) {
+							Swal.fire({
+								"title": "Success!",
+								"text": response.message,
+								"type": "success",
+								"confirmButtonClass": "btn btn-dark"
+							}).then((result) => {
+								if (result.value) {
+									location.reload();
+								}
+							})
+						},
+					});
+				}
+			})
 		});
 
 	</script>

@@ -133,4 +133,40 @@ class Incoming_requests extends MY_Controller {
 			exit('No direct script access allowed');
 		}
 	}
+
+	public function update_budget() {
+		if ($this->input->is_ajax_request() && $this->input->server('REQUEST_METHOD') === 'POST') {
+			$this->form_validation->set_rules('max_budget_idr', 'IDR Max budget', 'required');
+			$this->form_validation->set_rules('max_budget_usd', 'USD Max budget', 'required');
+
+			if ($this->form_validation->run()) {
+				$request_id = $this->input->post('r_id');
+				$clean_idr = str_replace('.', '',  $this->input->post('max_budget_idr'));
+				$clean_usd = str_replace('.', '',  $this->input->post('max_budget_usd'));
+				$payload = [
+					'max_budget_idr' => $clean_idr,
+					'max_budget_usd' => $clean_usd,
+				];
+				$updated = $this->db->where('id', $request_id)->update('ea_requests', $payload);
+				if($updated) {
+					$response['success'] = true;
+					$response['message'] = 'Max budget has been updated!';
+					$status_code = 200;
+					$this->send_json($response, $status_code);
+				} else {
+					$response['success'] = false;
+					$response['message'] = 'Failed to update max budget!';
+					$status_code = 400;
+					$this->send_json($response, $status_code);
+				}
+			} else {
+				$response['errors'] = $this->form_validation->error_array();
+				$response['message'] = 'Please fill all required fields';
+				$status_code = 422;
+			}
+			$this->send_json($response, $status_code);
+		} else {
+			exit('No direct script access allowed');
+		}
+	}
 }
