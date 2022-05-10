@@ -792,6 +792,7 @@
 		$('.meals').number(true, 0, '', '.');
 		$('.meals_lodging_total').number(true, 0, '', '.');
 		$('.total').number(true, 0, '', '.');
+		$('.destination-lodging-val').number(true, 0, '', '.');
 
 		const updateCosts = (el) => {
 			const parent = el.parent().parent().parent()
@@ -1092,18 +1093,19 @@
 										class="destination-project-number-val">${projectNumber}</span> </p>
 								<p class="mb-1">Budget monitor: <span
 										class="destination-project-number-val">${budgetMonitor}</span> </p>
-								<p class="mb-1">Lodging: <span class="destination-lodging-val">${lodging}</span>
+								<p class="mb-1">Lodging: Rp. <span class="destination-lodging-val">${lodging}</span>
 								</p>
-								<p class="mb-1">Meals: <span class="destination-meals-val">${meals}</span> </p>
-								<p class="mb-1">Total (lodging+meals): <span
+								<p class="mb-1">Meals: Rp. <span class="destination-meals-val">${meals}</span> </p>
+								<p class="mb-1">Total (lodging+meals): Rp. <span
 										class="destination-meals-lodging-total-val">${mealsLodging}</span> </p>
 								<p class="mb-1">Number of nights: <span
 										class="destination-night-val">${night}</span> </p>
-								<p class="mb-1">Total: <span class="destination-total-val">${total}</span>
+								<p class="mb-1">Total: Rp. <span class="destination-total-val">${total}</span>
 								</p>
 								</div>`;
 				$('.destinations-review-lists').append(html);
 			});
+			$('.destination-lodging-val, destination-meals-val, .destination-meals-lodging-total-val, .destination-total-val').number(true, 0, '', '.');
 		}
 
 		const updateStepReview = () => {

@@ -38,3 +38,4 @@ application/config/database.php
 uploads/
 assets/compiled
 .env
+.staging_update
