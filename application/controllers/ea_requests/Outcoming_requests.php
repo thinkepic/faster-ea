@@ -252,4 +252,93 @@ class Outcoming_requests extends MY_Controller {
 	public function test() {
 		echo json_encode($this->user_data);
 	}
+
+	public function test_email() {
+		$this->load->library('email');
+		$config['protocol'] = 'smtp';
+        $config['smtp_host'] = 'smtp.googlemail.com';
+        $config['smtp_user'] = 'alfayed@mhs.unsyiah.ac.id';
+        $config['smtp_pass'] = 'fadeladen0510';
+        $config['smtp_port'] = 465;
+        $config['mailtype'] = 'html';
+        $config['newline'] = "\r\n";
+        $config['smtp_timeout'] = 30;
+        $config['crlf'] = "\r\n";
+        $config['smtp_crypto'] = 'ssl';
+        $config['charset'] = 'utf-8';
+        $config['wordwrap'] = TRUE;
+
+        $this->email->initialize($config);
+		$this->email->clear(TRUE);
+		$data['preview'] = "<p>You have EA Request from 'Requestor Name' </b> and it need your review. Please check on attachment</p>";
+        
+        $data['content'] = '
+            <tr>
+                <td>
+                    <p>Dear Approver name</p>
+                    <p>'.$data['preview'].'</p>
+                    <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-detail">
+                        <tbody>
+                        <tr>
+                            <td align="left">
+                            <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                                <tbody>
+                                <tr>
+                                    <td> <a href="'.base_url('ea_requests/incoming-requests/requests-for-review').'" target="_blank">DETAILS</a> </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+					<table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
+                        <tbody>
+                        <tr>
+                            <td align="left">
+                            <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                                <tbody>
+                                <tr>
+									<td> <a href="" target="_blank">APPROVE</a> </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+					
+                    <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-danger">
+                        <tbody>
+                        <tr>
+                            <td align="left">
+                            <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                                <tbody>
+                                <tr>
+									<td> <a href="" target="_blank">REJECT</a> </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    
+                </td>
+            </tr>';
+		$this->load->view('template/email', $data);
+		// $text = $this->load->view('template/email', $data, TRUE);
+		// $this->email->to('fadelalfayed27@gmail.com');
+		// $this->email->from('no-reply@faster.bantuanteknis.id', 'Faster');
+		// $this->email->subject('EA Requests');
+		// $this->email->message($text);
+
+		// if (!$this->email->send()) {
+		// 	echo 'Failed send email';
+		// } else {
+		// 	echo 'sent';
+		// }
+	}
 }

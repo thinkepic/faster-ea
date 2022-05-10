@@ -1,0 +1,114 @@
+// Env
+'EAUrl'=>'http://localhost/faster-ea/'
+
+// Global helper
+if (!function_exists('is_ea_assosiate')) {
+	function is_ea_assosiate(){
+		$ci = &get_instance();
+		if($ci->session->us_user == 'fadelassosiate' || $ci->session->email == 'mlisna@fhi360.org') {
+			return true;
+		}
+		return false;
+	}
+}
+
+if (!function_exists('is_finance_teams')) {
+	function is_finance_teams(){
+		$ci = &get_instance();
+		if($ci->session->unit_id == '3') {
+			return true;
+		}
+		return false;
+	}
+}
+
+// Layout
+<li class="">
+    <a href="">
+        <span>EA Requests</span>
+    </a>
+</li>
+<?php if ($this->session->is_procurement_officer == '1' || 
+        $this->session->us_budget_reviewer == '1' ||
+        $this->session->is_head_unit == '1' ||
+        $this->session->is_DOA == '1' ||
+        $this->session->is_DirectSupervisor == '1' ||
+        $this->session->isCountryDirector == '1' ||
+        $this->session->unit_id == '3' ||
+        is_finance_teams() ||
+        is_ea_assosiate() ||
+        $this->session->username == 'root'): 
+?>
+<li class="nav-parent ">
+    <a>
+        <i class="fa fa-download" aria-hidden="true"></i>
+        <span>Incoming Request</span>
+    </a>
+    <ul class="nav nav-children">
+        <li
+            class="<?= ($this->uri->segment(1) == 'Inventories' and $this->uri->segment(2) == 'register') ? 'nav-active' : '' ?>">
+            <a
+                href="<?php echo $_SERVER['EAUrl'].'ea_requests/incoming-requests/requests-for-review';?>">
+                Request for Review
+            </a>
+        </li>
+        <li
+            class="<?= ($this->uri->segment(1) == 'Inventories' and $this->uri->segment(2) == 'lists') ? 'nav-active' : '' ?>">
+            <a
+                href="<?php echo $_SERVER['EAUrl'].'ea_requests/incoming-requests/pending';?>">
+                Pending
+            </a>
+        </li>
+        <li
+            class="<?= ($this->uri->segment(1) == 'Inventories' and $this->uri->segment(2) == 'lists') ? 'nav-active' : '' ?>">
+            <a
+                href="<?php echo $_SERVER['EAUrl'].'ea_requests/incoming-requests/rejected';?>">
+                Rejected
+            </a>
+        </li>
+        <li
+            class="<?= ($this->uri->segment(1) == 'Inventories' and $this->uri->segment(2) == 'lists') ? 'nav-active' : '' ?>">
+            <a
+                href="<?php echo $_SERVER['EAUrl'].'ea_requests/incoming-requests/done';?>">
+                Done
+            </a>
+        </li>
+    </ul>
+</li>
+<?php endif; ?>
+<li class="nav-parent ">
+    <a>
+        <i class="fa fa-download" aria-hidden="true"></i>
+        <span>Outcoming Request</span>
+    </a>
+    <ul class="nav nav-children">
+        <li
+            class="<?= ($this->uri->segment(1) == 'Inventories' and $this->uri->segment(2) == 'register') ? 'nav-active' : '' ?>">
+            <a
+                href="<?php echo $_SERVER['EAUrl'].'ea_requests/outcoming-requests/create';?>">
+                Create new request
+            </a>
+        </li>
+        <li
+            class="<?= ($this->uri->segment(1) == 'Inventories' and $this->uri->segment(2) == 'lists') ? 'nav-active' : '' ?>">
+            <a
+            href="<?php echo $_SERVER['EAUrl'].'ea_requests/outcoming-requests/pending';?>">
+                Pending
+            </a>
+        </li>
+        <li
+            class="<?= ($this->uri->segment(1) == 'Inventories' and $this->uri->segment(2) == 'lists') ? 'nav-active' : '' ?>">
+            <a
+            href="<?php echo $_SERVER['EAUrl'].'ea_requests/outcoming-requests/rejected';?>">
+                Rejected
+            </a>
+        </li>
+        <li
+            class="<?= ($this->uri->segment(1) == 'Inventories' and $this->uri->segment(2) == 'lists') ? 'nav-active' : '' ?>">
+            <a
+            href="<?php echo $_SERVER['EAUrl'].'ea_requests/outcoming-requests/done';?>">
+                Done
+            </a>
+        </li>
+    </ul>
+</li>
