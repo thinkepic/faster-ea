@@ -32,12 +32,6 @@
 								<span class="badge badge-light fw-bold"><?= $detail['request_base'] ?></span>
 							</div>
 						</div>
-						<div class="row">
-							<label class="col-3 col-form-label fw-bold">Request date</label>
-							<div class="col-9">
-								<span class="badge badge-light fw-bold"><?= $detail['request_date'] ?></span>
-							</div>
-						</div>
 						<?php if ($detail['request_base'] === 'Internal TOR'): ?>
 						<div class="row">
 							<label class="col-3 col-form-label fw-bold">TOR number</label>
@@ -46,6 +40,12 @@
 							</div>
 						</div>
 						<?php endif; ?>
+						<div class="row">
+							<label class="col-3 col-form-label fw-bold">Request date</label>
+							<div class="col-9">
+								<span class="badge badge-light fw-bold"><?= $detail['request_date'] ?></span>
+							</div>
+						</div>
 						<div class="row">
 							<label class="col-3 col-form-label fw-bold">Employment</label>
 							<div class="col-9">

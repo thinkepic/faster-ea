@@ -62,21 +62,7 @@ class Outcoming_requests extends MY_Controller {
 		if($detail) {
 			$user_id = $this->user_data->userId;
 			$requestor_data = $this->request->get_requestor_data($detail['requestor_id']);
-			if (is_head_of_units()) {
-				$this->datatable->where('st.head_of_units_status =', 1);
-				$this->datatable->where('st.head_of_units_id =', $user_id);
-			} else if (is_ea_assosiate()) {
-				$this->datatable->where('st.head_of_units_status =', 2);
-				$this->datatable->where('st.ea_assosiate_status =', 1);
-			} else if (is_fco_monitor()) {
-				$this->datatable->where('st.ea_assosiate_status =', 2);
-				$this->datatable->where('st.fco_monitor_status =', 1);
-			} else if (is_finance_teams()) {
-				$this->datatable->where('st.fco_monitor_status =', 2);
-				$this->datatable->where('st.finance_status =', 1);
-			} else {
-				$this->datatable->where('st.head_of_units_id =', null);
-			}
+			
 			$head_of_units_btn = '';
 			if($detail['head_of_units_status'] != 1 || $detail['head_of_units_id'] != $user_id) {
 				$head_of_units_btn = 'invisible';

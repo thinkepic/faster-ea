@@ -1105,7 +1105,7 @@
 								</div>`;
 				$('.destinations-review-lists').append(html);
 			});
-			$('.destination-lodging-val, destination-meals-val, .destination-meals-lodging-total-val, .destination-total-val').number(true, 0, '', '.');
+			$('.destination-lodging-val, .destination-meals-val, .destination-meals-lodging-total-val, .destination-total-val').number(true, 0, '', '.');
 		}
 
 		const updateStepReview = () => {
