@@ -161,15 +161,20 @@ class Outcoming_requests extends MY_Controller {
 			} else {
 				$payload['car_rental_memo'] = null;
 			}
-			$saved = $this->request->insert_request($payload);
-			if($saved) {
-				$response['message'] = 'Your request has been sent';
-				$response['data'] = $payload;
-				$status_code = 200;
+			$request_id = $this->request->insert_request($payload);
+			if($request_id) {
+				$sent = $this->send_email_to_head_of_units($request_id);
+				if($sent) {
+					$response['message'] = 'Your request has been sent';
+					$status_code = 200;
+				} else {
+					$response['message'] = 'Failed to send email notification to head_of_units';
+					$status_code = 400;
+				}
 			} else {
 				$response['errors'] = $this->form_validation->error_array();
 				$response['message'] = 'Failed to send request';
-				$status_code = 422;
+				$status_code = 400;
 			}
 		} else {
 			$response['errors'] = $this->form_validation->error_array();
@@ -215,22 +220,38 @@ class Outcoming_requests extends MY_Controller {
 
 	public function set_status() {
 		if ($this->input->is_ajax_request() && $this->input->server('REQUEST_METHOD') === 'POST') {
-			$id =  $this->input->post('id');
+			$req_id =  $this->input->post('id');
 			$status =  $this->input->post('status');
 			$level =  $this->input->post('level');
 			$approver_id = $this->user_data->userId;
-			$updated = $this->request->update_status($id, $approver_id, $status, $level);
-			if($updated) {
-				$response['success'] = true;
-				$response['message'] = 'Status has been updated!';
-				$status_code = 200;
-				$this->send_json($response, $status_code);
-			} else {
-				$response['success'] = false;
+            $request_detail = $this->request->get_request_by_id($req_id);
+			if($level == 'head_of_units') {
+                $ea_assosiate = $this->base_model->get_ea_assosiate();
+                $level = 'ea_assosiate';
+                $email_data = [
+                    'approver_name' => $request_detail['head_of_units_name'],
+                    'target_id' => $ea_assosiate['id'],
+                    'target_email' => $ea_assosiate['email'],
+                ];
+            }
+            $email_sent = $this->send_approved_email($req_id, $level, $email_data);
+            if($email_sent) {
+                $updated = $this->request->update_status($req_id, $approver_id, $status, $level);
+				if($updated) {
+					$response['success'] = true;
+					$response['message'] = 'Status has been updated!';
+					$status_code = 200;
+				} else {
+					$response['success'] = false;
+					$response['message'] = 'Failed to update status!';
+					$status_code = 400;
+				}
+            } else {
+                $response['success'] = false;
 				$response['message'] = 'Failed to update status!';
 				$status_code = 400;
-				$this->send_json($response, $status_code);
-			}
+            }
+			$this->send_json($response, $status_code);
 		} else {
 			exit('No direct script access allowed');
 		}
@@ -240,97 +261,7 @@ class Outcoming_requests extends MY_Controller {
 		echo json_encode($this->user_data);
 	}
 
-	public function test_email() {
-
-		$this->load->library('Phpmailer_library');
-        $mail = $this->phpmailer_library->load();
-        $mail->isSMTP();
-        $mail->SMTPSecure = 'ssl';
-        $mail->Host = 'smtp.googlemail.com';
-        $mail->Port = 465;
-        $mail->SMTPDebug = 2; 
-        $mail->SMTPAuth = true;
-        $mail->Username = 'alfayed@mhs.unsyiah.ac.id';
-        $mail->Password = 'fadeladen0510';
-
-		$data['preview'] = "<p>You have EA Request from 'Requestor Name' </b> and it need your review. Please check on attachment</p>";
-        
-        $data['content'] = '
-            <tr>
-                <td>
-                    <p>Dear Approver name</p>
-                    <p>'.$data['preview'].'</p>
-                    <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-detail">
-                        <tbody>
-                        <tr>
-                            <td align="left">
-                            <table role="presentation" border="0" cellpadding="0" cellspacing="0">
-                                <tbody>
-                                <tr>
-                                    <td> <a href="'.base_url('ea_requests/incoming-requests/requests-for-review').'" target="_blank">DETAILS</a> </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-
-					<table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
-                        <tbody>
-                        <tr>
-                            <td align="left">
-                            <table role="presentation" border="0" cellpadding="0" cellspacing="0">
-                                <tbody>
-                                <tr>
-									<td> <a href="" target="_blank">APPROVE</a> </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-					
-                    <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-danger">
-                        <tbody>
-                        <tr>
-                            <td align="left">
-                            <table role="presentation" border="0" cellpadding="0" cellspacing="0">
-                                <tbody>
-                                <tr>
-									<td> <a href="" target="_blank">REJECT</a> </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-
-                    
-                </td>
-            </tr>';
-
-        $text = $this->load->view('template/email', $data, true);
-        $mail->setFrom('no-reply@faster.bantuanteknis.id', 'FASTER-FHI360');
-        $mail->addAddress('fadelalfayed27@gmail.com');
-        $mail->Subject = "Mini Proposal Approve";
-        $mail->isHTML(true);
-        $mail->Body = $text;
-        $send=$mail->send();
-
-		if ($send) {
-			echo 'sent';
-			// return true;
-		} else {
-			print_r($mail->ErrorInfo);
-			die;
-			// return false;
-		}
-	}
-
-	function send_email_to_head_of_units($request_id) {
+	private function send_email_to_head_of_units($request_id) {
 		$this->load->library('Phpmailer_library');
         $mail = $this->phpmailer_library->load();
         $mail->isSMTP();
@@ -406,19 +337,194 @@ class Outcoming_requests extends MY_Controller {
                 </td>
             </tr>';
 
-        $this->load->view('template/email', $data);
-        // $text = $this->load->view('template/email', $data, true);
-        // $mail->setFrom('no-reply@faster.bantuanteknis.id', 'FASTER-FHI360');
-        // $mail->addAddress('fadelalfayed27@gmail.com');
-        // $mail->Subject = "EA Request";
-        // $mail->isHTML(true);
-        // $mail->Body = $text;
-        // $send=$mail->send();
+        // $this->load->view('template/email', $data);
+        $text = $this->load->view('template/email', $data, true);
+        $mail->setFrom('no-reply@faster.bantuanteknis.id', 'FASTER-FHI360');
+        $mail->addAddress($requestor['email']);
+        $mail->Subject = "EA Request";
+        $mail->isHTML(true);
+        $mail->Body = $text;
+        $sent=$mail->send();
 
-		// if ($send) {
-		// 	return true;
-		// } else {
-		// 	return false;
-		// }
+		if ($sent) {
+			return true;
+		} else {
+			return false;
+		}
 	}
+
+	private function send_approved_email($req_id, $level, $email_detail) {
+        $this->load->library('Phpmailer_library');
+        $mail = $this->phpmailer_library->load();
+        $mail->isSMTP();
+        $mail->SMTPSecure = 'ssl';
+        $mail->Host = $_ENV['EMAIL_HOST'];
+        $mail->Port = 465;
+        $mail->SMTPDebug = 0; 
+        $mail->SMTPAuth = true;
+        $mail->Username = $_ENV['EMAIL_USERNAME'];
+        $mail->Password = $_ENV['EMAIL_PASSWORD'];
+		$detail = $this->request->get_request_by_id($req_id);
+		// $requestor = $this->request->get_requestor_data($detail['requestor_id']);
+		$enc_req_id = encrypt($detail['r_id']);
+
+		$data['preview'] = '<p>EA Request #EA-'.$detail['r_id'].' has been approved by '.$email_detail['approver_name'].'</p>
+                             <p>Please review following requests</p>
+             ';
+        $data['content'] = '
+                    <p>Dear, '.$email_detail['target_name'].',</p> 
+                    <p>'.$data['preview'].'</p>
+                    <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-detail">
+                        <tbody>
+                        <tr>
+                            <td align="left">
+                            <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                                <tbody>
+                                <tr>
+                                    <td> <a href="'.base_url('ea_requests/outcoming-requests/detail').'/'.$enc_req_id.'" target="_blank">DETAILS</a> </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+					<table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
+                        <tbody>
+                        <tr>
+                            <td align="left">
+                            <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                                <tbody>
+                                <tr>
+									<td> <a href="'.base_url('ea_requests/requests_confirmation').'?req_id='.$enc_req_id.'&approver_id='.$email_detail['target_id'].'&status=2&level='.$level.'" target="_blank">APPROVE</a> </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+					
+                    <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-danger">
+                        <tbody>
+                        <tr>
+                            <td align="left">
+                            <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                                <tbody>
+                                <tr>
+									<td> <a <a href="'.base_url('ea_requests/requests_confirmation').'?req_id='.$enc_req_id.'&approver_id='.$email_detail['target_id'].'&status=3&level='.$level.'" target="_blank">REJECT</a> </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    ';
+
+        $text = $this->load->view('template/email', $data, true);
+        $mail->setFrom('no-reply@faster.bantuanteknis.id', 'FASTER-FHI360');
+        $mail->addAddress($email_detail['target_email']);
+        $mail->Subject = "EA Requests";
+        $mail->isHTML(true);
+        $mail->Body = $text;
+        $sent=$mail->send();
+
+		if ($sent) {
+			return true;
+		} else {
+			return false;
+		}
+    }
+
+	// public function test_email() {
+
+	// 	$this->load->library('Phpmailer_library');
+    //     $mail = $this->phpmailer_library->load();
+    //     $mail->isSMTP();
+    //     $mail->SMTPSecure = 'ssl';
+    //     $mail->Host = 'smtp.googlemail.com';
+    //     $mail->Port = 465;
+    //     $mail->SMTPDebug = 2; 
+    //     $mail->SMTPAuth = true;
+    //     $mail->Username = 'alfayed@mhs.unsyiah.ac.id';
+    //     $mail->Password = 'fadeladen0510';
+
+	// 	$data['preview'] = "<p>You have EA Request from 'Requestor Name' </b> and it need your review. Please check on attachment</p>";
+        
+    //     $data['content'] = '
+    //         <tr>
+    //             <td>
+    //                 <p>Dear Approver name</p>
+    //                 <p>'.$data['preview'].'</p>
+    //                 <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-detail">
+    //                     <tbody>
+    //                     <tr>
+    //                         <td align="left">
+    //                         <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+    //                             <tbody>
+    //                             <tr>
+    //                                 <td> <a href="'.base_url('ea_requests/incoming-requests/requests-for-review').'" target="_blank">DETAILS</a> </td>
+    //                             </tr>
+    //                             </tbody>
+    //                         </table>
+    //                         </td>
+    //                     </tr>
+    //                     </tbody>
+    //                 </table>
+
+	// 				<table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
+    //                     <tbody>
+    //                     <tr>
+    //                         <td align="left">
+    //                         <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+    //                             <tbody>
+    //                             <tr>
+	// 								<td> <a href="" target="_blank">APPROVE</a> </td>
+    //                             </tr>
+    //                             </tbody>
+    //                         </table>
+    //                         </td>
+    //                     </tr>
+    //                     </tbody>
+    //                 </table>
+					
+    //                 <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-danger">
+    //                     <tbody>
+    //                     <tr>
+    //                         <td align="left">
+    //                         <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+    //                             <tbody>
+    //                             <tr>
+	// 								<td> <a href="" target="_blank">REJECT</a> </td>
+    //                             </tr>
+    //                             </tbody>
+    //                         </table>
+    //                         </td>
+    //                     </tr>
+    //                     </tbody>
+    //                 </table>
+
+                    
+    //             </td>
+    //         </tr>';
+
+    //     $text = $this->load->view('template/email', $data, true);
+    //     $mail->setFrom('no-reply@faster.bantuanteknis.id', 'FASTER-FHI360');
+    //     $mail->addAddress('fadelalfayed27@gmail.com');
+    //     $mail->Subject = "Mini Proposal Approve";
+    //     $mail->isHTML(true);
+    //     $mail->Body = $text;
+    //     $send=$mail->send();
+
+	// 	if ($send) {
+	// 		echo 'sent';
+	// 		// return true;
+	// 	} else {
+	// 		print_r($mail->ErrorInfo);
+	// 		die;
+	// 		// return false;
+	// 	}
+	// }
 }

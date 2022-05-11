@@ -21,4 +21,26 @@ class Base_Model extends CI_Model
         ->where('pr.kepala_unit_id', $user_id)
         ->get()->result_array();
     }
+
+    function get_ea_assosiate() {
+        return $this->db->select('id, username, email')
+        ->from('tb_userapp')
+        ->where('id', 159)
+        // ->where('email', 'mlisna@fhi360.org')
+        ->get()->row_array();
+    }
+
+    function get_fco_monitor() {
+        return $this->db->select('id, username, email')
+        ->from('tb_userapp')
+        ->where('id', 160)
+        ->get()->row_array();
+    }
+
+    function get_finance_teams() {
+        return $this->db->select('id, username, email')
+        ->from('tb_userapp')
+        ->where('id', 162)
+        ->get()->row_array();
+    }
 }
