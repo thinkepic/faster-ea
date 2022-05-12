@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-
+use Spipu\Html2Pdf\Html2Pdf;
 class Outcoming_requests extends MY_Controller {
 
 	function __construct()
@@ -578,4 +578,16 @@ class Outcoming_requests extends MY_Controller {
 			return false;
 		}
     }
+
+	public function test_pdf() {
+		$content = $this->load->view('template/form_payment_reimburstment', [], true);
+        $html2pdf = new Html2Pdf('P', [210, 330], 'en', true, 'UTF-8', array(15, 10, 15, 10));
+        $html2pdf->setDefaultFont('arial');
+        $html2pdf->pdf->SetDisplayMode('fullpage');
+        $html2pdf->setTestTdInOnePage(false);
+        $html2pdf->writeHTML($content, isset($_GET['vuehtml']));
+        $pdf = $html2pdf->Output('Payment Request Form.pdf');
+
+		// $mail->addStringAttachment($pdf, 'Payment form request.pdf');
+	}
 }
