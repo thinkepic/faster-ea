@@ -461,7 +461,7 @@
 								</div>
 							</div>
 							<?php endif; ?>
-							<?php if ($detail['finance_status'] == 2): ?>
+							<?php if ($detail['finance_status'] == 2 && $detail['payment_receipt'] != NULL): ?>
 							<div class="div col-md-3 col-6">
 								<div class="p-3">
 									<div class="d-flex">
@@ -661,7 +661,7 @@
 										<td data-field="Car Model" class="kt-datatable__cell"><span
 												style="width: 110px;"><?= $detail['finance_status_at'] ?></span></td>
 										<td class="kt-datatable__cell">
-											<?php if ($detail['finance_status'] == 2): ?>
+											<?php if ($detail['finance_status'] == 2 && $detail['payment_receipt'] != NULL): ?>
 											<div style="width: 110px;" class="d-flex">
 												<a target="_blank"
 													href="<?= base_url('uploads/ea_payment_receipt/') ?><?= $detail['payment_receipt'] ?>"
