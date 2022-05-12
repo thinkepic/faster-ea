@@ -41,7 +41,7 @@ class Request_Model extends CI_Model
         ufi.username as finance_name, DATE_FORMAT(st.head_of_units_status_at, "%d %M %Y - %H:%i") as head_of_units_status_at,
         DATE_FORMAT(st.ea_assosiate_status_at, "%d %M %Y - %H:%i") as ea_assosiate_status_at,
         DATE_FORMAT(st.fco_monitor_status_at, "%d %M %Y - %H:%i") as fco_monitor_status_at,
-        DATE_FORMAT(st.finance_status_at, "%d %M %Y - %H:%i") as finance_status_at,
+        DATE_FORMAT(st.finance_status_at, "%d %M %Y - %H:%i") as finance_status_at, st.payment_receipt,
         (
             CASE 
                 WHEN head_of_units_status = "1" THEN "Pending"
@@ -203,6 +203,11 @@ class Request_Model extends CI_Model
             $level . '_status_at' => date("Y-m-d H:i:s"),
             $level . '_id' => $approver_id,
         ]);
+        return $this->db->affected_rows() === 1;
+    }
+
+    function update_payment_status($request_id, $payload) {
+        $this->db->where('request_id', $request_id)->update('ea_requests_status', $payload);
         return $this->db->affected_rows() === 1;
     }
 }
