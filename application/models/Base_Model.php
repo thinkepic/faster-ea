@@ -33,14 +33,15 @@ class Base_Model extends CI_Model
     function get_fco_monitor() {
         return $this->db->select('id, username, email')
         ->from('tb_userapp')
-        ->where('id', 160)
+        ->where('is_budget_reviewer', 1)
         ->get()->row_array();
     }
 
     function get_finance_teams() {
-        return $this->db->select('id, username, email')
-        ->from('tb_userapp')
-        ->where('id', 162)
-        ->get()->row_array();
+        return $this->db->select('u.id, u.username, u.email, un.unit_name')
+        ->from('tb_userapp u')
+        ->join('tb_units un', 'u.unit_id = un.id')
+        ->where('un.unit_name', 'Finance')
+        ->get()->result_array();
     }
 }

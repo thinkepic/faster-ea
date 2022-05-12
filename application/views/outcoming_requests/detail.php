@@ -682,7 +682,7 @@
 				}
 				const loader = `<div style="width: 5rem; height: 5rem;" class="spinner-border mb-5" role="status"></div>
 				<h5 class="mt-2">Please wait</h5>
-				<p>Updating status and send email to requestor...</p>				
+				<p>Updating status and sending email...</p>				
 				`
 				Swal.fire({
 					title: 'Are you sure?',
