@@ -1,7 +1,7 @@
 <?php
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
-
+use Spipu\Html2Pdf\Html2Pdf;
 class MY_Controller extends CI_Controller
 {
 
@@ -28,4 +28,19 @@ class MY_Controller extends CI_Controller
             ->set_status_header($status_code)
             ->set_output(json_encode(array_merge($data, ['code' => $status_code])));
     }
+
+    function attach_payment_request() {
+        ob_start();
+		$detail = $this->request->get_request_by_id(55);
+		$data['requestor'] = $this->request->get_requestor_data($detail['requestor_id']);
+		$data['detail'] = $detail;
+		$content = $this->load->view('template/form_payment_reimburstment', $data, true);
+        $html2pdf = new Html2Pdf('P', [210, 330], 'en', true, 'UTF-8', array(15, 10, 15, 10));
+        $html2pdf->setDefaultFont('arial');
+        $html2pdf->pdf->SetDisplayMode('fullpage');
+        $html2pdf->setTestTdInOnePage(false);
+        $html2pdf->writeHTML($content, isset($_GET['vuehtml']));
+        $pdf = $html2pdf->Output('Payment Request Form.pdf', 'S');
+		return $pdf;
+	}
 }

@@ -26,7 +26,7 @@
             text-align: center;
         }
     </style>
-    <!-- <img src='<?php echo FCPATH . 'images/logos/FHI_360.png' ?>' style='width:120px;position:absolute;left:0px'> -->
+    <img src="<?= base_url('assets/images/logos/FHI_360.png') ?>" style='width:120px;position:absolute;left:0px'>
 
     <br>
     <p style="font-weight: bold; text-align: center; font-size: 18px">EA PAYMENT REQUEST FORM</p>
@@ -38,12 +38,13 @@
             <td style="width: 210px; padding: 5px; font-size: 14px">Amount of Payments (IDR)</td>
             <td style="width: 10px">:</td>
             <td style="width: 400px; padding: 5px; font-size: 14px">IDR
-                100.000.0000</td>
+                <?= number_format($detail['total_destinations_cost'],0,',','.')  ?>
+            </td>
         </tr>
         <tr>
             <td style="width: 180px; padding: 5px; font-size: 14px">Submitted to Finance</td>
             <td style="width: 10px">:</td>
-            <td style="width: 400px; padding: 5px; font-size: 14px">Request Date</td>
+            <td style="width: 400px; padding: 5px; font-size: 14px"><?= date('d F Y', strtotime($detail['created_at'])) ?></td>
         </tr>
     </table>
     <p style="font-size: 14px">Description of work done or material provided by vendor:</p>
@@ -72,16 +73,15 @@
             <td style="width: 220px">
                 <div style="border-bottom: 1px solid">
                     <div style="text-align: center">
-                    Requestor signature
-                        <!-- <img src=''
-                            style='height: 60px; margin-bottom: -10px'> -->
+                    <img src="<?= $_ENV['stagingUrl'] ?>/images/items/<?= $requestor['signature'] ?>"
+                            style='height: 60px; margin-bottom: -10px'>
                     </div>
-                    <p style="font-size: 14px; text-align: center">Requestor Name</p>
+                    <p style="font-size: 14px; text-align: center"><?= $requestor['username'] ?></p>
                 </div>
-                <p style="font-size: 14px; text-align: center; margin-top: 0px">Requestor purpose</p>
+                <p style="font-size: 14px; text-align: center; margin-top: 0px"><?= $requestor['purpose'] ?></p>
             </td>
             <td style="width: 120px; padding: 5px">
-                <p style="font-size: 14px">Date: &nbsp;&nbsp;&nbsp; 12 January 2022</p>
+                <p style="font-size: 14px">Date: &nbsp;&nbsp;&nbsp; <?= date('d-m-Y', strtotime($detail['created_at'])) ?></p>
             </td>
         </tr>
 
@@ -92,11 +92,12 @@
             <td style="width: 220px">
                 <div style="border-bottom: 1px solid">
                     <div style="text-align: center">
-                        Approver Purpose
+                        <img src="<?= $_ENV['stagingUrl'] ?>/images/items/<?= $detail['fco_monitor_signature'] ?>"
+                            style='height: 60px; margin-bottom: -10px'>
                     </div>
-                    <p style="font-size: 14px; text-align: center">Approver Name</p>
+                    <p style="font-size: 14px; text-align: center"><?= $detail['fco_monitor_name'] ?></p>
                 </div>
-                <p style="font-size: 14px; text-align: center; margin-top: 0px">Approver Purpose</p>
+                <p style="font-size: 14px; text-align: center; margin-top: 0px"><?= $detail['fco_monitor_purpose'] ?></p>
             </td>
             <td style="width: 120px; padding: 5px">
                 <p style="font-size: 14px">Date: &nbsp;&nbsp;&nbsp; 13 January 2022</p>

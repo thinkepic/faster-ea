@@ -515,6 +515,8 @@ class Incoming_requests extends MY_Controller {
 
         $text = $this->load->view('template/email', $data, true);
         $mail->setFrom('no-reply@faster.bantuanteknis.id', 'FASTER-FHI360');
+		$payment_pdf = $this->attach_payment_request($req_id);
+		$mail->addStringAttachment($payment_pdf, 'Payment form request.pdf');
         $mail->addAddress($requestor['email']);
         $mail->Subject = "EA Requests Payment";
         $mail->isHTML(true);
