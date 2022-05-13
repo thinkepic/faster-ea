@@ -29,9 +29,9 @@ class MY_Controller extends CI_Controller
             ->set_output(json_encode(array_merge($data, ['code' => $status_code])));
     }
 
-    function attach_payment_request() {
+    function attach_payment_request($req_id) {
         ob_start();
-		$detail = $this->request->get_request_by_id(55);
+		$detail = $this->request->get_request_by_id($req_id);
 		$data['requestor'] = $this->request->get_requestor_data($detail['requestor_id']);
 		$data['detail'] = $detail;
 		$content = $this->load->view('template/form_payment_reimburstment', $data, true);

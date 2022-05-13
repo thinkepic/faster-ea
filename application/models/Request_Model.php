@@ -41,7 +41,7 @@ class Request_Model extends CI_Model
         ufc.purpose as fco_monitor_purpose, ufc.signature as fco_monitor_signature,
         ufi.username as finance_name, DATE_FORMAT(st.head_of_units_status_at, "%d %M %Y - %H:%i") as head_of_units_status_at,
         DATE_FORMAT(st.ea_assosiate_status_at, "%d %M %Y - %H:%i") as ea_assosiate_status_at,
-        DATE_FORMAT(st.fco_monitor_status_at, "%d %M %Y - %H:%i") as fco_monitor_status_at,
+        DATE_FORMAT(st.fco_monitor_status_at, "%d %M %Y - %H:%i") as fco_monitor_status_at, st.fco_monitor_status_at as fco_signature_date,
         DATE_FORMAT(st.finance_status_at, "%d %M %Y - %H:%i") as finance_status_at, st.payment_receipt,
         (
             CASE 
@@ -64,7 +64,7 @@ class Request_Model extends CI_Model
         (
             CASE 
                 WHEN finance_status = "1" THEN "Pending"
-                WHEN finance_status = "2" THEN "Approved"
+                WHEN finance_status = "2" THEN "Done"
                 WHEN finance_status = "3" THEN "Rejected"
             END) AS finance_status_text,
         ')

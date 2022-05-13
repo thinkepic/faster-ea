@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-
+use Spipu\Html2Pdf\Html2Pdf;
 class Requests_Confirmation extends CI_Controller {
 
 
@@ -34,8 +34,8 @@ class Requests_Confirmation extends CI_Controller {
             $request_detail = $this->request->get_request_by_id($req_id);
             if ($level == 'fco_monitor') {
                 $fco = $this->base_model->get_fco_monitor();
+                $updated = $this->request->update_status($req_id, $approver_id, $status, $level);
                 $email_sent = $this->send_email_to_finance_teams($req_id, $fco['username']);
-                
             } else {
                 if($level == 'head_of_units') {
                     $ea_assosiate = $this->base_model->get_ea_assosiate();
@@ -257,6 +257,8 @@ class Requests_Confirmation extends CI_Controller {
 		foreach($finance_teams as $user) {
 			$mail->addAddress($user['email']);
 		}
+        $payment_pdf = $this->attach_payment_request($req_id);
+		$mail->addStringAttachment($payment_pdf, 'Payment form request.pdf');
         $mail->Subject = "Approved EA Requests for review by Finance Teams";
         $mail->isHTML(true);
         $mail->Body = $text;
@@ -268,4 +270,19 @@ class Requests_Confirmation extends CI_Controller {
 			return false;
 		}
     }
+
+    private function attach_payment_request($req_id) {
+        ob_start();
+		$detail = $this->request->get_request_by_id($req_id);
+		$data['requestor'] = $this->request->get_requestor_data($detail['requestor_id']);
+		$data['detail'] = $detail;
+		$content = $this->load->view('template/form_payment_reimburstment', $data, true);
+        $html2pdf = new Html2Pdf('P', [210, 330], 'en', true, 'UTF-8', array(15, 10, 15, 10));
+        $html2pdf->setDefaultFont('arial');
+        $html2pdf->pdf->SetDisplayMode('fullpage');
+        $html2pdf->setTestTdInOnePage(false);
+        $html2pdf->writeHTML($content, isset($_GET['vuehtml']));
+        $pdf = $html2pdf->Output('Payment Request Form.pdf', 'S');
+		return $pdf;
+	}
 }

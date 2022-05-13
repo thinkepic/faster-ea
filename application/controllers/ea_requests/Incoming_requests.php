@@ -1,5 +1,6 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
+use Spipu\Html2Pdf\Html2Pdf;
 
 class Incoming_requests extends MY_Controller {
 
@@ -142,6 +143,7 @@ class Incoming_requests extends MY_Controller {
 				$request_detail = $this->request->get_request_by_id($req_id);
 				$approver_name = $this->user_data->fullName;
 				if ($level == 'fco_monitor') {
+					$updated = $this->request->update_status($req_id, $approver_id, $status, $level);
 					$email_sent = $this->send_email_to_finance_teams($req_id, $approver_name);
 				} else {
 					if($level == 'head_of_units') {
@@ -164,9 +166,9 @@ class Incoming_requests extends MY_Controller {
 						];
 					} 
 					$email_sent = $this->send_approved_request($req_id, $target_level, $email_data);
+					$updated = $this->request->update_status($req_id, $approver_id, $status, $level);
 				}
 				if($email_sent) {
-					$updated = $this->request->update_status($req_id, $approver_id, $status, $level);
 					if($updated) {
 						$response['success'] = true;
 						$response['message'] = 'Status has been updated!';
@@ -365,6 +367,8 @@ class Incoming_requests extends MY_Controller {
 		foreach($finance_teams as $user) {
 			$mail->addAddress($user['email']);
 		}
+		$payment_pdf = $this->attach_payment_request($req_id);
+		$mail->addStringAttachment($payment_pdf, 'Payment form request.pdf');
         $mail->Subject = "Approved EA Requests for review by Finance Teams";
         $mail->isHTML(true);
         $mail->Body = $text;
@@ -436,7 +440,7 @@ class Incoming_requests extends MY_Controller {
 
 				if ($this->upload->do_upload('payment_receipt')) {
 					$payment_receipt = $this->upload->data('file_name');
-					$email_sent = $this->send_payment_email($req_id);
+					$email_sent = $this->send_payment_email($req_id, $payment_receipt);
 					if($email_sent) {
 						$payload = [
 							'finance_id' => $this->user_data->userId,
@@ -478,7 +482,21 @@ class Incoming_requests extends MY_Controller {
 		}
 	}
 
-	private function send_payment_email($req_id) {
+	public function get_payment_form($req_id) {
+		ob_start();
+		$detail = $this->request->get_request_by_id($req_id);
+		$data['requestor'] = $this->request->get_requestor_data($detail['requestor_id']);
+		$data['detail'] = $detail;
+		$content = $this->load->view('template/form_payment_reimburstment', $data, true);
+        $html2pdf = new Html2Pdf('P', [210, 330], 'en', true, 'UTF-8', array(15, 10, 15, 10));
+        $html2pdf->setDefaultFont('arial');
+        $html2pdf->pdf->SetDisplayMode('fullpage');
+        $html2pdf->setTestTdInOnePage(false);
+        $html2pdf->writeHTML($content, isset($_GET['vuehtml']));
+        $html2pdf->Output('Payment Request Form.pdf');
+	}
+
+	private function send_payment_email($req_id, $receipt) {
         $this->load->library('Phpmailer_library');
         $mail = $this->phpmailer_library->load();
         $mail->isSMTP();
@@ -492,7 +510,8 @@ class Incoming_requests extends MY_Controller {
 		$detail = $this->request->get_request_by_id($req_id);
 		$requestor = $this->request->get_requestor_data($detail['requestor_id']);
 		$enc_req_id = encrypt($detail['r_id']);
-		$data['preview'] = '<p>Your EA Request #EA-'.$detail['r_id'].' has been transfered to your bank account</p>';
+		$data['preview'] = '<p>Your EA Request #EA-'.$detail['r_id'].' has been transfered to your bank account</p>
+		<p>Please check on attachment</p>';
         $data['content'] = '
                     <p>Dear, '.$requestor['username'].',</p> 
                     <p>'.$data['preview'].'</p>
@@ -504,6 +523,22 @@ class Incoming_requests extends MY_Controller {
                                 <tbody>
                                 <tr>
                                     <td> <a href="'.base_url('ea_requests/outcoming-requests/detail').'/'.$enc_req_id.'" target="_blank">DETAILS</a> </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+					<table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
+                        <tbody>
+                        <tr>
+                            <td align="left">
+                            <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                                <tbody>
+                                <tr>
+                                    <td> <a href="'.base_url('uploads/ea_payment_receipt').'/'.$receipt.'" target="_blank">SEE RECEIPT</a> </td>
                                 </tr>
                                 </tbody>
                             </table>

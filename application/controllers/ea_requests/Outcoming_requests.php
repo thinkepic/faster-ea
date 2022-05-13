@@ -1,6 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-use Spipu\Html2Pdf\Html2Pdf;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 class Outcoming_requests extends MY_Controller {
 
 	function __construct()
@@ -312,5 +313,25 @@ class Outcoming_requests extends MY_Controller {
 
 	public function test() {
 		echo json_encode($this->user_data);
+	}
+
+	public function test_excel($req_id) {
+
+		$detail = $this->request->get_request_by_id($req_id);
+		$requestor = $this->request->get_requestor_data($detail['requestor_id']);
+		$inputFileName = FCPATH.'assets/excel/ea_form.xlsx';
+		$reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+		$spreadsheet = $reader->load($inputFileName);
+		$sheet = $spreadsheet->getActiveSheet();
+		$sheet->setCellValue('C7', $requestor['username']);
+
+		$writer = new Xlsx($spreadsheet);
+		$writer = new Xlsx($spreadsheet);
+        $current_time = date('d-m-Y h:i:s');
+        $filename = "EA Request_Form/$current_time";
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header("Content-Disposition: attachment; filename=$filename.xlsx");
+        $writer->save('php://output');
+
 	}
 }
