@@ -547,7 +547,7 @@
 										<th class="kt-datatable__cell kt-datatable__cell--sort">
 											<span style="width: 110px;">Status</span></th>
 										<th class="kt-datatable__cell kt-datatable__cell--sort">
-											<span style="width: 110px;">Approved on</span></th>
+											<span style="width: 110px;">Submitted on</span></th>
 										<th class="kt-datatable__cell kt-datatable__cell--sort">
 											<span style="width: 110px;">Action</span></th>
 									</tr>
@@ -788,9 +788,9 @@
 				const id = $(this).attr('data-id')
 				const status = $(this).attr('data-status')
 				const level = $(this).attr('data-level')
-				let statusText = 'approve'
+				let statusText = 'Approve'
 				if (status == 3) {
-					statusText = 'reject'
+					statusText = 'Reject'
 				}
 				const loader = `<div style="width: 5rem; height: 5rem;" class="spinner-border mb-5" role="status"></div>
 				<h5 class="mt-2">Please wait</h5>
@@ -798,7 +798,7 @@
 				`
 				Swal.fire({
 					title: 'Are you sure?',
-					text: "Update status and send email to requestor?",
+					text: `${statusText} request and send notification email?`,
 					type: 'warning',
 					showCancelButton: true,
 					confirmButtonColor: '#3085d6',

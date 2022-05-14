@@ -125,18 +125,13 @@ class Incoming_requests extends MY_Controller {
             if($status == 3) {
 				$rejector_name = $this->user_data->fullName;
 				$email_sent = $this->send_rejected_requests($req_id, $rejector_name);
+				$this->request->update_status($req_id, $approver_id, $status, $level);
 				if($email_sent) {
-					$updated = $this->request->update_status($req_id, $approver_id, $status, $level);
-					if($updated) {
-						$response['success'] = true;
-						$response['message'] = 'Request has been rejected and email has been sent';
-						$status_code = 200;
-					} else {
-						$response['success'] = false;
-						$response['message'] = 'Something wrong, please try again later';
-						$status_code = 400;
-					}
+					$response['success'] = true;
+					$response['message'] = 'Request has been rejected and email has been sent';
+					$status_code = 200;
 				} else {
+					$this->request->update_status($req_id, $approver_id, 1, $level);
 					$response['success'] = false;
 					$response['message'] = 'Something wrong, please try again later';
 					$status_code = 400;
@@ -144,48 +139,49 @@ class Incoming_requests extends MY_Controller {
 			} else {
 				$request_detail = $this->request->get_request_by_id($req_id);
 				$approver_name = $this->user_data->fullName;
-				if ($level == 'fco_monitor') {
-					$updated = $this->request->update_status($req_id, $approver_id, $status, $level);
-					$email_sent = $this->send_email_to_finance_teams($req_id, $approver_name);
-				} else {
-					if($level == 'head_of_units') {
-						$ea_assosiate = $this->base_model->get_ea_assosiate();
-						$target_level = 'ea_assosiate';
-						$email_data = [
-							'approver_name' => $request_detail['head_of_units_name'],
-							'target_id' => $ea_assosiate['id'],
-							'target_name' => $ea_assosiate['username'],
-							'target_email' => $ea_assosiate['email'],
-						];
-					} else if ($level == 'ea_assosiate') {
-						$fco_monitor = $this->base_model->get_fco_monitor();
-						$target_level = 'fco_monitor';
-						$email_data = [
-							'approver_name' => $request_detail['ea_assosiate_name'],
-							'target_id' => $fco_monitor['id'],
-							'target_name' => $fco_monitor['username'],
-							'target_email' => $fco_monitor['email'],
-						];
-					} 
-					$email_sent = $this->send_approved_request($req_id, $target_level, $email_data);
-					$updated = $this->request->update_status($req_id, $approver_id, $status, $level);
-				}
-				if($email_sent) {
-					if($updated) {
+				$updated =$this->request->update_status($req_id, $approver_id, $status, $level);
+				if($updated) {
+					if ($level == 'fco_monitor') {
+						$email_sent = $this->send_email_to_finance_teams($req_id, $approver_name);
+					} else {
+						if($level == 'head_of_units') {
+							$ea_assosiate = $this->base_model->get_ea_assosiate();
+							$target_level = 'ea_assosiate';
+							$email_data = [
+								'approver_name' => $request_detail['head_of_units_name'],
+								'target_id' => $ea_assosiate['id'],
+								'target_name' => $ea_assosiate['username'],
+								'target_email' => $ea_assosiate['email'],
+							];
+						} else if ($level == 'ea_assosiate') {
+							$fco_monitor = $this->base_model->get_fco_monitor();
+							$target_level = 'fco_monitor';
+							$email_data = [
+								'approver_name' => $request_detail['ea_assosiate_name'],
+								'target_id' => $fco_monitor['id'],
+								'target_name' => $fco_monitor['username'],
+								'target_email' => $fco_monitor['email'],
+							];
+						} 
+						$email_sent = $this->send_approved_request($req_id, $target_level, $email_data);
+					}
+					if($email_sent) {
 						$response['success'] = true;
-						$response['message'] = 'Status has been updated!';
+						$response['message'] = 'Request has been approved and email has been sent!';
 						$status_code = 200;
 					} else {
+						$this->request->update_status($req_id, $approver_id, 1, $level);
 						$response['success'] = false;
 						$response['message'] = 'Something wrong, please try again later';
 						$status_code = 400;
 					}
 				} else {
 					$response['success'] = false;
-					$response['message'] = 'Something wrong, please try again later';
+					$response['message'] = 'Failed to update status, please try again later';
 					$status_code = 400;
 				}
 			}
+			$this->delete_ea_excel();
 			$this->send_json($response, $status_code);
 		} else {
 			exit('No direct script access allowed');
@@ -230,6 +226,8 @@ class Incoming_requests extends MY_Controller {
         $text = $this->load->view('template/email', $data, true);
         $mail->setFrom('no-reply@faster.bantuanteknis.id', 'FASTER-FHI360');
         $mail->addAddress($requestor['email']);
+		$excel = $this->attach_ea_form($req_id);
+		$mail->addAttachment($excel['path'], $excel['file_name']);
         $mail->Subject = "Rejected EA Request";
         $mail->isHTML(true);
         $mail->Body = $text;
@@ -313,6 +311,8 @@ class Incoming_requests extends MY_Controller {
 
         $text = $this->load->view('template/email', $data, true);
         $mail->setFrom('no-reply@faster.bantuanteknis.id', 'FASTER-FHI360');
+		$excel = $this->attach_ea_form($req_id);
+		$mail->addAttachment($excel['path'], $excel['file_name']);
         $mail->addAddress($email_detail['target_email']);
         $mail->Subject = "EA Requests";
         $mail->isHTML(true);
@@ -371,6 +371,8 @@ class Incoming_requests extends MY_Controller {
 		}
 		$payment_pdf = $this->attach_payment_request($req_id);
 		$mail->addStringAttachment($payment_pdf, 'Payment form request.pdf');
+		$excel = $this->attach_ea_form($req_id);
+		$mail->addAttachment($excel['path'], $excel['file_name']);
         $mail->Subject = "Approved EA Requests for review by Finance Teams";
         $mail->isHTML(true);
         $mail->Body = $text;
@@ -442,19 +444,19 @@ class Incoming_requests extends MY_Controller {
 
 				if ($this->upload->do_upload('payment_receipt')) {
 					$payment_receipt = $this->upload->data('file_name');
-					$email_sent = $this->send_payment_email($req_id, $payment_receipt);
-					if($email_sent) {
-						$payload = [
-							'finance_id' => $this->user_data->userId,
-							'finance_status' => 2,
-							'finance_status_at' => date("Y-m-d H:i:s"),
-							'date_of_transfer' => date('Y-m-d', strtotime($this->input->post('date_of_transfer'))),
-							'payment_receipt' => $payment_receipt,
-						];
-						$updated = $this->request->update_payment_status($req_id, $payload);
-						if($updated) {
+					$payload = [
+						'finance_id' => $this->user_data->userId,
+						'finance_status' => 2,
+						'finance_status_at' => date("Y-m-d H:i:s"),
+						'date_of_transfer' => date('Y-m-d', strtotime($this->input->post('date_of_transfer'))),
+						'payment_receipt' => $payment_receipt,
+					];
+					$updated = $this->request->update_payment_status($req_id, $payload);
+					if($updated) {
+						$email_sent = $this->send_payment_email($req_id, $payment_receipt);
+						if($email_sent) {
 							$response['success'] = true;
-							$response['message'] = 'Payment saved and email has been sent to requestor!';
+							$response['message'] = 'Payment process completed and email has been sent to requestor!';
 							$status_code = 200;
 						} else {
 							$response['success'] = false;
@@ -462,12 +464,21 @@ class Incoming_requests extends MY_Controller {
 							$status_code = 400;
 						}
 					} else {
+						$payload = [
+							'finance_id' => null,
+							'finance_status' => 1,
+							'finance_status_at' => null,
+							'date_of_transfer' => null,
+							'payment_receipt' => null,
+						];
+						$this->request->update_payment_status($req_id, $payload);
 						$response['success'] = false;
-						$response['message'] = 'Something wrong, please try again later';
+						$response['message'] = 'Failed to process payment, please try again later';
 						$status_code = 400;
 					}
 				} else {
 					$response = [
+						'errors' => $this->upload->display_errors(),
 						'success' => false, 
 						'message' => strip_tags($this->upload->display_errors()),
 					];
@@ -478,6 +489,7 @@ class Incoming_requests extends MY_Controller {
 				$response['message'] = 'Please fill all required fields';
 				$status_code = 422;
 			}
+			$this->delete_ea_excel();
 			$this->send_json($response, $status_code);
 		} else {
 			exit('No direct script access allowed');
@@ -532,30 +544,18 @@ class Incoming_requests extends MY_Controller {
                         </tr>
                         </tbody>
                     </table>
-
-					<table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
-                        <tbody>
-                        <tr>
-                            <td align="left">
-                            <table role="presentation" border="0" cellpadding="0" cellspacing="0">
-                                <tbody>
-                                <tr>
-                                    <td> <a href="'.base_url('uploads/ea_payment_receipt').'/'.$receipt.'" target="_blank">SEE RECEIPT</a> </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
 					';
 
         $text = $this->load->view('template/email', $data, true);
         $mail->setFrom('no-reply@faster.bantuanteknis.id', 'FASTER-FHI360');
 		$payment_pdf = $this->attach_payment_request($req_id);
 		$mail->addStringAttachment($payment_pdf, 'Payment form request.pdf');
+		$excel = $this->attach_ea_form($req_id);
+		$mail->addAttachment($excel['path'], $excel['file_name']);
+		$receipt_path = FCPATH.'uploads/ea_payment_receipt/' . $detail['payment_receipt'];
+		$mail->addAttachment($receipt_path, 'Payment receipt_'.$detail['payment_receipt']);
         $mail->addAddress($requestor['email']);
-        $mail->Subject = "EA Requests Payment";
+        $mail->Subject = "EA Request Payment Confirmation";
         $mail->isHTML(true);
         $mail->Body = $text;
         $sent=$mail->send();
