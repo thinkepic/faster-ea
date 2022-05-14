@@ -30,6 +30,14 @@ class Base_Model extends CI_Model
         ->get()->row_array();
     }
 
+    function get_country_director() {
+        return $this->db->select('id, username, email')
+        ->from('tb_userapp')
+        ->where('is_country_director', 1)
+        // ->where('account_name', 'eaditya@fhi360.org')
+        ->get()->row_array();
+    }
+
     function get_fco_monitor() {
         return $this->db->select('id, username, email')
         ->from('tb_userapp')

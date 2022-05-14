@@ -23,7 +23,7 @@ class Requests_Confirmation extends CI_Controller {
             $this->request->update_status($req_id, $approver_id, $status, $level);
             $email_sent = $this->send_rejected_requests($req_id, $level);
             if($email_sent) {
-                $data['message'] = "EA Requests #EA-$req_id has been rejected";
+                $data['message'] = "EA Requests #EA$req_id has been rejected";
             } else {
                 $data['message'] = "Something wrong, please try again later";
                 $this->request->update_status($req_id, $approver_id, 1, $level);
@@ -57,12 +57,13 @@ class Requests_Confirmation extends CI_Controller {
                 $email_sent = $this->send_approved_request($req_id, $target_level, $email_data);
             }
             if($email_sent) {
-                $data['message'] = "EA Requests #EA-$req_id has been approved";
+                $data['message'] = "EA Requests #EA$req_id has been approved";
             } else {
                 $data['message'] = "Something wrong, please try again later";
                 $this->request->update_status($req_id, $approver_id, 1, $level);
             }
         }
+        $this->delete_ea_excel();
         $this->template->render('requests_confirmation/index', $data);
 	}
 
@@ -112,6 +113,8 @@ class Requests_Confirmation extends CI_Controller {
         $text = $this->load->view('template/email', $data, true);
         $mail->setFrom('no-reply@faster.bantuanteknis.id', 'FASTER-FHI360');
         $mail->addAddress($requestor['email']);
+        $excel = $this->attach_ea_form($req_id);
+		$mail->addAttachment($excel['path'], $excel['file_name']);
         $mail->Subject = "Rejected EA Request";
         $mail->isHTML(true);
         $mail->Body = $text;
@@ -196,7 +199,9 @@ class Requests_Confirmation extends CI_Controller {
         $text = $this->load->view('template/email', $data, true);
         $mail->setFrom('no-reply@faster.bantuanteknis.id', 'FASTER-FHI360');
         $mail->addAddress($email_detail['target_email']);
-        $mail->Subject = "EA Requests";
+        $excel = $this->attach_ea_form($req_id);
+		$mail->addAttachment($excel['path'], $excel['file_name']);
+        $mail->Subject = "EA Request";
         $mail->isHTML(true);
         $mail->Body = $text;
         $sent=$mail->send();
@@ -252,6 +257,8 @@ class Requests_Confirmation extends CI_Controller {
 			$mail->addAddress($user['email']);
 		}
         $payment_pdf = $this->attach_payment_request($req_id);
+        $excel = $this->attach_ea_form($req_id);
+		$mail->addAttachment($excel['path'], $excel['file_name']);
 		$mail->addStringAttachment($payment_pdf, 'Payment form request.pdf');
         $mail->Subject = "Approved EA Requests for review by Finance Teams";
         $mail->isHTML(true);
@@ -327,7 +334,7 @@ class Requests_Confirmation extends CI_Controller {
 		$drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
 		$drawing->setName('Traveler signature');
 		$drawing->setPath(FCPATH.'assets/images/signature/' . $requestor['signature']); // put your path and image here
-		$drawing->setCoordinates('I85');
+		$drawing->setCoordinates('I84');
 		$drawing->setHeight(40);
 		$drawing->setWorksheet($spreadsheet->getActiveSheet());
 
@@ -335,19 +342,28 @@ class Requests_Confirmation extends CI_Controller {
 			$drawing2 = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
 			$drawing2->setName('Head of units signature');
 			$drawing2->setPath(FCPATH.'assets/images/signature/' . $detail['head_of_units_signature']); // put your path and image here
-			$drawing2->setCoordinates('I89');
-			$drawing2->setHeight(40);
-			$drawing2->setOffsetY(-5); 
+			$drawing2->setCoordinates('I88');
+			$drawing2->setHeight(35);
 			$drawing2->setWorksheet($spreadsheet->getActiveSheet());
 
 		} 
+
+		// if($detail['ea_assosiate_status'] == 2) {
+		// 	$drawing3 = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+		// 	$drawing3->setName('EA signature');
+		// 	$drawing3->setPath(FCPATH.'assets/images/signature/' . $detail['ea_assosiate_signature']); // put your path and image here
+		// 	$drawing3->setCoordinates('AK89');
+		// 	$drawing3->setHeight(50);
+		// 	$drawing3->setOffsetY(-15); 
+		// 	$drawing3->setWorksheet($spreadsheet->getActiveSheet());
+		// } 
 
 		if($detail['fco_monitor_status'] == 2) {
 			$drawing4 = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
 			$drawing4->setName('FCO signature');
 			$drawing4->setPath(FCPATH.'assets/images/signature/' . $detail['fco_monitor_signature']); // put your path and image here
 			$drawing4->setCoordinates('V28');
-			$drawing4->setHeight(50);
+			$drawing4->setHeight(40);
 			$drawing4->setWorksheet($spreadsheet->getActiveSheet());
 
 		} 
@@ -356,7 +372,7 @@ class Requests_Confirmation extends CI_Controller {
 			$drawing5 = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
 			$drawing5->setName('Finance signature');
 			$drawing5->setPath(FCPATH.'assets/images/signature/' . $detail['finance_signature']); // put your path and image here
-			$drawing5->setCoordinates('AK89');
+			$drawing5->setCoordinates('AI88');
 			$drawing5->setOffsetY(-15); 
 			$drawing5->setHeight(50);
 			$drawing5->setWorksheet($spreadsheet->getActiveSheet());
@@ -390,7 +406,7 @@ class Requests_Confirmation extends CI_Controller {
 				$drawing6->setName('FCO signature');
 				$drawing6->setPath(FCPATH.'assets/images/signature/' . $detail['fco_monitor_signature']); // put your path and image here
 				$drawing6->setCoordinates('V41');
-				$drawing6->setHeight(50);
+				$drawing6->setHeight(40);
 				$drawing6->setWorksheet($spreadsheet->getActiveSheet());
 			} 
 		}
@@ -411,7 +427,7 @@ class Requests_Confirmation extends CI_Controller {
 				$drawing7->setName('FCO signature');
 				$drawing7->setPath(FCPATH.'assets/images/signature/' . $detail['fco_monitor_signature']); // put your path and image here
 				$drawing7->setCoordinates('V54');
-				$drawing7->setHeight(50);
+				$drawing7->setHeight(40);
 				$drawing7->setWorksheet($spreadsheet->getActiveSheet());
 			} 
 		}
@@ -419,6 +435,8 @@ class Requests_Confirmation extends CI_Controller {
 		if($detail['travel_advance'] == 'Yes') {
 			$sheet->setCellValue('V68', 'X');
 			$sheet->setCellValue('AL79', '80%');
+			$total_advance = ($detail['total_destinations_cost'] + 1000000) * 0.8;
+			$sheet->setCellValue('AL81', $total_advance);
 		} else {
 			$sheet->setCellValue('Y68', 'X');
 			$sheet->setCellValue('AL79', '');
@@ -452,7 +470,7 @@ class Requests_Confirmation extends CI_Controller {
 		$writer = new Xlsx($spreadsheet);
 		$ea_number = $detail['ea_number'];
         $current_time = date('d-m-Y h:i:s');
-        $filename = "$ea_number Request_Form/$current_time";
+        $filename = "$ea_number Request_Form/$current_time.xlsx";
 		$path = FCPATH.'assets/excel/sent_ea_form.xlsx';
 		$writer->save($path);
         $excel = [

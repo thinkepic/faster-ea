@@ -181,7 +181,7 @@ class Outcoming_requests extends MY_Controller {
 			$response['message'] = 'Please fill all required fields';
 			$status_code = 422;
 		}
-
+		$this->delete_ea_excel();
 		$this->send_json($response, $status_code);
 	}
 
@@ -312,11 +312,6 @@ class Outcoming_requests extends MY_Controller {
 		} else {
 			return false;
 		}
-		$this->delete_ea_excel();
-	}
-
-	public function test() {
-		echo json_encode($this->user_data);
 	}
 
 	public function ea_form($req_id) {
