@@ -394,7 +394,7 @@
 									</div>
 									<div class="mt-3">
 										<h6 class="fw-bold">EA requests form</h6>
-										<a href="#" class="badge badge-primary"><span class="mr-1"><svg
+										<a target="_blank" href="<?= base_url('ea_requests/outcoming-requests/ea_form') ?>/<?= $detail['r_id'] ?>" class="badge badge-primary"><span class="mr-1"><svg
 													xmlns="http://www.w3.org/2000/svg" width="10" height="10"
 													fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
 													<path

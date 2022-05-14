@@ -315,7 +315,7 @@ class Outcoming_requests extends MY_Controller {
 		echo json_encode($this->user_data);
 	}
 
-	public function test_excel($req_id) {
+	public function ea_form($req_id) {
 
 		$detail = $this->request->get_excel_data_by_id($req_id);
 		$requestor = $this->request->get_requestor_data($detail['requestor_id']);
