@@ -30,6 +30,7 @@
 			data-url="<?= base_url('ea_requests/outcoming-requests/datatable') ?>/<?= $status ?>">
 			<thead>
 				<tr>
+					<th>EA Number</th>
 					<th>Requestor</th>
 					<th>Request base</th>
 					<th>Employment</th>

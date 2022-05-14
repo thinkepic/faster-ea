@@ -65,7 +65,7 @@ class Incoming_requests extends MY_Controller {
     {	
 		$user_id = $this->user_data->userId;
 
-		$this->datatable->select('u.username as requestor_name, ea.request_base, ea.employment, ea.originating_city,
+		$this->datatable->select('CONCAT("EA", ea.id) AS ea_number, u.username as requestor_name, ea.request_base, ea.employment, ea.originating_city,
 		DATE_FORMAT(ea.departure_date, "%d %M %Y") as departure_date, DATE_FORMAT(ea.return_date, "%d %M %Y") as return_date,
 		DATE_FORMAT(ea.created_at, "%d %M %Y - %H:%i") as created_at, ea.id', true);
         $this->datatable->from('ea_requests ea');
@@ -110,6 +110,8 @@ class Incoming_requests extends MY_Controller {
 		}
         $this->datatable->order_by('created_at', 'desc');
 		$this->datatable->edit_column('id', "$1", 'encrypt(id)');
+		$this->datatable->edit_column('ea_number', '<span style="font-size: 1rem;"
+		class="badge badge-success fw-bold">$1</span>', 'ea_number');
         echo $this->datatable->generate();
     }
 

@@ -1,6 +1,5 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 class Outcoming_requests extends MY_Controller {
 
@@ -188,7 +187,7 @@ class Outcoming_requests extends MY_Controller {
 
 	public function datatable($status = null)
     {	
-        $this->datatable->select('u.username as requestor_name, ea.request_base, ea.employment, ea.originating_city,
+        $this->datatable->select('CONCAT("EA", ea.id) AS ea_number, u.username as requestor_name, ea.request_base, ea.employment, ea.originating_city,
 		DATE_FORMAT(ea.departure_date, "%d %M %Y") as departure_date, DATE_FORMAT(ea.return_date, "%d %M %Y") as return_date,
 		DATE_FORMAT(ea.created_at, "%d %M %Y - %H:%i") as created_at, ea.id', true);
         $this->datatable->from('ea_requests ea');
@@ -216,6 +215,8 @@ class Outcoming_requests extends MY_Controller {
 		$this->datatable->where('ea.requestor_id =', $this->user_data->userId);
         $this->datatable->order_by('created_at', 'desc');
 		$this->datatable->edit_column('id', "$1", 'encrypt(id)');
+		$this->datatable->edit_column('ea_number', '<span style="font-size: 1rem;"
+		class="badge badge-success fw-bold">$1</span>', 'ea_number');
         echo $this->datatable->generate();
     }
 
@@ -298,6 +299,8 @@ class Outcoming_requests extends MY_Controller {
         // $this->load->view('template/email', $data);
         $text = $this->load->view('template/email', $data, true);
         $mail->setFrom('no-reply@faster.bantuanteknis.id', 'FASTER-FHI360');
+		$excel = $this->attach_ea_form($request_id);
+		$mail->addAttachment($excel['path'], $excel['file_name']);
         $mail->addAddress($requestor['email']);
         $mail->Subject = "EA Request";
         $mail->isHTML(true);
@@ -309,6 +312,7 @@ class Outcoming_requests extends MY_Controller {
 		} else {
 			return false;
 		}
+		$this->delete_ea_excel();
 	}
 
 	public function test() {
@@ -430,7 +434,7 @@ class Outcoming_requests extends MY_Controller {
 			$sheet->setCellValue('AL45', $destinations[1]['total_lodging_and_meals'] + 0);
 			$sheet->setCellValue('AL47', $destinations[1]['night'] + 0);
 			$sheet->setCellValue('AL49', $destinations[1]['total'] + 0);
-			if($detail['finance_status'] == 2) {
+			if($detail['fco_monitor_status'] == 2) {
 				$drawing6 = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
 				$drawing6->setName('FCO signature');
 				$drawing6->setPath(FCPATH.'assets/images/signature/' . $detail['fco_monitor_signature']); // put your path and image here
@@ -451,13 +455,13 @@ class Outcoming_requests extends MY_Controller {
 			$sheet->setCellValue('AL58', $destinations[2]['total_lodging_and_meals'] + 0);
 			$sheet->setCellValue('AL60', $destinations[2]['night'] + 0);
 			$sheet->setCellValue('AL62', $destinations[2]['total'] + 0);
-			if($detail['finance_status'] == 2) {
-				$drawing6 = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
-				$drawing6->setName('FCO signature');
-				$drawing6->setPath(FCPATH.'assets/images/signature/' . $detail['fco_monitor_signature']); // put your path and image here
-				$drawing6->setCoordinates('V54');
-				$drawing6->setHeight(50);
-				$drawing6->setWorksheet($spreadsheet->getActiveSheet());
+			if($detail['fco_monitor_status'] == 2) {
+				$drawing7 = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+				$drawing7->setName('FCO signature');
+				$drawing7->setPath(FCPATH.'assets/images/signature/' . $detail['fco_monitor_signature']); // put your path and image here
+				$drawing7->setCoordinates('V54');
+				$drawing7->setHeight(50);
+				$drawing7->setWorksheet($spreadsheet->getActiveSheet());
 			} 
 		}
 
@@ -502,6 +506,5 @@ class Outcoming_requests extends MY_Controller {
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header("Content-Disposition: attachment; filename=$filename.xlsx");
         $writer->save('php://output');
-
 	}
 }
