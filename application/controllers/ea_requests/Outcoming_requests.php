@@ -359,9 +359,7 @@ class Outcoming_requests extends MY_Controller {
 		}
 
 		// Signature
-
 		$drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
-		
 		$drawing->setName('Traveler signature');
 		$drawing->setPath(FCPATH.'assets/images/signature/' . $requestor['signature']); // put your path and image here
 		$drawing->setCoordinates('I85');
@@ -432,6 +430,14 @@ class Outcoming_requests extends MY_Controller {
 			$sheet->setCellValue('AL45', $destinations[1]['total_lodging_and_meals'] + 0);
 			$sheet->setCellValue('AL47', $destinations[1]['night'] + 0);
 			$sheet->setCellValue('AL49', $destinations[1]['total'] + 0);
+			if($detail['finance_status'] == 2) {
+				$drawing6 = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+				$drawing6->setName('FCO signature');
+				$drawing6->setPath(FCPATH.'assets/images/signature/' . $detail['fco_monitor_signature']); // put your path and image here
+				$drawing6->setCoordinates('V41');
+				$drawing6->setHeight(50);
+				$drawing6->setWorksheet($spreadsheet->getActiveSheet());
+			} 
 		}
 
 		if(count($destinations) > 2) {
@@ -445,6 +451,14 @@ class Outcoming_requests extends MY_Controller {
 			$sheet->setCellValue('AL58', $destinations[2]['total_lodging_and_meals'] + 0);
 			$sheet->setCellValue('AL60', $destinations[2]['night'] + 0);
 			$sheet->setCellValue('AL62', $destinations[2]['total'] + 0);
+			if($detail['finance_status'] == 2) {
+				$drawing6 = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+				$drawing6->setName('FCO signature');
+				$drawing6->setPath(FCPATH.'assets/images/signature/' . $detail['fco_monitor_signature']); // put your path and image here
+				$drawing6->setCoordinates('V54');
+				$drawing6->setHeight(50);
+				$drawing6->setWorksheet($spreadsheet->getActiveSheet());
+			} 
 		}
 
 		if($detail['travel_advance'] == 'Yes') {

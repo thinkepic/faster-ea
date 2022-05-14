@@ -7,6 +7,13 @@
 					</div>
 					<div class="kt-infobox__body">
 						<div class="row">
+							<label class="col-3 col-form-label fw-bold">EA Number</label>
+							<div class="col-9">
+								<span style="font-size: 1rem;"
+									class="badge badge-success fw-bold"><?= $detail['ea_number'] ?></span>
+							</div>
+						</div>
+						<div class="row">
 							<label class="col-3 col-form-label fw-bold">Requestor name</label>
 							<div class="col-9">
 								<span style="font-size: 1rem;"
