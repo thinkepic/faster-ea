@@ -215,13 +215,13 @@ class Request_Model extends CI_Model
     function get_excel_data_by_id($id) {
         $request_data =  $this->db->select('r.id as r_id, CONCAT("EA", r.id) AS ea_number, r.*, DATE_FORMAT(r.created_at, "%d-%M-%y") as request_date,
         DATE_FORMAT(r.departure_date, "%d-%M-%y") as departure_date, DATE_FORMAT(r.return_date, "%d-%M-%y") as return_date,
-        r.requestor_id, st.*, r.country_director_notified, format(r.max_budget_usd,0,"de_DE") as max_budget_usd,r.originating_city ,uh.username as head_of_units_name,
-        uea.username as ea_assosiate_name, ufc.username as fco_monitor_name,
-        ufc.purpose as fco_monitor_purpose, ufc.signature as fco_monitor_signature,
+        r.requestor_id, st.*, r.country_director_notified, format(r.max_budget_usd,0,"de_DE") as max_budget_usd,r.originating_city,
+        uh.username as head_of_units_name, uh.signature as head_of_units_signature, uea.username as ea_assosiate_name, ufc.username as fco_monitor_name,
+        ufc.purpose as fco_monitor_purpose, ufc.signature as fco_monitor_signature, uea.signature as ea_assosiate_signature,
         ufi.username as finance_name, DATE_FORMAT(st.head_of_units_status_at, "%d %M %Y - %H:%i") as head_of_units_status_at,
         DATE_FORMAT(st.ea_assosiate_status_at, "%d %M %Y - %H:%i") as ea_assosiate_status_at,
         DATE_FORMAT(st.fco_monitor_status_at, "%d %M %Y - %H:%i") as fco_monitor_status_at, st.fco_monitor_status_at as fco_signature_date,
-        DATE_FORMAT(st.finance_status_at, "%d %M %Y - %H:%i") as finance_status_at,
+        DATE_FORMAT(st.finance_status_at, "%d %M %Y - %H:%i") as finance_status_at, ufi.signature as finance_signature
         ')
             ->from('ea_requests r')
             ->join('ea_requests_status st', 'st.request_id = r.id', 'left')

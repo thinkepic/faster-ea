@@ -319,7 +319,6 @@ class Outcoming_requests extends MY_Controller {
 
 		$detail = $this->request->get_excel_data_by_id($req_id);
 		$requestor = $this->request->get_requestor_data($detail['requestor_id']);
-		// echo json_encode($detail);
 		$inputFileName = FCPATH.'assets/excel/ea_form.xlsx';
 		$reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
 		$spreadsheet = $reader->load($inputFileName);
@@ -337,7 +336,7 @@ class Outcoming_requests extends MY_Controller {
 		$sheet->setCellValue('AK15', $detail['ea_assosiate_name']);
 		$sheet->setCellValue('AL16', '$' . $detail['max_budget_usd']);
 		$sheet->setCellValue('C77', $detail['special_instructions']);
-
+		$sheet->setCellValue('C18', 'X');
 		if($detail['country_director_notified'] == 'Yes') {
 			$sheet->setCellValue('X18', 'X');
 		}
@@ -358,6 +357,57 @@ class Outcoming_requests extends MY_Controller {
 				$sheet->setCellValue('K23', $other_text);
 			}
 		}
+
+		// Signature
+
+		$drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+		
+		$drawing->setName('Traveler signature');
+		$drawing->setPath(FCPATH.'assets/images/signature/' . $requestor['signature']); // put your path and image here
+		$drawing->setCoordinates('I85');
+		$drawing->setHeight(40);
+		$drawing->setWorksheet($spreadsheet->getActiveSheet());
+
+		if($detail['head_of_units_status'] == 2) {
+			$drawing2 = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+			$drawing2->setName('Head of units signature');
+			$drawing2->setPath(FCPATH.'assets/images/signature/' . $detail['head_of_units_signature']); // put your path and image here
+			$drawing2->setCoordinates('I89');
+			$drawing2->setHeight(40);
+			$drawing2->setOffsetY(-5); 
+			$drawing2->setWorksheet($spreadsheet->getActiveSheet());
+
+		} 
+
+		// if($detail['ea_assosiate_status'] == 2) {
+		// 	$drawing3 = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+		// 	$drawing3->setName('EA signature');
+		// 	$drawing3->setPath(FCPATH.'assets/images/signature/' . $detail['ea_assosiate_signature']); // put your path and image here
+		// 	$drawing3->setCoordinates('AK89');
+		// 	$drawing3->setHeight(50);
+		// 	$drawing3->setOffsetY(-15); 
+		// 	$drawing3->setWorksheet($spreadsheet->getActiveSheet());
+		// } 
+
+		if($detail['fco_monitor_status'] == 2) {
+			$drawing4 = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+			$drawing4->setName('FCO signature');
+			$drawing4->setPath(FCPATH.'assets/images/signature/' . $detail['fco_monitor_signature']); // put your path and image here
+			$drawing4->setCoordinates('V28');
+			$drawing4->setHeight(50);
+			$drawing4->setWorksheet($spreadsheet->getActiveSheet());
+
+		} 
+
+		if($detail['finance_status'] == 2) {
+			$drawing5 = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+			$drawing5->setName('Finance signature');
+			$drawing5->setPath(FCPATH.'assets/images/signature/' . $detail['finance_signature']); // put your path and image here
+			$drawing5->setCoordinates('AK89');
+			$drawing5->setOffsetY(-15); 
+			$drawing5->setHeight(50);
+			$drawing5->setWorksheet($spreadsheet->getActiveSheet());
+		} 
 
 		$destinations= $detail['destinations'];
 		// 1st destination
@@ -430,7 +480,7 @@ class Outcoming_requests extends MY_Controller {
 			$sheet->setCellValue('Y74', 'X');
 		}
 
-		$writer = new Xlsx($spreadsheet);
+		// echo json_encode($detail);
 		$writer = new Xlsx($spreadsheet);
 		$ea_number = $detail['ea_number'];
         $current_time = date('d-m-Y h:i:s');
