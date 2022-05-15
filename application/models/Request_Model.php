@@ -37,7 +37,7 @@ class Request_Model extends CI_Model
     function get_request_by_id($id) {
         $request_data =  $this->db->select('r.id as r_id, CONCAT("EA", r.id) AS ea_number, DATE_FORMAT(r.created_at, "%d %M %Y - %H:%i") as request_date,
         DATE_FORMAT(r.departure_date, "%d %M %Y") as d_date, DATE_FORMAT(r.return_date, "%d %M %Y") as r_date,
-        r.*, st.*, uh.username as head_of_units_name, uea.username as ea_assosiate_name, ufc.username as fco_monitor_name,
+        r.*, st.*, uh.username as head_of_units_name, uh.email as head_of_units_email, uea.username as ea_assosiate_name, ufc.username as fco_monitor_name,
         ufc.purpose as fco_monitor_purpose, ufc.signature as fco_monitor_signature,
         ufi.username as finance_name, DATE_FORMAT(st.head_of_units_status_at, "%d %M %Y - %H:%i") as head_of_units_status_at,
         DATE_FORMAT(st.ea_assosiate_status_at, "%d %M %Y - %H:%i") as ea_assosiate_status_at,

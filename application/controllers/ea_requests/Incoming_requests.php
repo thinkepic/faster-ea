@@ -453,7 +453,7 @@ class Incoming_requests extends MY_Controller {
 					];
 					$updated = $this->request->update_payment_status($req_id, $payload);
 					if($updated) {
-						$email_sent = $this->send_payment_email($req_id, $payment_receipt);
+						$email_sent = $this->send_payment_email($req_id);
 						if($email_sent) {
 							$response['success'] = true;
 							$response['message'] = 'Payment process completed and email has been sent to requestor!';
@@ -510,7 +510,7 @@ class Incoming_requests extends MY_Controller {
         $html2pdf->Output('Payment Request Form.pdf');
 	}
 
-	private function send_payment_email($req_id, $receipt) {
+	private function send_payment_email($req_id) {
         $this->load->library('Phpmailer_library');
         $mail = $this->phpmailer_library->load();
         $mail->isSMTP();

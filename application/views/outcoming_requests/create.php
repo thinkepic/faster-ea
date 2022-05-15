@@ -1286,12 +1286,21 @@
 					'#head_of_units_email'))
 			} else {
 				const formData = new FormData(this);
+				const loader = `<div style="width: 5rem; height: 5rem;" class="spinner-border mb-5" role="status"></div>
+				<h5 class="mt-2">Please wait</h5>
+				<p>Submit data and sending email...</p>`
 				$.ajax({
 					url: $(this).attr("action"),
 					type: 'POST',
 					data: formData,
 					beforeSend: function () {
 						$('p.error').remove();
+						Swal.fire({
+									html: loader,
+									showConfirmButton: false,
+									allowEscapeKey: false,
+									allowOutsideClick: false,
+								});
 						KTApp.progress($('#btn-submit'))
 					},
 					error: function (xhr) {

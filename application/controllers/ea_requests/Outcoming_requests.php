@@ -164,6 +164,12 @@ class Outcoming_requests extends MY_Controller {
 			$request_id = $this->request->insert_request($payload);
 			if($request_id) {
 				$sent = $this->send_email_to_head_of_units($request_id);
+				if($payload['country_director_notified'] == 'Yes') {
+					$director = $this->base_model->get_country_director();
+					if($director) {
+						$this->send_email_to_country_director($request_id, $director);
+					}
+				}
 				if($sent) {
 					$response['message'] = 'Your request has been sent';
 					$status_code = 200;
@@ -237,6 +243,13 @@ class Outcoming_requests extends MY_Controller {
 		$enc_req_id = encrypt($detail['r_id']);
 		$approver_id = $detail['head_of_units_id'];
 
+		$assosiate = $this->base_model->get_ea_assosiate();
+		if($detail['travel_advance'] == 'Yes') {
+			if($assosiate) {
+				$approver_name = $approver_name . ' / ' . $assosiate['username'];
+			}
+		}
+
 		$data['preview'] = '<p>You have EA Request #EA-'.$detail['r_id'].' from <b>'.$requestor['username'].'</b> and it need your review. Please check on attachment</p>';
         
         $data['content'] = '
@@ -296,13 +309,58 @@ class Outcoming_requests extends MY_Controller {
                 </td>
             </tr>';
 
-        // $this->load->view('template/email', $data);
         $text = $this->load->view('template/email', $data, true);
         $mail->setFrom('no-reply@faster.bantuanteknis.id', 'FASTER-FHI360');
 		$excel = $this->attach_ea_form($request_id);
 		$mail->addAttachment($excel['path'], $excel['file_name']);
-        $mail->addAddress($requestor['email']);
+        $mail->addAddress($detail['head_of_units_email']);
+		if($detail['travel_advance'] == 'Yes') {
+			if($assosiate) {
+				$mail->addCC($assosiate['email']);
+			}
+		}
         $mail->Subject = "EA Request";
+        $mail->isHTML(true);
+        $mail->Body = $text;
+        $sent=$mail->send();
+
+		if ($sent) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	private function send_email_to_country_director($request_id, $director) {
+		$this->load->library('Phpmailer_library');
+        $mail = $this->phpmailer_library->load();
+        $mail->isSMTP();
+        $mail->SMTPSecure = 'ssl';
+        $mail->Host = $_ENV['EMAIL_HOST'];
+        $mail->Port = 465;
+        $mail->SMTPDebug = 0; 
+        $mail->SMTPAuth = true;
+        $mail->Username = $_ENV['EMAIL_USERNAME'];
+        $mail->Password = $_ENV['EMAIL_PASSWORD'];
+		$detail = $this->request->get_request_by_id($request_id);
+		$requestor = $this->request->get_requestor_data($detail['requestor_id']);
+
+		$data['preview'] = '<p>EA Request notify for country director #EA-'.$detail['r_id'].' from <b>'.$requestor['username'].'</b>. Please check on attachment</p>';
+        
+        $data['content'] = '
+            <tr>
+                <td>
+                    <p>Dear <b>'.$director['username'].'</b>,</p>
+                    <p>'.$data['preview'].'</p>
+                </td>
+            </tr>';
+
+        $text = $this->load->view('template/email', $data, true);
+        $mail->setFrom('no-reply@faster.bantuanteknis.id', 'FASTER-FHI360');
+		$excel = $this->attach_ea_form($request_id);
+		$mail->addAttachment($excel['path'], $excel['file_name']);
+        $mail->addAddress($director['email']);
+        $mail->Subject = "EA Request notification for Country Director";
         $mail->isHTML(true);
         $mail->Body = $text;
         $sent=$mail->send();
@@ -495,7 +553,6 @@ class Outcoming_requests extends MY_Controller {
 			$sheet->setCellValue('Y74', 'X');
 		}
 
-		// echo json_encode($detail);
 		$writer = new Xlsx($spreadsheet);
 		$ea_number = $detail['ea_number'];
         $current_time = date('d-m-Y h:i:s');
