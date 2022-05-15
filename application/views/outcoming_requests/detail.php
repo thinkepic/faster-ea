@@ -401,7 +401,9 @@
 									</div>
 									<div class="mt-3">
 										<h6 class="fw-bold">EA requests form</h6>
-										<a target="_blank" href="<?= base_url('ea_requests/outcoming-requests/ea_form') ?>/<?= $detail['r_id'] ?>" class="badge badge-primary"><span class="mr-1"><svg
+										<a target="_blank"
+											href="<?= base_url('ea_requests/outcoming-requests/ea_form') ?>/<?= $detail['r_id'] ?>"
+											class="badge badge-primary"><span class="mr-1"><svg
 													xmlns="http://www.w3.org/2000/svg" width="10" height="10"
 													fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
 													<path
@@ -549,7 +551,7 @@
 										<th class="kt-datatable__cell kt-datatable__cell--sort">
 											<span style="width: 110px;">Submitted on</span></th>
 										<th class="kt-datatable__cell kt-datatable__cell--sort">
-											<span style="width: 110px;">Action</span></th>
+											<span style="width: 140px;">Action</span></th>
 									</tr>
 								</thead>
 								<tbody class="kt-datatable__body">
@@ -573,7 +575,7 @@
 										<td data-field="Car Model" class="kt-datatable__cell"><span
 												style="width: 110px;"><?= $detail['head_of_units_status_at'] ?></span></td>
 										<td class="kt-datatable__cell">
-											<div style="width: 110px;" class="d-flex <?= $head_of_units_btn ?>">
+											<div style="width: 140px;" class="d-flex <?= $head_of_units_btn ?>">
 												<button data-level='head_of_units' data-id=<?= $detail['r_id'] ?>
 													data-status="2" class="btn btn-status btn-success mr-1">
 													<div class="d-flex align-items-center justify-content-center">
@@ -614,7 +616,12 @@
 										<td data-field="Car Model" class="kt-datatable__cell"><span
 												style="width: 110px;"><?= $detail['ea_assosiate_status_at'] ?></span></td>
 										<td class="kt-datatable__cell">
-											<div style="width: 110px;" class="d-flex <?= $ea_assosiate_btn ?>">
+											<div style="width: 140px;" class="d-flex <?= $ea_assosiate_btn ?>">
+												<?php if ($detail['max_budget_idr'] == null || $detail['max_budget_usd'] == null ): ?>
+												<button id="btn-to-budget-form" class="btn btn-sm btn-dark">
+													Max budget form
+												</button>
+												<?php else : ?>
 												<button data-level='ea_assosiate' data-id=<?= $detail['r_id'] ?>
 													data-status="2" class="btn btn-status btn-success mr-1">
 													<div class="d-flex align-items-center justify-content-center">
@@ -637,6 +644,7 @@
 														Reject
 													</div>
 												</button>
+												<?php endif; ?>
 											</div>
 										</td>
 									</tr>
@@ -654,7 +662,7 @@
 										<td data-field="Car Model" class="kt-datatable__cell"><span
 												style="width: 110px;"><?= $detail['fco_monitor_status_at'] ?></span></td>
 										<td class="kt-datatable__cell">
-											<div style="width: 110px;" class="d-flex <?= $fco_monitor_btn ?>">
+											<div style="width: 140px;" class="d-flex <?= $fco_monitor_btn ?>">
 												<button data-level='fco_monitor' data-id=<?= $detail['r_id'] ?>
 													data-status="2" class="btn btn-status btn-success mr-1">
 													<div class="d-flex align-items-center justify-content-center">
@@ -697,7 +705,7 @@
 												style="width: 110px;"><?= $detail['finance_status_at'] ?></span></td>
 										<td class="kt-datatable__cell">
 											<?php if ($detail['finance_status'] == 2): ?>
-											<div style="width: 110px;" class="d-flex">
+											<div style="width: 140px;" class="d-flex">
 												<a target="_blank"
 													href="<?= base_url('uploads/ea_payment_receipt/') ?><?= $detail['payment_receipt'] ?>"
 													class="badge badge-primary">
@@ -716,7 +724,7 @@
 												</a>
 											</div>
 											<?php else : ?>
-											<div style="width: 110px;" class="d-flex <?= $finance_btn ?>">
+											<div style="width: 140px;" class="d-flex <?= $finance_btn ?>">
 												<button data-level='finance' data-id=<?= $detail['r_id'] ?>
 													class="btn btn-payment btn-sm btn-warning text-light">
 													<div class="d-flex align-items-center justify-content-center">
@@ -783,6 +791,12 @@
 	<script>
 		$(document).ready(function () {
 			$('#max_budget_idr, #max_budget_usd').number(true, 0, '', '.');
+			$(document).on('click', '#btn-to-budget-form', function (e) {
+				e.preventDefault()
+				$('html, body').animate({
+					scrollTop: $("#max-budget-form").offset().top - 180
+				}, 500);
+			})
 			$(document).on('click', '.btn-status', function (e) {
 				e.preventDefault()
 				const id = $(this).attr('data-id')
