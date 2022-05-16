@@ -20,48 +20,56 @@ class Requests_Confirmation extends CI_Controller {
         $status = $this->input->get('status');
         $level = $this->input->get('level');
 		if($status == 3) {
-            $this->request->update_status($req_id, $approver_id, $status, $level);
-            $email_sent = $this->send_rejected_requests($req_id, $level);
-            if($email_sent) {
-                $data['message'] = "EA Requests #EA$req_id has been rejected";
-            } else {
-                $data['message'] = "Something wrong, please try again later";
-                $this->request->update_status($req_id, $approver_id, 1, $level);
-            }
+            $updated = $this->request->update_status($req_id, $approver_id, $status, $level);
+			if($updated) {
+				$email_sent = $this->send_rejected_requests($req_id, $level);
+				if($email_sent) {
+					$data['message'] = "EA Requests #EA$req_id has been rejected";
+				} else {
+					$data['message'] = "Something wrong, please try again later";
+					$this->request->update_status($req_id, $approver_id, 1, $level);
+				}
+			} else {
+				$data['message'] = "Something wrong, please try again later";
+			}
         } else {
             $request_detail = $this->request->get_request_by_id($req_id);
-            $this->request->update_status($req_id, $approver_id, $status, $level);
-            if ($level == 'fco_monitor') {
-                $fco = $this->base_model->get_fco_monitor();
-                $email_sent = $this->send_email_to_finance_teams($req_id, $fco['username']);
-            } else {
-                if($level == 'head_of_units') {
-                    $ea_assosiate = $this->base_model->get_ea_assosiate();
-                    $target_level = 'ea_assosiate';
-                    $email_data = [
-                        'approver_name' => $request_detail['head_of_units_name'],
-                        'target_id' => $ea_assosiate['id'],
-                        'target_name' => $ea_assosiate['username'],
-                        'target_email' => $ea_assosiate['email'],
-                    ];
-                } else if ($level == 'ea_assosiate') {
-                    $fco_monitor = $this->base_model->get_fco_monitor();
-                    $target_level = 'fco_monitor';
-                    $email_data = [
-                        'approver_name' => $request_detail['ea_assosiate_name'],
-                        'target_id' => $fco_monitor['id'],
-                        'target_name' => $fco_monitor['username'],
-                        'target_email' => $fco_monitor['email'],
-                    ];
-                }
-                $email_sent = $this->send_approved_request($req_id, $target_level, $email_data);
-            }
-            if($email_sent) {
-                $data['message'] = "EA Requests #EA$req_id has been approved";
-            } else {
-                $data['message'] = "Something wrong, please try again later";
-                $this->request->update_status($req_id, $approver_id, 1, $level);
-            }
+            $updated = $this->request->update_status($req_id, $approver_id, $status, $level);
+			if($updated) {
+				if ($level == 'fco_monitor') {
+					$fco = $this->base_model->get_fco_monitor();
+					$email_sent = $this->send_email_to_finance_teams($req_id, $fco['username']);
+				} else {
+					if($level == 'head_of_units') {
+						$ea_assosiate = $this->base_model->get_ea_assosiate();
+						$target_level = 'ea_assosiate';
+						$email_data = [
+							'approver_name' => $request_detail['head_of_units_name'],
+							'target_id' => $ea_assosiate['id'],
+							'target_name' => $ea_assosiate['username'],
+							'target_email' => $ea_assosiate['email'],
+						];
+					} else if ($level == 'ea_assosiate') {
+						$fco_monitor = $this->base_model->get_fco_monitor();
+						$target_level = 'fco_monitor';
+						$email_data = [
+							'approver_name' => $request_detail['ea_assosiate_name'],
+							'target_id' => $fco_monitor['id'],
+							'target_name' => $fco_monitor['username'],
+							'target_email' => $fco_monitor['email'],
+						];
+					}
+					$email_sent = $this->send_approved_request($req_id, $target_level, $email_data);
+				}
+				if($email_sent) {
+					$data['message'] = "EA Requests #EA$req_id has been approved";
+				} else {
+					$data['message'] = "Something wrong, please try again later";
+					$this->request->update_status($req_id, $approver_id, 1, $level);
+				}
+			} else {
+				$data['message'] = "Something wrong, please try again later";
+			}
         }
         $this->delete_ea_excel();
         $this->template->render('requests_confirmation/index', $data);

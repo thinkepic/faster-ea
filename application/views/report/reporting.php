@@ -31,6 +31,13 @@
 								<span class="badge badge-info fw-bold"><?= $requestor_data['unit_name'] ?></span>
 							</div>
 						</div>
+						<div class="row">
+							<label class="col-3 col-form-label fw-bold">Total cost</label>
+							<div class="col-9">
+								<span class="badge badge-pill badge-secondary fw-bold">IDR
+									<?= number_format($detail['total_destinations_cost'],2,',','.') ?></span>
+							</div>
+						</div>
 						<div class="p-2 mb-2 border-bottom"></div>
 					</div>
 				</div>
@@ -87,10 +94,11 @@
 								<tr data-row="1" class="kt-datatable__row" style="left: 0px;">
 									<td class="kt-datatable__cell fw-bold"><span style="width: 100px;">Meals</span></td>
 									<td data-field="Status" data-autohide-disabled="false" class="kt-datatable__cell">
-										<span style="width: 110px;"><span
-												class="badge badge-pill badge-secondary fw-bold">
+										<span style="width: 110px;">
+											<span class="badge badge-pill badge-secondary fw-bold">
 												<?= $dest['d_meals'] ?>
-											</span></span>
+											</span>
+										</span>
 									<td class="kt-datatable__cell">
 										<div>
 											<div class="input-group ">
@@ -107,7 +115,40 @@
 											12 May 2022, 18.14
 										</span>
 									</td>
-
+								</tr>
+								<tr data-row="1" class="kt-datatable__row" style="left: 0px;">
+									<td class="kt-datatable__cell fw-bold"><span style="width: 80px;">Total: </td>
+									<td data-field="Status" data-autohide-disabled="false" class="kt-datatable__cell">
+										<span style="width: 280px;">
+										 <span class="badge badge-pill badge-secondary fw-bold">
+										 <?= $dest['d_total_lodging_and_meals'] ?>
+										 </span>
+										 x <?= $dest['night'] ?> (number of nights)
+										</span>
+									<td class="kt-datatable__cell">
+										
+									</td>
+									<td class="kt-datatable__cell">
+										<span style="width: 150px;">
+											
+										</span>
+									</td>
+								</tr>
+								<tr data-row="1" class="kt-datatable__row" style="left: 0px;">
+									<td class="kt-datatable__cell fw-bold"><span style="width: 80px;">Total costs:</td>
+									<td data-field="Status" data-autohide-disabled="false" class="kt-datatable__cell">
+										<span style="width: 280px;">
+										 <span class="badge badge-pill badge-secondary fw-bold">
+										 <?= $dest['d_total'] ?>
+										</span>
+									<td class="kt-datatable__cell">
+										
+									</td>
+									<td class="kt-datatable__cell">
+										<span style="width: 150px;">
+											
+										</span>
+									</td>
 								</tr>
 							</tbody>
 						</table>
