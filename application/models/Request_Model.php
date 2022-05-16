@@ -81,7 +81,8 @@ class Request_Model extends CI_Model
         }
         $destinations = $this->db->select('*, format(meals,2,"de_DE") as d_meals, format(lodging,2,"de_DE") as d_lodging,
         format(total_lodging_and_meals,2,"de_DE") as d_total_lodging_and_meals, format(total,2,"de_DE") as d_total,
-        DATE_FORMAT(departure_date, "%d %M %Y") as depar_date, DATE_FORMAT(arrival_date, "%d %M %Y") as arriv_date
+        DATE_FORMAT(departure_date, "%d %M %Y") as depar_date, DATE_FORMAT(arrival_date, "%d %M %Y") as arriv_date,
+        format(actual_meals,2,"de_DE") as d_actual_meals, format(actual_lodging,2,"de_DE") as d_actual_lodging
         ')
         ->from('ea_requests_destinations')
         ->where('request_id', $id)
@@ -251,5 +252,10 @@ class Request_Model extends CI_Model
         $request_data['destinations'] = $destinations;
         $request_data['participants'] = $participants;
         return $request_data;
+    }
+
+    function insert_actual_cost($dest_id, $payload) {
+        $this->db->where('id', $dest_id)->update('ea_requests_destinations', $payload);
+        return $this->db->affected_rows() === 1;
     }
 }

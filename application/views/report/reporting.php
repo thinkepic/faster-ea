@@ -48,7 +48,7 @@
 						<h4 class="text-dark fw-600"><?= $dest['order'] ?> destination
 							<span>(<?= $dest['city'] ?>)</span></h4>
 					</div>
-					<div class="kt-datatable kt-datatable--default kt-datatable--brand kt-datatable--loaded">
+					<div class="kt-datatable kt-datatable--default kt-datatable--brand kt-datatable--loaded border-bottom">
 						<table class="kt-datatable__table" id="html_table" width="100%" style="display: block;">
 							<thead class="kt-datatable__head">
 								<tr class="kt-datatable__row" style="left: 0px;">
@@ -57,9 +57,11 @@
 									<th class="kt-datatable__cell kt-datatable__cell--sort"><span
 											style="width: 110px;">Cost</span></th>
 									<th class="kt-datatable__cell kt-datatable__cell--sort">
-										<span style="width: 250px;">Actual cost</span></th>
+										<span style="width: 110px;">Actual cost</span></th>
 									<th class="kt-datatable__cell kt-datatable__cell--sort">
-										<span style="width: 150px;">Submitted at</span></th>
+										<span style="width: 90px;">Receipt</span></th>
+									<th class="kt-datatable__cell kt-datatable__cell--sort">
+										<span style="width: 90px;">Action</span></th>
 
 								</tr>
 							</thead>
@@ -70,86 +72,145 @@
 											Lodging
 										</span>
 									</td>
-									<td data-field="Status" data-autohide-disabled="false" class="kt-datatable__cell">
+									<td class="kt-datatable__cell">
 										<span style="width: 110px;">
 											<span class="badge badge-pill badge-secondary fw-bold">
 												<?= $dest['d_lodging'] ?>
 											</span>
 										</span>
-									<td class="kt-datatable__cell">
-										<div class="input-group ">
-											<input type="text" class="form-control" placeholder="Enter actual lodging">
-											<div class="input-group-append">
-												<button class="btn btn-success" id="basic-addon2">Submit</button>
-											</div>
-										</div>
 									</td>
 									<td class="kt-datatable__cell">
-										<span style="width: 150px;">
-											12 May 2022, 18.14
+										<span style="width: 110px;">
+											<span class="badge badge-pill badge-secondary fw-bold">
+												<?= ($dest['d_actual_lodging'] == '' ? '-' : $dest['d_actual_lodging']) ?>
+											</span>
 										</span>
 									</td>
-
+									<td class="kt-datatable__cell">
+										<span style="width: 90px;">
+											<?php if ($dest['lodging_receipt'] == null): ?>
+											<span class="badge badge-pill badge-secondary fw-bold">
+												-
+											</span>
+											<?php else : ?>
+											<a target="_blank" class="badge badge-warning text-light"
+												href="<?= base_url('uploads/ea_items_receipt/') ?><?= $dest['lodging_receipt'] ?>">
+												<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+													fill="currentColor" class="bi bi-card-image" viewBox="0 0 16 16">
+													<path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+													<path
+														d="M1.5 2A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13zm13 1a.5.5 0 0 1 .5.5v6l-3.775-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12v.54A.505.505 0 0 1 1 12.5v-9a.5.5 0 0 1 .5-.5h13z" />
+												</svg>
+											</a>
+											<?php endif; ?>
+										</span>
+									</td>
+									<td class="kt-datatable__cell">
+										<span style="width: 90px;">
+											<button data-field="lodging" data-dest-id="<?= $dest['id'] ?>"
+												class="btn btn-meals-lodging btn-sm btn-danger">
+												<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+													fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+													<path
+														d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+													<path fill-rule="evenodd"
+														d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+												</svg>
+												<span class="ml-1">Edit</span>
+											</button>
+										</span>
+									</td>
 								</tr>
-								<tr data-row="1" class="kt-datatable__row" style="left: 0px;">
-									<td class="kt-datatable__cell fw-bold"><span style="width: 100px;">Meals</span></td>
-									<td data-field="Status" data-autohide-disabled="false" class="kt-datatable__cell">
+								<tr data-row="0" class="kt-datatable__row" style="left: 0px;">
+									<td class="kt-datatable__cell fw-bold">
+										<span style="width: 100px;">
+											Meals
+										</span>
+									</td>
+									<td class="kt-datatable__cell">
 										<span style="width: 110px;">
 											<span class="badge badge-pill badge-secondary fw-bold">
 												<?= $dest['d_meals'] ?>
 											</span>
 										</span>
-									<td class="kt-datatable__cell">
-										<div>
-											<div class="input-group ">
-												<input type="text" class="form-control" placeholder="Enter actual meals"
-													aria-label="Recipient's username" aria-describedby="basic-addon2">
-												<div class="input-group-append">
-													<button class="btn btn-success" id="basic-addon2">Submit</button>
-												</div>
-											</div>
-										</div>
 									</td>
 									<td class="kt-datatable__cell">
-										<span style="width: 150px;">
-											12 May 2022, 18.14
+										<span style="width: 110px;">
+											<span class="badge badge-pill badge-secondary fw-bold">
+												<?= ($dest['d_actual_meals'] == '' ? '-' : $dest['d_actual_meals']) ?>
+											</span>
+										</span>
+									</td>
+									<td class="kt-datatable__cell">
+										<span style="width: 90px;">
+											<?php if ($dest['meals_receipt'] == null): ?>
+											<span class="badge badge-pill badge-secondary fw-bold">
+												-
+											</span>
+											<?php else : ?>
+											<a target="_blank" class="badge badge-warning text-light"
+												href="<?= base_url('uploads/ea_items_receipt/') ?><?= $dest['meals_receipt'] ?>">
+												<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+													fill="currentColor" class="bi bi-card-image" viewBox="0 0 16 16">
+													<path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+													<path
+														d="M1.5 2A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13zm13 1a.5.5 0 0 1 .5.5v6l-3.775-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12v.54A.505.505 0 0 1 1 12.5v-9a.5.5 0 0 1 .5-.5h13z" />
+												</svg>
+											</a>
+											<?php endif; ?>
+										</span>
+									</td>
+									<td class="kt-datatable__cell">
+										<span style="width: 90px;">
+											<button data-field="meals" data-dest-id="<?= $dest['id'] ?>"
+												class="btn btn-meals-lodging btn-sm btn-danger">
+												<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+													fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+													<path
+														d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+													<path fill-rule="evenodd"
+														d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+												</svg>
+												<span class="ml-1">Edit</span>
+											</button>
 										</span>
 									</td>
 								</tr>
-								<tr data-row="1" class="kt-datatable__row" style="left: 0px;">
-									<td class="kt-datatable__cell fw-bold"><span style="width: 80px;">Total: </td>
+								<!-- <tr class="kt-datatable__row" style="left: 0px;">
+									<td class="kt-datatable__cell fw-bold"><span style="width: 110px;">Total: </td>
 									<td data-field="Status" data-autohide-disabled="false" class="kt-datatable__cell">
 										<span style="width: 280px;">
-										 <span class="badge badge-pill badge-secondary fw-bold">
-										 <?= $dest['d_total_lodging_and_meals'] ?>
-										 </span>
-										 x <?= $dest['night'] ?> (number of nights)
+											<span class="badge badge-pill badge-secondary fw-bold">
+												<?= $dest['d_total_lodging_and_meals'] ?>
+											</span>
+											x <?= $dest['night'] ?> (number of nights)
 										</span>
 									<td class="kt-datatable__cell">
-										
+
 									</td>
 									<td class="kt-datatable__cell">
-										<span style="width: 150px;">
-											
+										<span style="width: 170px;">
+
 										</span>
 									</td>
-								</tr>
-								<tr data-row="1" class="kt-datatable__row" style="left: 0px;">
-									<td class="kt-datatable__cell fw-bold"><span style="width: 80px;">Total costs:</td>
+								</tr> -->
+								<!-- <tr class="kt-datatable__row bg-dark" style="left: 0px;">
+									<td class="kt-datatable__cell fw-bold "><span class="text-light"
+											style="width: 110px;">Total costs:</td>
 									<td data-field="Status" data-autohide-disabled="false" class="kt-datatable__cell">
 										<span style="width: 280px;">
-										 <span class="badge badge-pill badge-secondary fw-bold">
-										 <?= $dest['d_total'] ?>
-										</span>
+											<span class="badge badge-pill badge-secondary fw-bold">
+												<?= $dest['d_total'] ?>
+											</span>
 									<td class="kt-datatable__cell">
-										
+
 									</td>
 									<td class="kt-datatable__cell">
-										<span style="width: 150px;">
-											
+										<span style="width: 170px;">
+
 										</span>
 									</td>
-								</tr>
+								</tr> -->
 							</tbody>
 						</table>
 					</div>
@@ -162,7 +223,82 @@
 
 <script>
 	$(document).ready(function () {
-
+		$(document).on('click', '.btn-meals-lodging', function (e) {
+			e.preventDefault()
+			const dest_id = $(this).attr('data-dest-id')
+			const field = $(this).attr('data-field')
+			$.get(base_url + `ea_requests/report/meals_lodging_modal?dest_id=${dest_id}&field=${field}`,
+				function (html) {
+					$('#myModal').html(html)
+					$('#actual_cost').number(true, 0, '', '.');
+					$('#myModal').modal('show')
+				});
+		});
+		$(document).on("submit", '#meals-lodging-form', function (e) {
+			e.preventDefault()
+			const loader = `<div style="width: 5rem; height: 5rem;" class="spinner-border mb-5" role="status"></div>
+			<h5 class="mt-2">Please wait</h5>
+			<p>Saving data ...</p>`
+			const formData = new FormData(this);
+			Swal.fire({
+				title: 'Reporting actual costs?',
+				text: "",
+				type: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: `Yes!`
+			}).then((result) => {
+				if (result.value) {
+					$.ajax({
+						type: 'POST',
+						url: $(this).attr("action"),
+						data: formData,
+						beforeSend: function () {
+							$('p.error').remove();
+							Swal.fire({
+								html: loader,
+								showConfirmButton: false,
+								allowEscapeKey: false,
+								allowOutsideClick: false,
+							});
+						},
+						error: function (xhr) {
+							const response = xhr.responseJSON;
+							if (response.errors) {
+								for (const err in response.errors) {
+									$(`#${err}`).parent().append(
+										`<p class="error mt-1 mb-0">This field is required</p>`
+									)
+								}
+							}
+							Swal.fire({
+								"title": response.message,
+								"text": '',
+								"type": "error",
+								"confirmButtonClass": "btn btn-dark"
+							});
+						},
+						success: function (response) {
+							Swal.fire({
+								"title": "Success!",
+								"text": response.message,
+								"type": "success",
+								"confirmButtonClass": "btn btn-dark"
+							}).then((result) => {
+								console.log(response)
+								if (result.value) {
+									location.reload();
+								}
+							})
+						},
+						cache: false,
+						contentType: false,
+						processData: false
+					});
+				}
+			})
+		});
 	});
 
 </script>

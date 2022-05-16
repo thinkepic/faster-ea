@@ -330,8 +330,8 @@
 									aria-haspopup="true" data-ktmenu-submenu-toggle="hover"><a href="javascript:;"
 										class="kt-menu__link kt-menu__toggle">
 										<span class="kt-menu__link-icon">
-											<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-												fill="gray" class="bi bi-file-earmark-text" viewBox="0 0 16 16">
+											<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="gray"
+												class="bi bi-file-earmark-text" viewBox="0 0 16 16">
 												<path
 													d="M5.5 7a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zM5 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5z" />
 												<path
@@ -347,8 +347,7 @@
 														class="kt-menu__link-text">Subheaders</span></span></li>
 											<li class="kt-menu__item <?= ($page == 'Request report' ? 'kt-menu__item--active' : '') ?>"
 												aria-haspopup="true">
-												<a href="<?= base_url('ea_requests/report') ?>"
-													class="kt-menu__link"><i
+												<a href="<?= base_url('ea_requests/report') ?>" class="kt-menu__link"><i
 														class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span
 														class="kt-menu__link-text">
 														Request Report</span>
@@ -468,6 +467,10 @@
 	</div>
 	<!-- end::Scrolltop -->
 
+	<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
+		
+	</div>
 	<!-- begin::Global Config(global config for global JS sciprts) -->
 	<script>
 		var KTAppOptions = {
