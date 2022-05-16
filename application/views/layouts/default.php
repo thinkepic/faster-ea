@@ -227,7 +227,8 @@
 											<li class="kt-menu__item  kt-menu__item--parent" aria-haspopup="true"><span
 													class="kt-menu__link"><span
 														class="kt-menu__link-text">Subheaders</span></span></li>
-											<li class="kt-menu__item <?= ($page == 'Requests for review' ? 'kt-menu__item--active' : '') ?>"" aria-haspopup="true">
+											<li class="kt-menu__item <?= ($page == 'Requests for review' ? 'kt-menu__item--active' : '') ?>"" aria-haspopup="
+												true">
 												<a href="<?= base_url('ea_requests/incoming-requests/requests-for-review') ?>"
 													class="kt-menu__link"><i
 														class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span
@@ -235,7 +236,8 @@
 														Requests For Review</span>
 												</a>
 											</li>
-											<li class="kt-menu__item <?= ($page == 'Pending requests' ? 'kt-menu__item--active' : '') ?>"" aria-haspopup="true">
+											<li class="kt-menu__item <?= ($page == 'Pending requests' ? 'kt-menu__item--active' : '') ?>"" aria-haspopup="
+												true">
 												<a href="<?= base_url('ea_requests/incoming-requests/pending') ?>"
 													class="kt-menu__link"><i
 														class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span
@@ -243,7 +245,8 @@
 														Pending</span>
 												</a>
 											</li>
-											<li class="kt-menu__item <?= ($page == 'Rejected requests' ? 'kt-menu__item--active' : '') ?>" aria-haspopup="true">
+											<li class="kt-menu__item <?= ($page == 'Rejected requests' ? 'kt-menu__item--active' : '') ?>"
+												aria-haspopup="true">
 												<a href="<?= base_url('ea_requests/incoming-requests/rejected') ?>"
 													class="kt-menu__link"><i
 														class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span
@@ -251,7 +254,8 @@
 														Rejected</span>
 												</a>
 											</li>
-											<li class="kt-menu__item <?= ($page == 'Done requests' ? 'kt-menu__item--active' : '') ?>" aria-haspopup="true">
+											<li class="kt-menu__item <?= ($page == 'Done requests' ? 'kt-menu__item--active' : '') ?>"
+												aria-haspopup="true">
 												<a href="<?= base_url('ea_requests/incoming-requests/done') ?>"
 													class="kt-menu__link"><i
 														class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span
@@ -317,6 +321,37 @@
 														class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span
 														class="kt-menu__link-text">
 														Done</span>
+												</a>
+											</li>
+										</ul>
+									</div>
+								</li>
+								<li class="kt-menu__item  kt-menu__item--submenu <?= ($pageParent == 'Report' ? 'kt-menu__item--open' : '') ?>"
+									aria-haspopup="true" data-ktmenu-submenu-toggle="hover"><a href="javascript:;"
+										class="kt-menu__link kt-menu__toggle">
+										<span class="kt-menu__link-icon">
+											<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+												fill="gray" class="bi bi-file-earmark-text" viewBox="0 0 16 16">
+												<path
+													d="M5.5 7a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zM5 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5z" />
+												<path
+													d="M9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.5L9.5 0zm0 1v2A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z" />
+											</svg>
+										</span>
+										<span class="kt-menu__link-text">Report</span><i
+											class="kt-menu__ver-arrow la la-angle-right"></i></a>
+									<div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
+										<ul class="kt-menu__subnav">
+											<li class="kt-menu__item  kt-menu__item--parent" aria-haspopup="true"><span
+													class="kt-menu__link"><span
+														class="kt-menu__link-text">Subheaders</span></span></li>
+											<li class="kt-menu__item <?= ($page == 'Request Report' ? 'kt-menu__item--active' : '') ?>"
+												aria-haspopup="true">
+												<a href="<?= base_url('ea_requests/report') ?>"
+													class="kt-menu__link"><i
+														class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span
+														class="kt-menu__link-text">
+														Request Report</span>
 												</a>
 											</li>
 										</ul>
@@ -459,7 +494,8 @@
 
 	<!--begin:: Global Mandatory Vendors -->
 	<script src="<?= site_url('assets/vendors/general/js-cookie/src/js.cookie.js') ?>" type="text/javascript"></script>
-	<script src="<?= site_url('assets/vendors/general/jquery-number/jquery.number.min.js') ?>" type="text/javascript"></script>
+	<script src="<?= site_url('assets/vendors/general/jquery-number/jquery.number.min.js') ?>" type="text/javascript">
+	</script>
 	<script src="<?= site_url('assets/vendors/general/sweetalert2/dist/sweetalert2.min.js') ?>" type="text/javascript">
 	</script>
 	<script src="<?= site_url('assets/vendors/general/sticky-js/dist/sticky.min.js') ?>" type="text/javascript">

@@ -16,8 +16,6 @@ class Incoming_requests extends MY_Controller {
 	public function requests_for_review()
 	{
 		$this->template->set('page', 'Requests for review');
-		$requests = $this->db->select('*')->from('ea_requests')->get()->result();
-		$data['requests'] = $requests;
 		$data['status'] = 'requests_for_review';
 		$this->template->render('incoming_requests/requests_for_review', $data);
 	}
@@ -137,10 +135,10 @@ class Incoming_requests extends MY_Controller {
 					$status_code = 400;
 				}
 			} else {
-				$request_detail = $this->request->get_request_by_id($req_id);
 				$approver_name = $this->user_data->fullName;
 				$updated =$this->request->update_status($req_id, $approver_id, $status, $level);
 				if($updated) {
+					$request_detail = $this->request->get_request_by_id($req_id);
 					if ($level == 'fco_monitor') {
 						$email_sent = $this->send_email_to_finance_teams($req_id, $approver_name);
 					} else {

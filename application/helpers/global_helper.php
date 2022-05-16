@@ -125,3 +125,19 @@ if (!function_exists('is_finance_teams')) {
         return false;
     }
 }
+
+if (!function_exists('get_total_request_costs')) {
+    function get_total_request_costs($req_id)
+    {   
+        $ci = &get_instance();
+        $destinations = $ci->db->select('total')
+        ->from('ea_requests_destinations')
+        ->where('request_id', $req_id)
+        ->get()->result_array();
+        $total_destinations_cost = 0;
+        foreach($destinations as $dest) {
+            $total_destinations_cost += $dest['total'];
+        }
+        return number_format($total_destinations_cost,2,',','.');
+    }
+}
