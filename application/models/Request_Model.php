@@ -256,6 +256,6 @@ class Request_Model extends CI_Model
 
     function insert_actual_cost($dest_id, $payload) {
         $this->db->where('id', $dest_id)->update('ea_requests_destinations', $payload);
-        return $this->db->affected_rows() === 1;
+        return true;
     }
 }
