@@ -345,7 +345,7 @@
 											<li class="kt-menu__item  kt-menu__item--parent" aria-haspopup="true"><span
 													class="kt-menu__link"><span
 														class="kt-menu__link-text">Subheaders</span></span></li>
-											<li class="kt-menu__item <?= ($page == 'Request Report' ? 'kt-menu__item--active' : '') ?>"
+											<li class="kt-menu__item <?= ($page == 'Request report' ? 'kt-menu__item--active' : '') ?>"
 												aria-haspopup="true">
 												<a href="<?= base_url('ea_requests/report') ?>"
 													class="kt-menu__link"><i

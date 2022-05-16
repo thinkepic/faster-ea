@@ -16,9 +16,28 @@ class Report extends MY_Controller {
 
 	public function index()
 	{   
-        $this->template->set('page', 'Request reports');
+        $this->template->set('page', 'Request report');
         $data['status'] = 'done';
 		$this->template->render('report/index', $data);
+	}
+
+    public function reporting($id = null)
+	{
+		$id = decrypt($id);
+		$detail = $this->request->get_request_by_id($id);
+		if($detail) {
+			$user_id = $this->user_data->userId;
+			$requestor_data = $this->request->get_requestor_data($detail['requestor_id']);
+			$data = [
+				'detail' => $detail,
+				'requestor_data' => $requestor_data,
+			];
+			// echo json_encode($data);
+			$this->template->set('page', 'Reporting #' . $detail['ea_number']);
+			$this->template->render('report/reporting', $data);
+		} else {
+			show_404();
+		}
 	}
 
     public function datatable()
