@@ -53,6 +53,7 @@ class Report extends MY_Controller {
         $this->datatable->where('st.fco_monitor_status =', 2);
         $this->datatable->where('st.finance_status =', 2);
         $this->datatable->order_by('created_at', 'desc');
+		$this->datatable->where('ea.requestor_id =', $this->user_data->userId);
 		$this->datatable->edit_column('id', "$1", 'encrypt(id)');
 		$this->datatable->edit_column('total_cost', '<span style="font-size: 1rem;"
 		class="badge badge-pill badge-secondary fw-bold">$1</span>', 'get_total_request_costs(total_cost)');
@@ -77,6 +78,15 @@ class Report extends MY_Controller {
 		];
 
 		$this->load->view('report/meals_lodging_modal', $data);
+	}
+
+	public function add_items_modal() {
+		$dest_id = $this->input->get('dest_id');		
+		$data = [
+			'dest_id' => $dest_id,
+		];
+
+		$this->load->view('report/add_items_modal', $data);
 	}
 
 	public function insert_actual_meals_lodging() {

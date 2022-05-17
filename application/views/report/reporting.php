@@ -48,7 +48,8 @@
 						<h4 class="text-dark fw-600"><?= $dest['order'] ?> destination
 							<span>(<?= $dest['city'] ?>)</span></h4>
 					</div>
-					<div class="kt-datatable kt-datatable--default kt-datatable--brand kt-datatable--loaded border-bottom">
+					<div
+						class="kt-datatable kt-datatable--default kt-datatable--brand kt-datatable--loaded border-bottom">
 						<table class="kt-datatable__table" id="html_table" width="100%" style="display: block;">
 							<thead class="kt-datatable__head">
 								<tr class="kt-datatable__row" style="left: 0px;">
@@ -176,6 +177,33 @@
 										</span>
 									</td>
 								</tr>
+								<tr data-row="0" class="kt-datatable__row" style="left: 0px;">
+									<td class="kt-datatable__cell fw-bold">
+										<span style="width: 100px;">
+
+										</span>
+									</td>
+									<td class="kt-datatable__cell">
+										<span style="width: 110px;">
+										</span>
+									</td>
+									<td class="kt-datatable__cell">
+										<span style="width: 110px;">
+										</span>
+									</td>
+									<td class="kt-datatable__cell">
+										<span style="width: 90px;">
+
+										</span>
+									</td>
+									<td class="kt-datatable__cell">
+										<span style="width: 90px;">
+											<button data-dest-id="<?= $dest['id'] ?>" class="btn btn-add-items btn-sm btn-success">
+												Add items
+											</button>
+										</span>
+									</td>
+								</tr>
 								<!-- <tr class="kt-datatable__row" style="left: 0px;">
 									<td class="kt-datatable__cell fw-bold"><span style="width: 110px;">Total: </td>
 									<td data-field="Status" data-autohide-disabled="false" class="kt-datatable__cell">
@@ -234,14 +262,86 @@
 					$('#myModal').modal('show')
 				});
 		});
-		$(document).on("submit", '#meals-lodging-form', function (e) {
+		$(document).on('click', '.btn-add-items', function (e) {
 			e.preventDefault()
-			const loader = `<div style="width: 5rem; height: 5rem;" class="spinner-border mb-5" role="status"></div>
+			const dest_id = $(this).attr('data-dest-id')
+			$.get(base_url + `ea_requests/report/add_items_modal?dest_id=${dest_id}`,
+				function (html) {
+					$('#myModal').html(html)
+					$('#cost').number(true, 0, '', '.');
+					$('#myModal').modal('show')
+				});
+		});
+		const loader = `<div style="width: 5rem; height: 5rem;" class="spinner-border mb-5" role="status"></div>
 			<h5 class="mt-2">Please wait</h5>
 			<p>Saving data ...</p>`
+		$(document).on("submit", '#meals-lodging-form', function (e) {
+			e.preventDefault()
 			const formData = new FormData(this);
 			Swal.fire({
 				title: 'Reporting actual costs?',
+				text: "",
+				type: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: `Yes!`
+			}).then((result) => {
+				if (result.value) {
+					$.ajax({
+						type: 'POST',
+						url: $(this).attr("action"),
+						data: formData,
+						beforeSend: function () {
+							$('p.error').remove();
+							Swal.fire({
+								html: loader,
+								showConfirmButton: false,
+								allowEscapeKey: false,
+								allowOutsideClick: false,
+							});
+						},
+						error: function (xhr) {
+							const response = xhr.responseJSON;
+							if (response.errors) {
+								for (const err in response.errors) {
+									$(`#${err}`).parent().append(
+										`<p class="error mt-1 mb-0">This field is required</p>`
+									)
+								}
+							}
+							Swal.fire({
+								"title": response.message,
+								"text": '',
+								"type": "error",
+								"confirmButtonClass": "btn btn-dark"
+							});
+						},
+						success: function (response) {
+							Swal.fire({
+								"title": "Success!",
+								"text": response.message,
+								"type": "success",
+								"confirmButtonClass": "btn btn-dark"
+							}).then((result) => {
+								console.log(response)
+								if (result.value) {
+									location.reload();
+								}
+							})
+						},
+						cache: false,
+						contentType: false,
+						processData: false
+					});
+				}
+			})
+		});
+		$(document).on("submit", '#other-items-form', function (e) {
+			e.preventDefault()
+			const formData = new FormData(this);
+			Swal.fire({
+				title: 'Add more items?',
 				text: "",
 				type: 'warning',
 				showCancelButton: true,

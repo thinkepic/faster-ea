@@ -252,9 +252,28 @@ class Incoming_requests extends MY_Controller {
 		$detail = $this->request->get_request_by_id($req_id);
 		$enc_req_id = encrypt($detail['r_id']);
 
+		$reject_btn = '<table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-danger">
+							<tbody>
+							<tr>
+								<td align="left">
+								<table role="presentation" border="0" cellpadding="0" cellspacing="0">
+									<tbody>
+									<tr>
+										<td> <a <a href="'.base_url('ea_requests/requests_confirmation').'?req_id='.$enc_req_id.'&approver_id='.$email_detail['target_id'].'&status=3&level='.$level.'" target="_blank">REJECT</a> </td>
+									</tr>
+									</tbody>
+								</table>
+								</td>
+							</tr>
+							</tbody>
+						</table>';
+		if($level == 'ea_assosiate') {
+			$reject_btn = '';
+		}
+	
+
 		$data['preview'] = '<p>EA Request #EA-'.$detail['r_id'].' has been approved by '.$email_detail['approver_name'].'</p>
-                             <p>Please review following requests</p>
-             ';
+                             <p>Please review following requests</p>';
         $data['content'] = '
                     <p>Dear, '.$email_detail['target_name'].',</p> 
                     <p>'.$data['preview'].'</p>
@@ -289,22 +308,7 @@ class Incoming_requests extends MY_Controller {
                         </tr>
                         </tbody>
                     </table>
-					
-                    <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-danger">
-                        <tbody>
-                        <tr>
-                            <td align="left">
-                            <table role="presentation" border="0" cellpadding="0" cellspacing="0">
-                                <tbody>
-                                <tr>
-									<td> <a <a href="'.base_url('ea_requests/requests_confirmation').'?req_id='.$enc_req_id.'&approver_id='.$email_detail['target_id'].'&status=3&level='.$level.'" target="_blank">REJECT</a> </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+					'.$reject_btn.'
                     ';
 
         $text = $this->load->view('template/email', $data, true);
