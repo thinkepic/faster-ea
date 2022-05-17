@@ -13,27 +13,28 @@
 					</div>
 					<div class="kt-infobox__body">
 						<div class="row">
-							<label class="col-3 col-form-label fw-bold">Name</label>
-							<div class="col-9">
+							<label class="col-5 mb-2 col-form-label fw-bold">Name</label>
+							<div class="col-7">
 								<span style="font-size: 1rem;"
 									class="badge badge-light fw-bold"><?= $requestor_data['username'] ?></span>
 							</div>
 						</div>
 						<div class="row">
-							<label class="col-3 col-form-label fw-bold">Division</label>
-							<div class="col-9">
+							<label class="col-5 mb-2 col-form-label fw-bold">Division</label>
+							<div class="col-7">
 								<span class="badge badge-dark fw-bold"><?= $requestor_data['project_name'] ?></span>
 							</div>
 						</div>
 						<div class="row">
-							<label class="col-3 col-form-label fw-bold">Purpose</label>
-							<div class="col-9">
+							<label class="col-5 mb-2 col-form-label fw-bold">Purpose</label>
+							<div class="col-7">
 								<span class="badge badge-info fw-bold"><?= $requestor_data['unit_name'] ?></span>
 							</div>
 						</div>
 						<div class="row">
-							<label class="col-3 col-form-label fw-bold">Total cost</label>
-							<div class="col-9">
+							<label class="col-5 mb-2 col-form-label fw-bold">Total cost (meals and lodging x
+								night)</label>
+							<div class="col-7">
 								<span class="badge badge-pill badge-secondary fw-bold">IDR
 									<?= number_format($detail['total_destinations_cost'],2,',','.') ?></span>
 							</div>
@@ -109,7 +110,7 @@
 									<td class="kt-datatable__cell">
 										<span style="width: 90px;">
 											<button data-field="lodging" data-dest-id="<?= $dest['id'] ?>"
-												class="btn btn-meals-lodging btn-sm btn-danger">
+												class="btn btn-meals-lodging btn-sm btn-info">
 												<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
 													fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
 													<path
@@ -164,7 +165,7 @@
 									<td class="kt-datatable__cell">
 										<span style="width: 90px;">
 											<button data-field="meals" data-dest-id="<?= $dest['id'] ?>"
-												class="btn btn-meals-lodging btn-sm btn-danger">
+												class="btn btn-meals-lodging btn-sm btn-info">
 												<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
 													fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
 													<path
@@ -177,6 +178,74 @@
 										</span>
 									</td>
 								</tr>
+								<?php foreach ($dest['other_items'] as $item): ?>
+								<tr class="kt-datatable__row" style="left: 0px;">
+									<td class="kt-datatable__cell fw-bold">
+										<span style="width: 100px;">
+											<?= $item['item'] ?>
+										</span>
+									</td>
+									<td class="kt-datatable__cell">
+										<span style="width: 110px;">
+											<span class="badge badge-pill badge-secondary fw-bold">
+												<?= $item['cost'] ?>
+											</span>
+										</span>
+									</td>
+									<td class="kt-datatable__cell">
+										<span style="width: 110px;">
+											<span class="badge badge-pill badge-secondary fw-bold">
+												<?= $item['cost'] ?>
+											</span>
+										</span>
+									</td>
+									<td class="kt-datatable__cell">
+										<span style="width: 90px;">
+											<?php if ($item['receipt'] == null): ?>
+											<span class="badge badge-pill badge-secondary fw-bold">
+												-
+											</span>
+											<?php else : ?>
+											<a target="_blank" class="badge badge-warning text-light"
+												href="<?= base_url('uploads/ea_items_receipt/') ?><?= $item['receipt'] ?>">
+												<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+													fill="currentColor" class="bi bi-card-image" viewBox="0 0 16 16">
+													<path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+													<path
+														d="M1.5 2A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13zm13 1a.5.5 0 0 1 .5.5v6l-3.775-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12v.54A.505.505 0 0 1 1 12.5v-9a.5.5 0 0 1 .5-.5h13z" />
+												</svg>
+											</a>
+											<?php endif; ?>
+										</span>
+									</td>
+									<td class="kt-datatable__cell">
+										<span class="d-flex flex-column" style="width: 90px;">
+											<button data-id="<?= $item['id'] ?>"
+												class="btn btn-edit-other-items btn-sm btn-info">
+												<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+													fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+													<path
+														d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+													<path fill-rule="evenodd"
+														d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+												</svg>
+												<span class="ml-1">Edit</span>
+											</button>
+											<button data-id="<?= $item['id'] ?>"
+												class="btn btn-delete-items btn-sm btn-danger mt-2">
+												<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13"
+													fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+													<path
+														d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+													<path fill-rule="evenodd"
+														d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+												</svg>
+												<span class="ml-1">Delete</span>
+											</button>
+										</span>
+									</td>
+								</tr>
+								<?php endforeach; ?>
 								<tr data-row="0" class="kt-datatable__row" style="left: 0px;">
 									<td class="kt-datatable__cell fw-bold">
 										<span style="width: 100px;">
@@ -198,7 +267,8 @@
 									</td>
 									<td class="kt-datatable__cell">
 										<span style="width: 90px;">
-											<button data-dest-id="<?= $dest['id'] ?>" class="btn btn-add-items btn-sm btn-success">
+											<button data-dest-id="<?= $dest['id'] ?>"
+												class="btn btn-add-items btn-sm btn-success">
 												Add items
 											</button>
 										</span>
@@ -271,6 +341,44 @@
 					$('#cost').number(true, 0, '', '.');
 					$('#myModal').modal('show')
 				});
+		});
+		$(document).on('click', '.btn-delete-items', function (e) {
+			e.preventDefault()
+			const id = $(this).attr('data-id')
+			Swal.fire({
+				title: 'Delete item?',
+				text: "",
+				type: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: `Yes!`
+			}).then((result) => {
+				if (result.value) {
+					$.get(base_url + `ea_requests/report/delete_other_items/${id}`,
+						function (response) {
+							if (response.success) {
+								Swal.fire({
+									"title": "Success!",
+									"text": response.message,
+									"type": "success",
+									"confirmButtonClass": "btn btn-dark"
+								}).then((result) => {
+									if (result.value) {
+										location.reload();
+									}
+								})
+							} else {
+								Swal.fire({
+									"title": response.message,
+									"text": '',
+									"type": "error",
+									"confirmButtonClass": "btn btn-dark"
+								});
+							}
+						});
+				}
+			})
 		});
 		const loader = `<div style="width: 5rem; height: 5rem;" class="spinner-border mb-5" role="status"></div>
 			<h5 class="mt-2">Please wait</h5>

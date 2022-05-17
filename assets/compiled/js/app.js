@@ -39602,7 +39602,6 @@ dayjs.extend(isSameOrBefore);
 dayjs.extend(relativeTime);
 window.dayjs = dayjs;
 
-window.initFormAjax = _helpers__WEBPACK_IMPORTED_MODULE_2__["initFormAjax"];
 window.initDatatable = _helpers__WEBPACK_IMPORTED_MODULE_2__["initDatatable"];
 window.initSelect2 = _helpers__WEBPACK_IMPORTED_MODULE_2__["initSelect2"];
 
@@ -39612,12 +39611,11 @@ window.initSelect2 = _helpers__WEBPACK_IMPORTED_MODULE_2__["initSelect2"];
 /*!*********************************!*\
   !*** ./resources/js/helpers.js ***!
   \*********************************/
-/*! exports provided: initFormAjax, initSelect2, initDatatable */
+/*! exports provided: initSelect2, initDatatable */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "initFormAjax", function() { return initFormAjax; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "initSelect2", function() { return initSelect2; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "initDatatable", function() { return initDatatable; });
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
@@ -39626,57 +39624,6 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-// form ajax submit helper
-function initFormAjax(selector) {
-  var ajaxConfig = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-  var showValidation = $(selector).attr("show-validation") !== undefined;
-
-  if (showValidation) {
-    $(document).on("focus, change", ".is-invalid", function (e) {
-      $(e.target).parent().children("div.invalid-feedback").remove();
-      $(e.target).removeClass("is-invalid");
-    });
-  }
-
-  $(document).on("submit", selector, function (e) {
-    var defaultConfig = {
-      url: $(selector).attr("action"),
-      type: "POST",
-      data: $(selector).serialize(),
-      beforeSend: function beforeSend() {
-        $('.invalid-feedback').remove();
-      },
-      error: function error(xhr) {
-        var response = xhr.responseJSON;
-
-        if (showValidation && response.errors) {
-          for (var err in response.errors) {
-            var $parent = $("#".concat(err.replace("[]", ""))).parent();
-            $("#".concat(err.replace("[]", ""))).addClass("is-invalid");
-
-            if ($parent.find("invalid-feeedback").length == 0) {
-              $parent.append("<div class=\"invalid-feedback\">".concat(response.errors[err], "</div>"));
-            }
-          }
-        }
-
-        showToast('Gagal', response.message, 'danger');
-      },
-      success: function success(data) {
-        showToast('Sukses', data.message, 'success');
-
-        if (data.formReset) {
-          $(selector).trigger("reset");
-        }
-      }
-    };
-
-    var mergedConfig = _objectSpread(_objectSpread({}, defaultConfig), ajaxConfig);
-
-    e.preventDefault();
-    $.ajax(mergedConfig);
-  });
-}
 function initSelect2(selector) {
   var customConfig = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
   var $this = $(selector);

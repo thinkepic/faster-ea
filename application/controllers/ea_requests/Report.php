@@ -24,15 +24,14 @@ class Report extends MY_Controller {
     public function reporting($id = null)
 	{
 		$id = decrypt($id);
-		$detail = $this->request->get_request_by_id($id);
+		$detail = $this->request->get_report_data_by_id($id);
 		if($detail) {
-			$user_id = $this->user_data->userId;
 			$requestor_data = $this->request->get_requestor_data($detail['requestor_id']);
 			$data = [
 				'detail' => $detail,
 				'requestor_data' => $requestor_data,
 			];
-			// echo json_encode($data);
+			// echo json_encode($detail);
 			$this->template->set('page', 'Reporting #' . $detail['ea_number']);
 			$this->template->render('report/reporting', $data);
 		} else {
@@ -164,5 +163,82 @@ class Report extends MY_Controller {
 		} else {
 			exit('No direct script access allowed');
 		}
+	}
+
+	public function insert_other_items() {
+		if ($this->input->is_ajax_request() && $this->input->server('REQUEST_METHOD') === 'POST') {
+			$this->form_validation->set_rules('item', 'Item', 'required');
+			$this->form_validation->set_rules('cost', 'Cost', 'required');
+			$dest_id = $this->input->post('dest_id');
+			if (empty($_FILES['receipt']['name']))
+			{
+				$this->form_validation->set_rules('receipt', 'Receipt', 'required');
+			}
+
+			if ($this->form_validation->run()) {
+				$dir = './uploads/ea_items_receipt/';
+				if (!is_dir($dir)) {
+					mkdir($dir, 0777, true);
+				}
+				$config['upload_path']          = $dir;
+				$config['allowed_types']        = 'pdf|jpg|png|jpeg';
+				$config['max_size']             = 10048;
+				$config['encrypt_name']         = true;
+				$this->load->library('upload', $config);
+				$this->upload->initialize($config);
+
+				if($this->upload->do_upload('receipt')) {
+					$receipt = $this->upload->data('file_name');
+					$item = $this->input->post('item');
+					$cost = $this->input->post('cost');
+					$clean_cost = str_replace('.', '',  $cost);
+					$payload = [
+						'destination_id' => $dest_id,
+						'item' => $item,
+						'cost' => $clean_cost,
+						'receipt' => $receipt,
+					];
+					$updated = $this->request->insert_other_items($payload);
+					if($updated) {
+						$response['success'] = true;
+						$response['message'] = 'Data has been saved!';
+						$status_code = 200;
+					} else {
+						$response['success'] = false;
+						$response['message'] = 'Failed to saving data, please try again later';
+						$status_code = 400;
+					}
+				} else {
+					$response = [
+						'errors' => $this->upload->display_errors(),
+						'success' => false, 
+						'message' => strip_tags($this->upload->display_errors()),
+					];
+					$status_code = 400;
+					return $this->send_json($response, $status_code);
+				}
+			} else {
+				$response['errors'] = $this->form_validation->error_array();
+				$response['message'] = 'Please fill all required fields';
+				$status_code = 422;
+			}
+			$this->send_json($response, $status_code);
+		} else {
+			exit('No direct script access allowed');
+		}
+	}
+
+	public function delete_other_items($id) {
+		$deleted = $this->db->where('id', $id)->delete('ea_requests_other_items');
+		if($deleted) {
+			$response['success'] = true;
+			$response['message'] = 'Item has been deleted';
+			$status_code = 200;
+		} else {
+			$response['success'] = false;
+			$response['message'] = 'Failed to delete item';
+			$status_code = 422;
+		}
+		$this->send_json($response, $status_code);
 	}
 }

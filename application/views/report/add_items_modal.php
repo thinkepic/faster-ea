@@ -1,9 +1,3 @@
-<style>
-    .select2-container.select2-container--default {
-        width: 100% !important;
-    }
-</style>
-
 <div class="modal-dialog" role="document">
 	<div class="modal-content">
 		<div class="modal-header">
@@ -19,6 +13,7 @@
 				<div class="form-group">
 					<label for="cost" class="d-block">Item</label>
 					<select name="item" id="item">
+						<option value="">Select items</option>
 						<option value="Parking">Parking</option>
 						<option value="Airport Tax">Airport Tax</option>
 						<option value="Visa Fee">Visa Fee</option>

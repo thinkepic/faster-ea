@@ -145,3 +145,11 @@ input:read-only, textarea:read-only {
     line-height: 1.5 !important;
     border-radius: 0.2rem !important;
 }
+
+.kt-datatable__row {
+	border-bottom: 1px solid #ddd !important;
+}
+
+.select2-container.select2-container--default {
+	width: 100% !important;
+}

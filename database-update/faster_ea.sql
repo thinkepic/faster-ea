@@ -648,6 +648,21 @@ CREATE TABLE `ea_requests_status` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
+-- Table structure for table `ea_requests_other_items`
+--
+
+CREATE TABLE `ea_requests_other_items` (
+  `id` int(11) NOT NULL,
+  `destination_id` int(11) NOT NULL,
+  `item` varchar(255) NOT NULL,
+  `cost` decimal(14,2) NOT NULL,
+  `receipt` text DEFAULT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Indexes for dumped tables
 --
 
@@ -718,9 +733,16 @@ ALTER TABLE `ea_requests_status`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 COMMIT;
 
+--
+-- AUTO_INCREMENT for table `ea_requests_other_items`
+--
+ALTER TABLE `ea_requests_other_items`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
 ALTER TABLE ea_requests_destinations ADD CONSTRAINT ea_dest_FK_1 FOREIGN KEY (request_id) REFERENCES ea_requests(id) ON DELETE CASCADE;
 ALTER TABLE ea_requests_participants ADD CONSTRAINT ea_partic_FK_1 FOREIGN KEY (request_id) REFERENCES ea_requests(id) ON DELETE CASCADE;
 ALTER TABLE ea_requests_status ADD CONSTRAINT ea_status_FK_1 FOREIGN KEY (request_id) REFERENCES ea_requests(id) ON DELETE CASCADE;
+ALTER TABLE ea_requests_other_items ADD CONSTRAINT ea_other_items_FK_1 FOREIGN KEY (destination_id) REFERENCES ea_requests_destinations(id) ON DELETE CASCADE;
 
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

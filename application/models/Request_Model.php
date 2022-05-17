@@ -94,6 +94,8 @@ class Request_Model extends CI_Model
         $total_destinations_cost = 0;
         foreach($destinations as $dest) {
             $total_destinations_cost += $dest['total'];
+            $other_items = $this->get_destination_other_items($dest['id']);
+            $dest['other_items'] = $other_items;
         }
         $request_data['total_destinations_cost'] = $total_destinations_cost;
         $request_data['destinations'] = $destinations;
@@ -108,6 +110,37 @@ class Request_Model extends CI_Model
         ->join('tb_units un', 'u.unit_id = un.id')
         ->where('u.id', $user_id)
         ->get()->row_array();
+    }
+
+    function get_report_data_by_id($id) {
+        $request_data =  $this->db->select('r.id as r_id, CONCAT("EA", r.id) AS ea_number, DATE_FORMAT(r.created_at, "%d %M %Y - %H:%i") as request_date,
+        DATE_FORMAT(r.departure_date, "%d %M %Y") as d_date, DATE_FORMAT(r.return_date, "%d %M %Y") as r_date,
+        r.*,
+        ')
+        ->from('ea_requests r')
+        ->where('r.id', $id)
+        ->get()->row_array();
+        if(!$request_data) {
+            return false;
+        }
+        $destinations = $this->db->select('*, format(meals,2,"de_DE") as d_meals, format(lodging,2,"de_DE") as d_lodging,
+        format(total_lodging_and_meals,2,"de_DE") as d_total_lodging_and_meals, format(total,2,"de_DE") as d_total,
+        DATE_FORMAT(departure_date, "%d %M %Y") as depar_date, DATE_FORMAT(arrival_date, "%d %M %Y") as arriv_date,
+        format(actual_meals,2,"de_DE") as d_actual_meals, format(actual_lodging,2,"de_DE") as d_actual_lodging
+        ')
+        ->from('ea_requests_destinations')
+        ->where('request_id', $id)
+        ->get()->result_array();
+        $total_destinations_cost = 0;
+        $total_dest = count($destinations);
+        for ($i = 0; $i < $total_dest; $i++) {
+            $total_destinations_cost += $destinations[$i]['total'];
+            $other_items = $this->get_destination_other_items($destinations[$i]['id']);
+            $destinations[$i]['other_items'] = $other_items;
+          }
+        $request_data['total_destinations_cost'] = $total_destinations_cost;
+        $request_data['destinations'] = $destinations;
+        return $request_data;
     }
 
     function insert_request($data)
@@ -254,8 +287,21 @@ class Request_Model extends CI_Model
         return $request_data;
     }
 
+    function get_destination_other_items($dest_id) {
+        $other_items = $this->db->select('*, format(cost,2,"de_DE") as cost')
+        ->from('ea_requests_other_items')
+        ->where('destination_id', $dest_id)
+        ->get()->result_array();
+        return $other_items;
+    }
+
     function insert_actual_cost($dest_id, $payload) {
         $this->db->where('id', $dest_id)->update('ea_requests_destinations', $payload);
         return true;
+    }
+
+    function insert_other_items($payload) {
+        $this->db->insert('ea_requests_other_items', $payload);
+        return $this->db->insert_id();
     }
 }
