@@ -9,6 +9,7 @@ class Report extends MY_Controller {
 	{
 		parent::__construct();
 		$this->load->model('Request_Model', 'request');
+		$this->load->model('Report_Model', 'report');
 		$this->load->model('Base_Model', 'base_model');
 		$this->template->set('pageParent', 'Report');
 		$this->template->set_default_layout('layouts/default');
@@ -24,14 +25,13 @@ class Report extends MY_Controller {
     public function reporting($id = null)
 	{
 		$id = decrypt($id);
-		$detail = $this->request->get_report_data_by_id($id);
+		$detail = $this->report->get_report_data_by_id($id);
 		if($detail) {
 			$requestor_data = $this->request->get_requestor_data($detail['requestor_id']);
 			$data = [
 				'detail' => $detail,
 				'requestor_data' => $requestor_data,
 			];
-			// echo json_encode($detail);
 			$this->template->set('page', 'Reporting #' . $detail['ea_number']);
 			$this->template->render('report/reporting', $data);
 		} else {
@@ -76,7 +76,7 @@ class Report extends MY_Controller {
 			'field' => $field,
 		];
 
-		$this->load->view('report/meals_lodging_modal', $data);
+		$this->load->view('report/modal/meals_lodging', $data);
 	}
 
 	public function add_items_modal() {
@@ -84,8 +84,16 @@ class Report extends MY_Controller {
 		$data = [
 			'dest_id' => $dest_id,
 		];
+		$this->load->view('report/modal/add_items', $data);
+	}
 
-		$this->load->view('report/add_items_modal', $data);
+	public function edit_items_modal() {
+		$item_id = $this->input->get('item_id');	
+		$detail = $this->report->get_items_detail($item_id);	
+		$data = [
+			'detail' => $detail,
+		];
+		$this->load->view('report/modal/edit_items', $data);
 	}
 
 	public function insert_actual_meals_lodging() {
@@ -144,7 +152,7 @@ class Report extends MY_Controller {
 					'actual_'. $field => $clean_actual_cost,
 					$field . '_receipt' => $receipt,
 				];
-				$updated = $this->request->insert_actual_cost($dest_id, $payload);
+				$updated = $this->report->insert_actual_cost($dest_id, $payload);
 				if($updated) {
 					$response['success'] = true;
 					$response['message'] = 'Data has been saved!';
@@ -198,8 +206,8 @@ class Report extends MY_Controller {
 						'cost' => $clean_cost,
 						'receipt' => $receipt,
 					];
-					$updated = $this->request->insert_other_items($payload);
-					if($updated) {
+					$saved = $this->report->insert_other_items($payload);
+					if($saved) {
 						$response['success'] = true;
 						$response['message'] = 'Data has been saved!';
 						$status_code = 200;
@@ -216,6 +224,67 @@ class Report extends MY_Controller {
 					];
 					$status_code = 400;
 					return $this->send_json($response, $status_code);
+				}
+			} else {
+				$response['errors'] = $this->form_validation->error_array();
+				$response['message'] = 'Please fill all required fields';
+				$status_code = 422;
+			}
+			$this->send_json($response, $status_code);
+		} else {
+			exit('No direct script access allowed');
+		}
+	}
+
+	public function update_other_items($item_id) {
+		if ($this->input->is_ajax_request() && $this->input->server('REQUEST_METHOD') === 'POST') {
+			$this->form_validation->set_rules('item', 'Item', 'required');
+			$this->form_validation->set_rules('cost', 'Cost', 'required');
+			if ($this->form_validation->run()) {
+				
+				$detail = $this->report->get_items_detail($item_id);
+				if (empty($_FILES['receipt']['name'])) {
+					$receipt = $detail['receipt'];
+				} else {
+					$dir = './uploads/ea_items_receipt/';
+					if (!is_dir($dir)) {
+						mkdir($dir, 0777, true);
+					}
+					$config['upload_path']          = $dir;
+					$config['allowed_types']        = 'pdf|jpg|png|jpeg';
+					$config['max_size']             = 10048;
+					$config['encrypt_name']         = true;
+					$this->load->library('upload', $config);
+					$this->upload->initialize($config);
+					if($this->upload->do_upload('receipt')) {
+						$receipt = $this->upload->data('file_name');
+					} else {
+						$response = [
+							'errors' => $this->upload->display_errors(),
+							'success' => false, 
+							'message' => strip_tags($this->upload->display_errors()),
+						];
+						$status_code = 400;
+						return $this->send_json($response, $status_code);
+					}
+				}
+				$item = $this->input->post('item');
+				$cost = $this->input->post('cost');
+				$clean_cost = str_replace('.', '',  $cost);
+				$payload = [
+					'item' => $item,
+					'cost' => $clean_cost,
+					'receipt' => $receipt,
+				];
+				$updated = $this->report->update_other_items($item_id, $payload);
+				if($updated) {
+					$response['success'] = true;
+					$response['message'] = 'Item has been updated!';
+					$status_code = 200;
+				} else {
+					$response['success'] = false;
+					$response['message'] = 'Failed to update item, please try again later';
+					$status_code = 400;
 				}
 			} else {
 				$response['errors'] = $this->form_validation->error_array();

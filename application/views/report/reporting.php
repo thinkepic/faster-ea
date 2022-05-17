@@ -244,7 +244,7 @@
 											</button>
 										</span>
 									</td>
-								</tr>
+								</tr> 
 								<?php endforeach; ?>
 								<tr data-row="0" class="kt-datatable__row" style="left: 0px;">
 									<td class="kt-datatable__cell fw-bold">
@@ -342,6 +342,16 @@
 					$('#myModal').modal('show')
 				});
 		});
+		$(document).on('click', '.btn-edit-other-items', function (e) {
+			e.preventDefault()
+			const item_id = $(this).attr('data-id')
+			$.get(base_url + `ea_requests/report/edit_items_modal?item_id=${item_id}`,
+				function (html) {
+					$('#myModal').html(html)
+					$('#cost').number(true, 0, '', '.');
+					$('#myModal').modal('show')
+				});
+		});
 		$(document).on('click', '.btn-delete-items', function (e) {
 			e.preventDefault()
 			const id = $(this).attr('data-id')
@@ -380,9 +390,11 @@
 				}
 			})
 		});
+		
 		const loader = `<div style="width: 5rem; height: 5rem;" class="spinner-border mb-5" role="status"></div>
 			<h5 class="mt-2">Please wait</h5>
 			<p>Saving data ...</p>`
+		
 		$(document).on("submit", '#meals-lodging-form', function (e) {
 			e.preventDefault()
 			const formData = new FormData(this);
@@ -448,8 +460,12 @@
 		$(document).on("submit", '#other-items-form', function (e) {
 			e.preventDefault()
 			const formData = new FormData(this);
+			let title = 'Add item?';
+			if($('#method_').val() == 'PUT') {
+				title = 'Edit item ?'
+			}
 			Swal.fire({
-				title: 'Add more items?',
+				title: title,
 				text: "",
 				type: 'warning',
 				showCancelButton: true,
@@ -494,7 +510,6 @@
 								"type": "success",
 								"confirmButtonClass": "btn btn-dark"
 							}).then((result) => {
-								console.log(response)
 								if (result.value) {
 									location.reload();
 								}
