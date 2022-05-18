@@ -444,64 +444,66 @@ class Incoming_requests extends MY_Controller {
 	public function payment() {
 		if ($this->input->is_ajax_request() && $this->input->server('REQUEST_METHOD') === 'POST') {
 			$this->form_validation->set_rules('date_of_transfer', 'Transfer date', 'required');
-			if (empty($_FILES['payment_receipt']['name']))
-			{
-				$this->form_validation->set_rules('payment_receipt', 'Payment Receipt', 'required');
-			}
 
 			if ($this->form_validation->run()) {
 				$req_id = $this->input->post('r_id');
-				$dir = './uploads/ea_payment_receipt/';
-				if (!is_dir($dir)) {
-					mkdir($dir, 0777, true);
-				}
-				$config['upload_path']          = $dir;
-				$config['allowed_types']        = 'pdf|jpg|png|jpeg';
-				$config['max_size']             = 10048;
-				$config['encrypt_name']         = true;
-				$this->load->library('upload', $config);
-				$this->upload->initialize($config);
-
-				if ($this->upload->do_upload('payment_receipt')) {
-					$payment_receipt = $this->upload->data('file_name');
-					$payload = [
-						'finance_id' => $this->user_data->userId,
-						'finance_status' => 2,
-						'finance_status_at' => date("Y-m-d H:i:s"),
-						'date_of_transfer' => date('Y-m-d', strtotime($this->input->post('date_of_transfer'))),
-						'payment_receipt' => $payment_receipt,
-					];
-					$updated = $this->request->update_payment_status($req_id, $payload);
-					if($updated) {
-						$email_sent = $this->send_payment_email($req_id);
-						if($email_sent) {
-							$response['success'] = true;
-							$response['message'] = 'Payment process completed and email has been sent to requestor!';
-							$status_code = 200;
-						} else {
-							$response['success'] = false;
-							$response['message'] = 'Something wrong, please try again later';
-							$status_code = 400;
-						}
+				if (!empty($_FILES['payment_receipt']['name'])) {
+					$this->form_validation->set_rules('payment_receipt', 'Payment Receipt', 'required');
+					$dir = './uploads/ea_payment_receipt/';
+					if (!is_dir($dir)) {
+						mkdir($dir, 0777, true);
+					}
+					$config['upload_path']          = $dir;
+					$config['allowed_types']        = 'pdf|jpg|png|jpeg';
+					$config['max_size']             = 10048;
+					$config['encrypt_name']         = true;
+					$this->load->library('upload', $config);
+					$this->upload->initialize($config);
+					if ($this->upload->do_upload('payment_receipt')) {
+						$payment_receipt = $this->upload->data('file_name');
 					} else {
-						$payload = [
-							'finance_id' => null,
-							'finance_status' => 1,
-							'finance_status_at' => null,
-							'date_of_transfer' => null,
-							'payment_receipt' => null,
+						$response = [
+							'errors' => $this->upload->display_errors(),
+							'success' => false, 
+							'message' => strip_tags($this->upload->display_errors()),
 						];
-						$this->request->update_payment_status($req_id, $payload);
+						$status_code = 400;
+						return $this->send_json($response, $status_code);
+					}
+				} else {
+					$payment_receipt = null;
+				}
+
+				$payload = [
+					'finance_id' => $this->user_data->userId,
+					'finance_status' => 2,
+					'finance_status_at' => date("Y-m-d H:i:s"),
+					'date_of_transfer' => date('Y-m-d', strtotime($this->input->post('date_of_transfer'))),
+					'payment_receipt' => $payment_receipt,
+				];
+				$updated = $this->request->update_payment_status($req_id, $payload);
+				if($updated) {
+					$email_sent = $this->send_payment_email($req_id);
+					if($email_sent) {
+						$response['success'] = true;
+						$response['message'] = 'Payment process completed and email has been sent to requestor!';
+						$status_code = 200;
+					} else {
 						$response['success'] = false;
-						$response['message'] = 'Failed to process payment, please try again later';
+						$response['message'] = 'Something wrong, please try again later';
 						$status_code = 400;
 					}
 				} else {
-					$response = [
-						'errors' => $this->upload->display_errors(),
-						'success' => false, 
-						'message' => strip_tags($this->upload->display_errors()),
+					$payload = [
+						'finance_id' => null,
+						'finance_status' => 1,
+						'finance_status_at' => null,
+						'date_of_transfer' => null,
+						'payment_receipt' => null,
 					];
+					$this->request->update_payment_status($req_id, $payload);
+					$response['success'] = false;
+					$response['message'] = 'Failed to process payment, please try again later';
 					$status_code = 400;
 				}
 			} else {
@@ -571,9 +573,11 @@ class Incoming_requests extends MY_Controller {
 		$payment_pdf = $this->attach_payment_request($req_id);
 		$mail->addStringAttachment($payment_pdf, 'Payment form request.pdf');
 		$excel = $this->attach_ea_form($req_id);
+		if($detail['payment_receipt'] != null) {
+			$receipt_path = FCPATH.'uploads/ea_payment_receipt/' . $detail['payment_receipt'];
+			$mail->addAttachment($receipt_path, 'Payment receipt_'.$detail['payment_receipt']);
+		}
 		$mail->addAttachment($excel['path'], $excel['file_name']);
-		$receipt_path = FCPATH.'uploads/ea_payment_receipt/' . $detail['payment_receipt'];
-		$mail->addAttachment($receipt_path, 'Payment receipt_'.$detail['payment_receipt']);
         $mail->addAddress($requestor['email']);
         $mail->Subject = "EA Request Payment Confirmation";
         $mail->isHTML(true);

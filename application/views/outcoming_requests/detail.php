@@ -534,7 +534,7 @@
 								</div>
 							</div>
 							<?php endif; ?>
-							<?php if ($detail['finance_status'] == 2): ?>
+							<?php if ($detail['finance_status'] == 2 && $detail['payment_receipt'] != null): ?>
 							<div class="div col-md-3 col-6">
 								<div class="p-3">
 									<div class="d-flex">
@@ -740,31 +740,11 @@
 										<td data-field="Car Model" class="kt-datatable__cell"><span
 												style="width: 110px;"><?= $detail['finance_status_at'] ?></span></td>
 										<td class="kt-datatable__cell">
-											<?php if ($detail['finance_status'] == 2): ?>
-											<div style="width: 140px;" class="d-flex">
-												<a target="_blank"
-													href="<?= base_url('uploads/ea_payment_receipt/') ?><?= $detail['payment_receipt'] ?>"
-													class="badge badge-primary">
-													<span class="mr-1">
-														<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"
-															fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
-															<path
-																d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
-															<path
-																d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
-														</svg>
-													</span>
-													<small>
-														Receipt
-													</small>
-												</a>
-											</div>
-											<?php else : ?>
-											<div style="width: 140px;" class="d-flex <?= $finance_btn ?>">
+											<div style="width: 140px;" class="d-flex flex-column <?= $finance_btn ?>">
 												<button data-level='finance' data-id=<?= $detail['r_id'] ?>
-													class="btn btn-payment btn-sm btn-warning text-light">
+													class="btn btn-payment btn-status btn-sm btn-warning text-light">
 													<div class="d-flex align-items-center justify-content-center">
-														<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+														<svg xmlns="http://www.w3.org/2000/svg" width="11" height="11"
 															fill="currentColor" class="bi bi-currency-dollar"
 															viewBox="0 0 16 16">
 															<path
@@ -773,8 +753,18 @@
 														Payment
 													</div>
 												</button>
+												<button data-level='finance' data-id=<?= $detail['r_id'] ?>
+													data-status="3" class="btn btn-status btn-danger mt-2">
+													<div class="d-flex align-items-center justify-content-center">
+														<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+															fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+															<path
+																d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+														</svg>
+														Reject
+													</div>
+												</button>
 											</div>
-											<?php endif; ?>
 										</td>
 									</tr>
 								</tbody>
@@ -1068,7 +1058,7 @@
 				`
 				const formData = new FormData(this);
 				Swal.fire({
-					title: 'Send payment receipt and send email to requestor?',
+					title: 'Process payment and send email to requestor?',
 					text: "",
 					type: 'warning',
 					showCancelButton: true,

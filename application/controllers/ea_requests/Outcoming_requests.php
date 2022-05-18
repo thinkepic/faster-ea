@@ -439,7 +439,7 @@ class Outcoming_requests extends MY_Controller {
 			$drawing4->setName('FCO signature');
 			$drawing4->setPath(FCPATH.'assets/images/signature/' . $detail['fco_monitor_signature']); // put your path and image here
 			$drawing4->setCoordinates('V28');
-			$drawing4->setHeight(50);
+			$drawing4->setHeight(30);
 			$drawing4->setWorksheet($spreadsheet->getActiveSheet());
 
 		} 
@@ -482,7 +482,7 @@ class Outcoming_requests extends MY_Controller {
 				$drawing6->setName('FCO signature');
 				$drawing6->setPath(FCPATH.'assets/images/signature/' . $detail['fco_monitor_signature']); // put your path and image here
 				$drawing6->setCoordinates('V41');
-				$drawing6->setHeight(50);
+				$drawing6->setHeight(30);
 				$drawing6->setWorksheet($spreadsheet->getActiveSheet());
 			} 
 		}
@@ -503,7 +503,7 @@ class Outcoming_requests extends MY_Controller {
 				$drawing7->setName('FCO signature');
 				$drawing7->setPath(FCPATH.'assets/images/signature/' . $detail['fco_monitor_signature']); // put your path and image here
 				$drawing7->setCoordinates('V54');
-				$drawing7->setHeight(50);
+				$drawing7->setHeight(30);
 				$drawing7->setWorksheet($spreadsheet->getActiveSheet());
 			} 
 		}

@@ -189,6 +189,25 @@ class Requests_Confirmation extends CI_Controller {
 		$detail = $this->request->get_request_by_id($req_id);
 		$enc_req_id = encrypt($detail['r_id']);
 
+		$approve_btn = '<table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
+		<tbody>
+		<tr>
+			<td align="left">
+			<table role="presentation" border="0" cellpadding="0" cellspacing="0">
+				<tbody>
+				<tr>
+					<td> <a href="'.base_url('ea_requests/requests_confirmation').'?req_id='.$enc_req_id.'&approver_id='.$email_detail['target_id'].'&status=2&level='.$level.'" target="_blank">APPROVE</a> </td>
+				</tr>
+				</tbody>
+			</table>
+			</td>
+		</tr>
+		</tbody>
+	</table>';
+		if($level == 'ea_assosiate') {
+			$approve_btn = '';
+		}
+
 		$data['preview'] = '<p>EA Request #EA-'.$detail['r_id'].' has been approved by '.$email_detail['approver_name'].'</p>
                              <p>Please review following requests</p>
              ';
@@ -211,21 +230,7 @@ class Requests_Confirmation extends CI_Controller {
                         </tbody>
                     </table>
 
-					<table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
-                        <tbody>
-                        <tr>
-                            <td align="left">
-                            <table role="presentation" border="0" cellpadding="0" cellspacing="0">
-                                <tbody>
-                                <tr>
-									<td> <a href="'.base_url('ea_requests/requests_confirmation').'?req_id='.$enc_req_id.'&approver_id='.$email_detail['target_id'].'&status=2&level='.$level.'" target="_blank">APPROVE</a> </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+					'.$approve_btn.'
 					
                     <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-danger">
                         <tbody>
@@ -396,22 +401,12 @@ class Requests_Confirmation extends CI_Controller {
 
 		} 
 
-		// if($detail['ea_assosiate_status'] == 2) {
-		// 	$drawing3 = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
-		// 	$drawing3->setName('EA signature');
-		// 	$drawing3->setPath(FCPATH.'assets/images/signature/' . $detail['ea_assosiate_signature']); // put your path and image here
-		// 	$drawing3->setCoordinates('AK89');
-		// 	$drawing3->setHeight(50);
-		// 	$drawing3->setOffsetY(-15); 
-		// 	$drawing3->setWorksheet($spreadsheet->getActiveSheet());
-		// } 
-
 		if($detail['fco_monitor_status'] == 2) {
 			$drawing4 = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
 			$drawing4->setName('FCO signature');
 			$drawing4->setPath(FCPATH.'assets/images/signature/' . $detail['fco_monitor_signature']); // put your path and image here
 			$drawing4->setCoordinates('V28');
-			$drawing4->setHeight(40);
+			$drawing4->setHeight(35);
 			$drawing4->setWorksheet($spreadsheet->getActiveSheet());
 
 		} 
@@ -454,7 +449,7 @@ class Requests_Confirmation extends CI_Controller {
 				$drawing6->setName('FCO signature');
 				$drawing6->setPath(FCPATH.'assets/images/signature/' . $detail['fco_monitor_signature']); // put your path and image here
 				$drawing6->setCoordinates('V41');
-				$drawing6->setHeight(40);
+				$drawing6->setHeight(35);
 				$drawing6->setWorksheet($spreadsheet->getActiveSheet());
 			} 
 		}
@@ -475,7 +470,7 @@ class Requests_Confirmation extends CI_Controller {
 				$drawing7->setName('FCO signature');
 				$drawing7->setPath(FCPATH.'assets/images/signature/' . $detail['fco_monitor_signature']); // put your path and image here
 				$drawing7->setCoordinates('V54');
-				$drawing7->setHeight(40);
+				$drawing7->setHeight(35);
 				$drawing7->setWorksheet($spreadsheet->getActiveSheet());
 			} 
 		}
