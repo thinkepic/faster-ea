@@ -219,7 +219,7 @@ class Incoming_requests extends MY_Controller {
 		<p style="margin-bottom: 2px;">Rejected reason:</p>
 		<p><b>'.$detail['rejected_reason'].'</b></p>';
         $data['content'] = '
-                    <p>Dear, '.$requestor['username'].',</p> 
+                    <p>Dear '.$requestor['username'].',</p> 
                     <p>'.$data['preview'].'</p>
 					<table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-detail">
                         <tbody>
@@ -292,7 +292,7 @@ class Incoming_requests extends MY_Controller {
 		$data['preview'] = '<p>EA Request #EA-'.$detail['r_id'].' has been approved by '.$email_detail['approver_name'].'</p>
                              <p>Please review following requests</p>';
         $data['content'] = '
-                    <p>Dear, '.$email_detail['target_name'].',</p> 
+                    <p>Dear '.$email_detail['target_name'].',</p> 
                     <p>'.$data['preview'].'</p>
                     <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-detail">
                         <tbody>

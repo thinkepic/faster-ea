@@ -168,3 +168,31 @@ if (!function_exists('get_requests_status')) {
         return $status;
     }
 }
+
+if (!function_exists('is_expired_request')) {
+    function is_expired_request($req_id, $level)
+    {   
+        $ci = &get_instance();
+        $request = $ci->db->select('head_of_units_status, ea_assosiate_status, fco_monitor_status, finance_status')
+        ->from('ea_requests_status')
+        ->where('request_id', $req_id)
+        ->get()->row_array();
+        $expired = false;
+        if($level == 'head_of_units' ) {
+            if($request['head_of_units_status'] != 1) {
+                $expired = true;
+            }
+        } 
+        if($level == 'ea_assosiate' ) {
+            if($request['ea_assosiate_status'] != 1) {
+                $expired = true;
+            }
+        } 
+        if($level == 'fco_monitor' ) {
+            if($request['fco_monitor_status'] != 1) {
+                $expired = true;
+            }
+        } 
+        return $expired;
+    }
+}

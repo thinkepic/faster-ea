@@ -19,60 +19,59 @@ class Requests_Confirmation extends CI_Controller {
         $approver_id = $this->input->get('approver_id');
         $status = $this->input->get('status');
         $level = $this->input->get('level');
-		if($status == 3) {
-            $updated = $this->request->update_status($req_id, $approver_id, $status, $level);
-			if($updated) {
-				$email_sent = $this->send_rejected_requests($req_id, $level);
-				if($email_sent) {
-					$data['message'] = "EA Requests #EA$req_id has been rejected";
-				} else {
-					$data['message'] = "Something wrong, please try again later";
-					$this->request->update_status($req_id, $approver_id, 1, $level);
-				}
+		if(is_expired_request($req_id, $level)) {
+			$this->template->render('requests_confirmation/expired_request');
+		} else {
+			if($status == 3) {
+				$data = [
+					'req_id' => $req_id,
+					'approver_id' => $approver_id,
+					'status' => $status,
+					'level' => $level,
+				];
+				$this->template->render('requests_confirmation/rejecting', $data);
 			} else {
-				$data['message'] = "Something wrong, please try again later";
-			}
-        } else {
-            $request_detail = $this->request->get_request_by_id($req_id);
-            $updated = $this->request->update_status($req_id, $approver_id, $status, $level);
-			if($updated) {
-				if ($level == 'fco_monitor') {
-					$fco = $this->base_model->get_fco_monitor();
-					$email_sent = $this->send_email_to_finance_teams($req_id, $fco['username']);
-				} else {
-					if($level == 'head_of_units') {
-						$ea_assosiate = $this->base_model->get_ea_assosiate();
-						$target_level = 'ea_assosiate';
-						$email_data = [
-							'approver_name' => $request_detail['head_of_units_name'],
-							'target_id' => $ea_assosiate['id'],
-							'target_name' => $ea_assosiate['username'],
-							'target_email' => $ea_assosiate['email'],
-						];
-					} else if ($level == 'ea_assosiate') {
-						$fco_monitor = $this->base_model->get_fco_monitor();
-						$target_level = 'fco_monitor';
-						$email_data = [
-							'approver_name' => $request_detail['ea_assosiate_name'],
-							'target_id' => $fco_monitor['id'],
-							'target_name' => $fco_monitor['username'],
-							'target_email' => $fco_monitor['email'],
-						];
+				$request_detail = $this->request->get_request_by_id($req_id);
+				$updated = $this->request->update_status($req_id, $approver_id, $status, $level);
+				if($updated) {
+					if ($level == 'fco_monitor') {
+						$fco = $this->base_model->get_fco_monitor();
+						$email_sent = $this->send_email_to_finance_teams($req_id, $fco['username']);
+					} else {
+						if($level == 'head_of_units') {
+							$ea_assosiate = $this->base_model->get_ea_assosiate();
+							$target_level = 'ea_assosiate';
+							$email_data = [
+								'approver_name' => $request_detail['head_of_units_name'],
+								'target_id' => $ea_assosiate['id'],
+								'target_name' => $ea_assosiate['username'],
+								'target_email' => $ea_assosiate['email'],
+							];
+						} else if ($level == 'ea_assosiate') {
+							$fco_monitor = $this->base_model->get_fco_monitor();
+							$target_level = 'fco_monitor';
+							$email_data = [
+								'approver_name' => $request_detail['ea_assosiate_name'],
+								'target_id' => $fco_monitor['id'],
+								'target_name' => $fco_monitor['username'],
+								'target_email' => $fco_monitor['email'],
+							];
+						}
+						$email_sent = $this->send_approved_request($req_id, $target_level, $email_data);
 					}
-					$email_sent = $this->send_approved_request($req_id, $target_level, $email_data);
-				}
-				if($email_sent) {
-					$data['message'] = "EA Requests #EA$req_id has been approved";
+					if($email_sent) {
+						$data['message'] = "EA Requests #EA$req_id has been approved";
+						$this->delete_ea_excel();
+					} else {
+						$data['message'] = "Something wrong, please try again later";
+						$this->request->update_status($req_id, $approver_id, 1, $level);
+					}
 				} else {
 					$data['message'] = "Something wrong, please try again later";
-					$this->request->update_status($req_id, $approver_id, 1, $level);
 				}
-			} else {
-				$data['message'] = "Something wrong, please try again later";
+				$this->template->render('requests_confirmation/index', $data);
 			}
-        }
-        $this->delete_ea_excel();
-        $this->template->render('requests_confirmation/index', $data);
+		}
 	}
 
     private function send_rejected_requests($req_id, $level) {
@@ -97,9 +96,11 @@ class Requests_Confirmation extends CI_Controller {
             $rejected_by = $detail['fco_monitor_name'];
         }
 
-		$data['preview'] = '<p>Your EA Request #EA-'.$detail['r_id'].' has been rejected by '.$rejected_by.'</p>';
+		$data['preview'] = '<p>Your EA Request #EA-'.$detail['r_id'].' has been rejected by '.$rejected_by.'</p>
+		<p style="margin-bottom: 2px;">Rejected reason:</p>
+		<p><b>'.$detail['rejected_reason'].'</b></p>';
         $data['content'] = '
-                    <p>Dear, '.$requestor['username'].',</p> 
+                    <p>Dear '.$requestor['username'].',</p> 
                     <p>'.$data['preview'].'</p>
                     <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-detail">
                         <tbody>
@@ -135,6 +136,45 @@ class Requests_Confirmation extends CI_Controller {
 		}
     }
 
+	public function rejecting() {
+		if ($this->input->is_ajax_request() && $this->input->server('REQUEST_METHOD') === 'POST') {
+			$this->form_validation->set_rules('rejected_reason', 'Reason', 'required');
+			if ($this->form_validation->run()) {
+				$req_id =  $this->input->post('id');
+				$approver_id =  $this->input->post('approver_id');
+				$status =  $this->input->post('status');
+				$level =  $this->input->post('level');
+				$rejected_reason =  $this->input->post('rejected_reason');
+				$updated = $this->request->update_status($req_id, $approver_id, $status, $level, $rejected_reason);
+				if($updated) {
+					$email_sent = $this->send_rejected_requests($req_id, $level);
+					if($email_sent) {
+						$response['success'] = true;
+						$response['message'] = 'Request has been rejected and email has been sent';
+						$status_code = 200;
+						$this->delete_ea_excel();
+					} else {
+						$this->request->update_status($req_id, $approver_id, 1, $level);
+						$response['success'] = false;
+						$response['message'] = 'Something wrong, please try again later';
+						$status_code = 400;
+					}
+				} else {
+					$response['success'] = false;
+					$response['message'] = 'Something wrong, please try again later';
+					$status_code = 400;
+				}
+			} else {
+				$response['errors'] = $this->form_validation->error_array();
+				$response['message'] = 'Please fill all required fields';
+				$status_code = 422;
+			}
+			$this->send_json($response, $status_code);
+		} else {
+			exit('No direct script access allowed');
+		}
+	}
+
     private function send_approved_request($req_id, $level, $email_detail) {
         $this->load->library('Phpmailer_library');
         $mail = $this->phpmailer_library->load();
@@ -153,7 +193,7 @@ class Requests_Confirmation extends CI_Controller {
                              <p>Please review following requests</p>
              ';
         $data['content'] = '
-                    <p>Dear, '.$email_detail['target_name'].',</p> 
+                    <p>Dear '.$email_detail['target_name'].',</p> 
                     <p>'.$data['preview'].'</p>
                     <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-detail">
                         <tbody>
@@ -493,4 +533,11 @@ class Requests_Confirmation extends CI_Controller {
 		$excel_path = './assets/excel/sent_ea_form.xlsx';
 		unlink($excel_path);
 	}
+
+	private function send_json($data, $status_code = 200) {
+        return $this->output
+            ->set_content_type('application/json')
+            ->set_status_header($status_code)
+            ->set_output(json_encode(array_merge($data, ['code' => $status_code])));
+    }
 }
