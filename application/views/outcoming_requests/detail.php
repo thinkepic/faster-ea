@@ -779,6 +779,12 @@
 									</tr>
 								</tbody>
 							</table>
+							<?php if ($request_status['text'] == 'Rejected'): ?>
+								<div class="mt-4">
+									<h5>Rejected reason :</h5>
+									<textarea class="form-control" readonly id="" rows="3"><?= $detail['rejected_reason'] ?></textarea>
+								</div>
+							<?php endif; ?>
 						</div>
 					</div>
 				</div>
