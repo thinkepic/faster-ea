@@ -36,7 +36,10 @@ class Requests_Confirmation extends CI_Controller {
 				if($updated) {
 					if ($level == 'fco_monitor') {
 						$fco = $this->base_model->get_fco_monitor();
-						$email_sent = $this->send_email_to_finance_teams($req_id, $fco['username']);
+						$finance_teams = $this->base_model->get_finance_teams();
+						foreach($finance_teams as $user) {
+							$email_sent = $this->send_email_to_finance_teams($req_id, $fco['username'], $user);
+						}
 					} else {
 						if($level == 'head_of_units') {
 							$ea_assosiate = $this->base_model->get_ea_assosiate();
@@ -94,6 +97,8 @@ class Requests_Confirmation extends CI_Controller {
             $rejected_by = $detail['ea_assosiate_name'];
         } else if($level == 'fco_monitor') {
             $rejected_by = $detail['fco_monitor_name'];
+        } else if($level == 'finance') {
+            $rejected_by = $detail['finance_name'];
         }
 
 		$data['preview'] = '<p>Your EA Request #EA-'.$detail['r_id'].' has been rejected by '.$rejected_by.'</p>
@@ -266,7 +271,7 @@ class Requests_Confirmation extends CI_Controller {
 		}
     }
 
-    private function send_email_to_finance_teams($req_id, $approver_name) {
+    private function send_email_to_finance_teams($req_id, $approver_name, $user) {
         $this->load->library('Phpmailer_library');
         $mail = $this->phpmailer_library->load();
         $mail->isSMTP();
@@ -280,35 +285,46 @@ class Requests_Confirmation extends CI_Controller {
 		$detail = $this->request->get_request_by_id($req_id);
 		$enc_req_id = encrypt($detail['r_id']);
 
+		$mail->setFrom('no-reply@faster.bantuanteknis.id', 'FASTER-FHI360');
 		$data['preview'] = '<p>EA Request #EA-'.$detail['r_id'].' has been approved by '.$approver_name.'</p>
-                             <p>Please process payment request, check on following details</p>
-             ';
-        $data['content'] = '
-                    <p>Dear Finance Teams,</p> 
-                    <p>'.$data['preview'].'</p>
-                    <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-detail">
-                        <tbody>
-                        <tr>
-                            <td align="left">
-                            <table role="presentation" border="0" cellpadding="0" cellspacing="0">
-                                <tbody>
-                                <tr>
-                                    <td> <a href="'.base_url('ea_requests/outcoming-requests/detail').'/'.$enc_req_id.'" target="_blank">DETAILS</a> </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    ';
-
-        $text = $this->load->view('template/email', $data, true);
-        $mail->setFrom('no-reply@faster.bantuanteknis.id', 'FASTER-FHI360');
-		$finance_teams = $this->base_model->get_finance_teams();
-		foreach($finance_teams as $user) {
-			$mail->addAddress($user['email']);
-		}
+						 <p>Please process payment request, check on following details</p>
+		 ';
+		 $data['content'] = '
+					 <p>Dear '.$user['username'].',</p> 
+					 <p>'.$data['preview'].'</p>
+					 <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-detail">
+						 <tbody>
+						 <tr>
+							 <td align="left">
+							 <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+								 <tbody>
+								 <tr>
+									 <td> <a href="'.base_url('ea_requests/outcoming-requests/detail').'/'.$enc_req_id.'" target="_blank">DETAILS</a> </td>
+								 </tr>
+								 </tbody>
+							 </table>
+							 </td>
+						 </tr>
+						 </tbody>
+					 </table>
+					 <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-danger">
+					 <tbody>
+					 <tr>
+						 <td align="left">
+						 <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+							 <tbody>
+							 <tr>
+								 <td> <a <a href="'.base_url('ea_requests/requests_confirmation').'?req_id='.$enc_req_id.'&approver_id='.$user['id'].'&status=3&level=finance" target="_blank">REJECT</a> </td>
+							 </tr>
+							 </tbody>
+						 </table>
+						 </td>
+					 </tr>
+					 </tbody>
+				 </table>
+					 ';
+		$text = $this->load->view('template/email', $data, true);
+		$mail->addAddress($user['email']);
         $payment_pdf = $this->attach_payment_request($req_id);
         $excel = $this->attach_ea_form($req_id);
 		$mail->addAttachment($excel['path'], $excel['file_name']);
