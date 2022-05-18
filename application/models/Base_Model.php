@@ -33,8 +33,8 @@ class Base_Model extends CI_Model
     function get_country_director() {
         return $this->db->select('id, username, email')
         ->from('tb_userapp')
-        // ->where('is_country_director', 1)
-        ->where('account_name', 'eaditya@fhi360.org')
+        ->where('is_country_director', 1)
+        // ->where('account_name', 'eaditya@fhi360.org')
         ->get()->row_array();
     }
 
