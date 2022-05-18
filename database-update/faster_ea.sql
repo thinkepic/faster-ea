@@ -643,6 +643,7 @@ CREATE TABLE `ea_requests_status` (
   `finance_id` int(11) DEFAULT NULL,
   `finance_status` tinyint(1) NOT NULL DEFAULT 1 COMMENT '1=Pending,\r\n2=Approved,\r\n3=Rejected',
   `finance_status_at` datetime DEFAULT NULL
+  `rejected_reason` text DEFAULT NULL,
   `date_of_transfer` date DEFAULT NULL
   `payment_receipt` text DEFAULT NULL,
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

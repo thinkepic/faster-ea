@@ -121,22 +121,31 @@ class Incoming_requests extends MY_Controller {
 			$approver_id = $this->user_data->userId;
             $request_detail = $this->request->get_request_by_id($req_id);
             if($status == 3) {
-				$rejector_name = $this->user_data->fullName;
-				$email_sent = $this->send_rejected_requests($req_id, $rejector_name);
-				$this->request->update_status($req_id, $approver_id, $status, $level);
-				if($email_sent) {
-					$response['success'] = true;
-					$response['message'] = 'Request has been rejected and email has been sent';
-					$status_code = 200;
+				$this->form_validation->set_rules('rejected_reason', 'Reason', 'required');
+				if ($this->form_validation->run()) {
+					$rejector_name = $this->user_data->fullName;
+					$rejected_reason =  $this->input->post('rejected_reason');
+					$email_sent = $this->send_rejected_requests($req_id, $rejector_name);
+					$this->request->update_status($req_id, $approver_id, $status, $level, $rejected_reason);
+					if($email_sent) {
+						$response['success'] = true;
+						$response['message'] = 'Request has been rejected and email has been sent';
+						$status_code = 200;
+						$this->delete_ea_excel();
+					} else {
+						$this->request->update_status($req_id, $approver_id, 1, $level);
+						$response['success'] = false;
+						$response['message'] = 'Something wrong, please try again later';
+						$status_code = 400;
+					}
 				} else {
-					$this->request->update_status($req_id, $approver_id, 1, $level);
-					$response['success'] = false;
-					$response['message'] = 'Something wrong, please try again later';
-					$status_code = 400;
+					$response['errors'] = $this->form_validation->error_array();
+					$response['message'] = 'Please fill all required fields';
+					$status_code = 422;
 				}
 			} else {
 				$approver_name = $this->user_data->fullName;
-				$updated =$this->request->update_status($req_id, $approver_id, $status, $level);
+				$updated = $this->request->update_status($req_id, $approver_id, $status, $level);
 				if($updated) {
 					$request_detail = $this->request->get_request_by_id($req_id);
 					if ($level == 'fco_monitor') {
@@ -167,6 +176,7 @@ class Incoming_requests extends MY_Controller {
 						$response['success'] = true;
 						$response['message'] = 'Request has been approved and email has been sent!';
 						$status_code = 200;
+						$this->delete_ea_excel();
 					} else {
 						$this->request->update_status($req_id, $approver_id, 1, $level);
 						$response['success'] = false;
@@ -179,7 +189,6 @@ class Incoming_requests extends MY_Controller {
 					$status_code = 400;
 				}
 			}
-			$this->delete_ea_excel();
 			$this->send_json($response, $status_code);
 		} else {
 			exit('No direct script access allowed');
@@ -569,4 +578,13 @@ class Incoming_requests extends MY_Controller {
 			return false;
 		}
     }
+
+	public function get_rejected_modal() {	
+		$data = [
+			'id' => $this->input->get('id'),
+			'status' => $this->input->get('status'),
+			'level' => $this->input->get('level'),
+		];
+		$this->load->view('incoming_requests/modal/rejected_reason', $data);
+	}
 }

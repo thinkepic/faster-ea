@@ -913,69 +913,135 @@
 				const id = $(this).attr('data-id')
 				const status = $(this).attr('data-status')
 				const level = $(this).attr('data-level')
-				let statusText = 'Approve'
-				if (status == 3) {
-					statusText = 'Reject'
-				}
 				const loader = `<div style="width: 5rem; height: 5rem;" class="spinner-border mb-5" role="status"></div>
 				<h5 class="mt-2">Please wait</h5>
-				<p>Updating status and sending email...</p>				
-				`
-				Swal.fire({
-					title: 'Are you sure?',
-					text: `${statusText} request and send notification email?`,
-					type: 'warning',
-					showCancelButton: true,
-					confirmButtonColor: '#3085d6',
-					cancelButtonColor: '#d33',
-					confirmButtonText: `Yes, ${statusText} it!`
-				}).then((result) => {
-					const formData = {
-						id: id,
-						status: status,
-						level: level
-					}
-					if (result.value) {
-						$.ajax({
-							type: 'POST',
-							dataType: 'JSON',
-							url: base_url + 'ea_requests/incoming_requests/set_status',
-							data: formData,
-							beforeSend: function () {
-								Swal.fire({
-									html: loader,
-									showConfirmButton: false,
-									allowEscapeKey: false,
-									allowOutsideClick: false,
-								});
-							},
-							error: function (xhr) {
-								const response = xhr.responseJSON;
-								console.log(response)
-								Swal.fire({
-									"title": "Something went wrong!",
-									"text": response.message,
-									"type": "error",
-									"confirmButtonClass": "btn btn-dark"
-								});
-							},
-							success: function (response) {
-								Swal.fire({
-									"title": "Success!",
-									"text": response.message,
-									"type": "success",
-									"confirmButtonClass": "btn btn-dark"
-								}).then((result) => {
-									if (result.value) {
-										window.location.replace(base_url +
-											'ea_requests/incoming-requests/requests-for-review'
-										)
-									}
-								})
-							},
+				<p>Updating status and sending email...</p>	`
+				if (status == 3) {
+					$.get(base_url +
+						`ea_requests/incoming_requests/get_rejected_modal?id=${id}&status=${status}&level=${level}`,
+						function (html) {
+							$('#myModal').html(html)
+							$('#myModal').modal('show')
 						});
-					}
-				})
+					$(document).on("submit", '#reject-form', function (e) {
+						e.preventDefault()
+						const formData = new FormData(this);
+						Swal.fire({
+							title: `Reject request and send notification email?`,
+							text: "",
+							type: 'warning',
+							showCancelButton: true,
+							confirmButtonColor: '#3085d6',
+							cancelButtonColor: '#d33',
+							confirmButtonText: `Yes!`
+						}).then((result) => {
+							if (result.value) {
+								$.ajax({
+									type: 'POST',
+									url: $(this).attr("action"),
+									data: formData,
+									beforeSend: function () {
+										$('p.error').remove();
+										Swal.fire({
+											html: loader,
+											showConfirmButton: false,
+											allowEscapeKey: false,
+											allowOutsideClick: false,
+										});
+									},
+									error: function (xhr) {
+										const response = xhr.responseJSON;
+										if (response.errors) {
+											for (const err in response.errors) {
+												$(`#${err}`).parent().append(
+													`<p class="error mt-1 mb-0">This field is required</p>`
+												)
+											}
+										}
+										Swal.fire({
+											"title": response.message,
+											"text": '',
+											"type": "error",
+											"confirmButtonClass": "btn btn-dark"
+										});
+									},
+									success: function (response) {
+										Swal.fire({
+											"title": "Success!",
+											"text": response.message,
+											"type": "success",
+											"confirmButtonClass": "btn btn-dark"
+										}).then((result) => {
+											if (result.value) {
+												location.reload();
+											}
+										})
+									},
+									cache: false,
+									contentType: false,
+									processData: false
+								});
+							}
+						})
+					});
+				} else {
+					Swal.fire({
+						title: 'Are you sure?',
+						text: `Approve request and send notification email?`,
+						type: 'warning',
+						showCancelButton: true,
+						confirmButtonColor: '#3085d6',
+						cancelButtonColor: '#d33',
+						confirmButtonText: `Yes, approve it!`
+					}).then((result) => {
+						const formData = {
+							id: id,
+							status: status,
+							level: level
+						}
+						if (result.value) {
+							$.ajax({
+								type: 'POST',
+								dataType: 'JSON',
+								url: base_url + 'ea_requests/incoming_requests/set_status',
+								data: formData,
+								beforeSend: function () {
+									Swal.fire({
+										html: loader,
+										showConfirmButton: false,
+										allowEscapeKey: false,
+										allowOutsideClick: false,
+									});
+								},
+								error: function (xhr) {
+									const response = xhr.responseJSON;
+									console.log(response)
+									Swal.fire({
+										"title": "Something went wrong!",
+										"text": response.message,
+										"type": "error",
+										"confirmButtonClass": "btn btn-dark"
+									});
+								},
+								success: function (response) {
+									Swal.fire({
+										"title": "Success!",
+										"text": response.message,
+										"type": "success",
+										"confirmButtonClass": "btn btn-dark"
+									}).then((result) => {
+										if (result.value) {
+											window.location.replace(base_url +
+												'ea_requests/incoming-requests/requests-for-review'
+											)
+										}
+									})
+								},
+							});
+						}
+					})
+				}
+
 			});
 		});
 

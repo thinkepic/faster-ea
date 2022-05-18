@@ -201,11 +201,12 @@ class Request_Model extends CI_Model
         return $this->db->affected_rows() === 1;
     }
 
-    function update_status($request_id, $approver_id, $status, $level) {
+    function update_status($request_id, $approver_id, $status, $level, $rejected_reason = null) {
         $this->db->where('request_id', $request_id)->update('ea_requests_status', [
             $level . '_status' => $status,
             $level . '_status_at' => date("Y-m-d H:i:s"),
             $level . '_id' => $approver_id,
+            'rejected_reason' => $rejected_reason,
         ]);
         return $this->db->affected_rows() === 1;
     }
