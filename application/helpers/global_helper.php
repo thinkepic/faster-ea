@@ -141,3 +141,30 @@ if (!function_exists('get_total_request_costs')) {
         return number_format($total_destinations_cost,2,',','.');
     }
 }
+
+if (!function_exists('get_requests_status')) {
+    function get_requests_status($req_id)
+    {   
+        $ci = &get_instance();
+        $request = $ci->db->select('head_of_units_status, ea_assosiate_status, fco_monitor_status, finance_status')
+        ->from('ea_requests_status')
+        ->where('request_id', $req_id)
+        ->get()->row_array();
+        $status = [
+            'text' => 'Pending',
+            'badge_color' => 'info',
+        ];
+        if($request['head_of_units_status'] == 3 || $request['ea_assosiate_status'] == 3 || $request['fco_monitor_status'] == 3 || $request['finance_status'] == 3) {
+            $status = [
+                'text' => 'Rejected',
+                'badge_color' => 'danger',
+            ];
+        } else if($request['head_of_units_status'] == 2 && $request['ea_assosiate_status'] == 2 && $request['fco_monitor_status'] == 2 && $request['finance_status'] == 2) {
+            $status = [
+                'text' => 'Done',
+                'badge_color' => 'success',
+            ];
+        }
+        return $status;
+    }
+}

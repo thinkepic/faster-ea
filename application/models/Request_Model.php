@@ -263,4 +263,26 @@ class Request_Model extends CI_Model
         ->get()->result_array();
         return $other_items;
     }
+
+    function update_costs($dest_id, $payload) {
+        $detail = $this->db->select('*')->from('ea_requests_destinations')->where('id', $dest_id)->get()->row_array();
+        $night = $detail['night'];
+        $meals = $payload['meals'];
+        $lodging = $payload['lodging'];
+        $total_lodging_and_meals = $meals + $lodging;
+        $total = $total_lodging_and_meals * $night;
+        $data = [
+            'arrival_date' => date('Y-m-d', strtotime($payload['arrival_date'])),
+            'departure_date' => date('Y-m-d', strtotime($payload['departure_date'])),
+            'meals' => $meals,
+            'lodging' => $lodging,
+            'total_lodging_and_meals' => $total_lodging_and_meals,
+            'total' => $total,
+        ];
+        $updated = $this->db->where('id', $dest_id)->update('ea_requests_destinations', $data);
+        if($updated) {
+            return true;
+        }
+        return false;
+    }
 }

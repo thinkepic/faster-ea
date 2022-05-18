@@ -7,61 +7,68 @@
 					</div>
 					<div class="kt-infobox__body">
 						<div class="row">
-							<label class="col-3 col-form-label fw-bold">EA Number</label>
+							<label class="col-3 mb-2 col-form-label fw-bold">EA Number</label>
 							<div class="col-9">
 								<span style="font-size: 1rem;"
 									class="badge badge-success fw-bold"><?= $detail['ea_number'] ?></span>
 							</div>
 						</div>
 						<div class="row">
-							<label class="col-3 col-form-label fw-bold">Requestor name</label>
+							<label class="col-3 mb-2 col-form-label fw-bold">Status</label>
+							<div class="col-9">
+								<span style="font-size: 1rem;"
+									class="badge badge-<?= $request_status['badge_color'] ?> fw-bold"><?= $request_status['text'] ?></span>
+							</div>
+						</div>
+						<div class="row">
+							<label class="col-3 mb-2 col-form-label fw-bold">Requestor name</label>
 							<div class="col-9">
 								<span style="font-size: 1rem;"
 									class="badge badge-light fw-bold"><?= $requestor_data['username'] ?></span>
 							</div>
 						</div>
 						<div class="row">
-							<label class="col-3 col-form-label fw-bold">Division</label>
+							<label class="col-3 mb-2 col-form-label fw-bold">Division</label>
 							<div class="col-9">
 								<span class="badge badge-dark fw-bold"><?= $requestor_data['project_name'] ?></span>
 							</div>
 						</div>
 						<div class="row">
-							<label class="col-3 col-form-label fw-bold">Purpose</label>
+							<label class="col-3 mb-2 col-form-label fw-bold">Purpose</label>
 							<div class="col-9">
 								<span class="badge badge-info fw-bold"><?= $requestor_data['unit_name'] ?></span>
 							</div>
 						</div>
 						<div class="p-2 mb-2 border-bottom"></div>
 						<div class="row">
-							<label class="col-3 col-form-label fw-bold">Request base</label>
+							<label class="col-3 mb-2 col-form-label fw-bold">Request base</label>
 							<div class="col-9">
 								<span class="badge badge-light fw-bold"><?= $detail['request_base'] ?></span>
 							</div>
 						</div>
 						<?php if ($detail['request_base'] === 'Internal TOR'): ?>
 						<div class="row">
-							<label class="col-3 col-form-label fw-bold">TOR number</label>
+							<label class="col-3 mb-2 col-form-label fw-bold">TOR number</label>
 							<div class="col-9">
 								<span class="badge badge-light fw-bold"><?= $detail['tor_number'] ?></span>
 							</div>
 						</div>
 						<?php endif; ?>
 						<div class="row">
-							<label class="col-3 col-form-label fw-bold">Request date</label>
+							<label class="col-3 mb-2 col-form-label fw-bold">Request date</label>
 							<div class="col-9">
 								<span class="badge badge-light fw-bold"><?= $detail['request_date'] ?></span>
 							</div>
 						</div>
 						<div class="row">
-							<label class="col-3 col-form-label fw-bold">Employment</label>
+							<label class="col-3 mb-2 col-form-label fw-bold">Employment</label>
 							<div class="col-9">
 								<span class="badge badge-light fw-bold"><?= $detail['employment'] ?></span>
 							</div>
 						</div>
 						<?php if ($detail['employment'] === 'On behalf'): ?>
 						<div class="row">
-							<label class="col-3 col-form-label fw-bold">Employment status</label>
+							<label class="col-3 mb-2 col-form-label fw-bold">Employment status</label>
 							<div class="col-9">
 								<span class="badge badge-light fw-bold"><?= $detail['employment_status'] ?></span>
 							</div>
@@ -368,6 +375,35 @@
 											<?= $dest['d_total'] ?></span>
 									</p>
 								</div>
+								<?php if (is_ea_assosiate()): ?>
+								<div class="d-flex justify-content-end align-items-center p-2">
+									<button data-dest-id="<?= $dest['id'] ?>"
+										class="btn btn-sm btn-success btn-edit-costs">
+										<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor"
+											class="bi bi-pencil-square" viewBox="0 0 16 16">
+											<path
+												d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+											<path fill-rule="evenodd"
+												d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+										</svg>
+										<span class="ml-1">Edit cost</span>
+									</button>
+								</div>
+								<?php elseif ($detail['requestor_id'] == $this->user_data->userId && $request_status['text'] == 'Rejected'): ?>
+								<div class="d-flex justify-content-end align-items-center p-2">
+									<button data-dest-id="<?= $dest['id'] ?>"
+										class="btn btn-sm btn-success btn-edit-costs">
+										<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor"
+											class="bi bi-pencil-square" viewBox="0 0 16 16">
+											<path
+												d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+											<path fill-rule="evenodd"
+												d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+										</svg>
+										<span class="ml-1">Edit cost</span>
+									</button>
+								</div>
+								<?php endif; ?>
 							</div>
 							<?php endforeach; ?>
 						</div>
@@ -797,6 +833,81 @@
 					scrollTop: $("#max-budget-form").offset().top - 180
 				}, 500);
 			})
+			$(document).on('click', '.btn-edit-costs', function (e) {
+				e.preventDefault()
+				const dest_id = $(this).attr('data-dest-id')
+				$.get(base_url + `ea_requests/outcoming_requests/edit_costs_modal?dest_id=${dest_id}`,
+					function (html) {
+						$('#myModal').html(html)
+						$('#lodging, #meals').number(true, 0, '', '.');
+						$('#myModal').modal('show')
+					});
+			})
+			$(document).on("submit", '#update-costs', function (e) {
+				e.preventDefault()
+				const formData = new FormData(this);
+				const loader = `<div style="width: 5rem; height: 5rem;" class="spinner-border mb-5" role="status"></div>
+					<h5 class="mt-2">Please wait</h5>
+					<p>Updating costs ...</p>`
+				Swal.fire({
+					title: 'Update costs?',
+					text: "",
+					type: 'warning',
+					showCancelButton: true,
+					confirmButtonColor: '#3085d6',
+					cancelButtonColor: '#d33',
+					confirmButtonText: `Yes!`
+				}).then((result) => {
+					if (result.value) {
+						$.ajax({
+							type: 'POST',
+							url: $(this).attr("action"),
+							data: formData,
+							beforeSend: function () {
+								$('p.error').remove();
+								Swal.fire({
+									html: loader,
+									showConfirmButton: false,
+									allowEscapeKey: false,
+									allowOutsideClick: false,
+								});
+							},
+							error: function (xhr) {
+								const response = xhr.responseJSON;
+								if (response.errors) {
+									for (const err in response.errors) {
+										$(`#${err}`).parent().append(
+											`<p class="error mt-1 mb-0">This field is required</p>`
+										)
+									}
+								}
+								Swal.fire({
+									"title": response.message,
+									"text": '',
+									"type": "error",
+									"confirmButtonClass": "btn btn-dark"
+								});
+							},
+							success: function (response) {
+								Swal.fire({
+									"title": "Success!",
+									"text": response.message,
+									"type": "success",
+									"confirmButtonClass": "btn btn-dark"
+								}).then((result) => {
+									console.log(response)
+									if (result.value) {
+										location.reload();
+									}
+								})
+							},
+							cache: false,
+							contentType: false,
+							processData: false
+						});
+					}
+				})
+			});
 			$(document).on('click', '.btn-status', function (e) {
 				e.preventDefault()
 				const id = $(this).attr('data-id')

@@ -88,8 +88,8 @@ class Outcoming_requests extends MY_Controller {
 				'ea_assosiate_btn' => $ea_assosiate_btn,
 				'fco_monitor_btn' => $fco_monitor_btn,
 				'finance_btn' => $finance_btn,
+				'request_status' => get_requests_status($detail['r_id']),
 			];
-			// echo json_encode($data);
 			$this->template->set('pageParent', 'Requests');
 			$this->template->set('page', 'Requests detail');
 			$this->template->render('outcoming_requests/detail', $data);
@@ -434,16 +434,6 @@ class Outcoming_requests extends MY_Controller {
 
 		} 
 
-		// if($detail['ea_assosiate_status'] == 2) {
-		// 	$drawing3 = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
-		// 	$drawing3->setName('EA signature');
-		// 	$drawing3->setPath(FCPATH.'assets/images/signature/' . $detail['ea_assosiate_signature']); // put your path and image here
-		// 	$drawing3->setCoordinates('AK89');
-		// 	$drawing3->setHeight(50);
-		// 	$drawing3->setOffsetY(-15); 
-		// 	$drawing3->setWorksheet($spreadsheet->getActiveSheet());
-		// } 
-
 		if($detail['fco_monitor_status'] == 2) {
 			$drawing4 = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
 			$drawing4->setName('FCO signature');
@@ -560,5 +550,56 @@ class Outcoming_requests extends MY_Controller {
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header("Content-Disposition: attachment; filename=$filename.xlsx");
         $writer->save('php://output');
+	}
+
+	public function edit_costs_modal() {
+		$dest_id = $this->input->get('dest_id');	
+		$detail = $this->db->select('ed.id, er.requestor_id, ed.arrival_date, ed.departure_date ,format(ed.meals,0,"de_DE") as meals, format(ed.lodging,0,"de_DE") as lodging')
+					->from('ea_requests_destinations ed')
+					->join('ea_requests er', 'er.id = ed.request_id')
+					->where('ed.id', $dest_id)
+					->get()->row_array();	
+		$data = [
+			'detail' => $detail,
+		];
+		$this->load->view('outcoming_requests/modal/edit_costs', $data);
+	}
+
+	public function update_costs($dest_id) {
+		if ($this->input->is_ajax_request() && $this->input->server('REQUEST_METHOD') === 'POST') {
+			$this->form_validation->set_rules('meals', 'Meals', 'required');
+			$this->form_validation->set_rules('lodging', 'Lodging', 'required');
+
+			if ($this->form_validation->run()) {
+				
+				$meals = $this->input->post('meals');
+				$clean_meals = str_replace('.', '',  $meals);
+				$lodging = $this->input->post('lodging');
+				$clean_lodging = str_replace('.', '',  $lodging);
+				$payload = [
+					'arrival_date' => $this->input->post('arrival_date'),
+					'departure_date' => $this->input->post('departure_date'),
+					'meals' => $clean_meals,
+					'lodging' => $clean_lodging,
+				];
+				$updated = $this->request->update_costs($dest_id, $payload);
+				if($updated) {
+					$response['success'] = true;
+					$response['message'] = 'Data has been updated!';
+					$status_code = 200;
+				} else {
+					$response['success'] = false;
+					$response['message'] = 'Failed to update data, please try again later';
+					$status_code = 400;
+				}
+			} else {
+				$response['errors'] = $this->form_validation->error_array();
+				$response['message'] = 'Please fill all required fields';
+				$status_code = 422;
+			}
+			$this->send_json($response, $status_code);
+		} else {
+			exit('No direct script access allowed');
+		}
 	}
 }

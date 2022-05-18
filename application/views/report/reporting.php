@@ -47,7 +47,7 @@
 				<div class="kt-infobox">
 					<div class="kt-infobox__header border-bottom pb-1">
 						<h4 class="text-dark fw-600"><?= $dest['order'] ?> destination
-							<span>(<?= $dest['city'] ?>)</span></h4>
+							<span>(<?= $dest['city'] ?>, <?= $dest['night'] ?> night)</span></h4>
 					</div>
 					<div
 						class="kt-datatable kt-datatable--default kt-datatable--brand kt-datatable--loaded border-bottom">
