@@ -125,15 +125,21 @@ class Incoming_requests extends MY_Controller {
 				if ($this->form_validation->run()) {
 					$rejector_name = $this->user_data->fullName;
 					$rejected_reason =  $this->input->post('rejected_reason');
-					$email_sent = $this->send_rejected_requests($req_id, $rejector_name);
-					$this->request->update_status($req_id, $approver_id, $status, $level, $rejected_reason);
-					if($email_sent) {
-						$response['success'] = true;
-						$response['message'] = 'Request has been rejected and email has been sent';
-						$status_code = 200;
-						$this->delete_ea_excel();
+					$updated = $this->request->update_status($req_id, $approver_id, $status, $level, $rejected_reason);
+					if($updated) {
+						$email_sent = $this->send_rejected_requests($req_id, $rejector_name);
+						if($email_sent) {
+							$response['success'] = true;
+							$response['message'] = 'Request has been rejected and email has been sent';
+							$status_code = 200;
+							$this->delete_ea_excel();
+						} else {
+							$this->request->update_status($req_id, $approver_id, 1, $level);
+							$response['success'] = false;
+							$response['message'] = 'Something wrong, please try again later';
+							$status_code = 400;
+						}
 					} else {
-						$this->request->update_status($req_id, $approver_id, 1, $level);
 						$response['success'] = false;
 						$response['message'] = 'Something wrong, please try again later';
 						$status_code = 400;
@@ -209,7 +215,9 @@ class Incoming_requests extends MY_Controller {
 		$detail = $this->request->get_request_by_id($req_id);
 		$requestor = $this->request->get_requestor_data($detail['requestor_id']);
 		$enc_req_id = encrypt($detail['r_id']);
-		$data['preview'] = '<p>Your EA Request #EA-'.$detail['r_id'].' has been rejected by '.$rejector_name.'</p>';
+		$data['preview'] = '<p>Your EA Request #EA-'.$detail['r_id'].' has been rejected by '.$rejector_name.'</p>
+		<p style="margin-bottom: 2px;">Rejected reason:</p>
+		<p><b>'.$detail['rejected_reason'].'</b></p>';
         $data['content'] = '
                     <p>Dear, '.$requestor['username'].',</p> 
                     <p>'.$data['preview'].'</p>
