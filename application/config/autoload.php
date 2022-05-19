@@ -103,7 +103,7 @@ $autoload['helper'] = array('url', 'tag_helper', 'global_helper', 'cookie');
 | config files.  Otherwise, leave it blank.
 |
 */
-$autoload['config'] = array();
+$autoload['config'] = array('custom');
 
 /*
 | -------------------------------------------------------------------

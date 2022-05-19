@@ -741,8 +741,8 @@
 												style="width: 110px;"><?= $detail['finance_status_at'] ?></span></td>
 										<td class="kt-datatable__cell">
 											<div style="width: 140px;" class="d-flex flex-column <?= $finance_btn ?>">
-												<button data-level='finance' data-id=<?= $detail['r_id'] ?>
-													class="btn btn-payment btn-status btn-sm btn-warning text-light">
+												<button style="padding: 0.3rem .6rem !important;" data-level='finance' data-id=<?= $detail['r_id'] ?>
+													class="btn btn-payment btn-sm btn-warning text-light">
 													<div class="d-flex align-items-center justify-content-center">
 														<svg xmlns="http://www.w3.org/2000/svg" width="11" height="11"
 															fill="currentColor" class="bi bi-currency-dollar"
