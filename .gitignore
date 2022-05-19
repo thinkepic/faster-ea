@@ -39,7 +39,6 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 /tests/results/
 
 node_modules
-application/config/database.php
 .vscode
 uploads/
 .env
