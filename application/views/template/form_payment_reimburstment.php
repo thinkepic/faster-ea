@@ -84,7 +84,7 @@
 			<td style="width: 220px">
 				<div style="border-bottom: 1px solid">
 					<div style="text-align: center">
-						<img src="<?= $_ENV['stagingUrl'] ?>/images/items/<?= $requestor['signature'] ?>"
+						<img src="<?= site_url('assets/images/signature') ?>/<?= $requestor['signature'] ?>"
 							style='height: 60px; margin-bottom: -10px'>
 					</div>
 					<p style="font-size: 14px; text-align: center"><?= $requestor['username'] ?></p>
@@ -104,7 +104,7 @@
 			<td style="width: 220px">
 				<div style="border-bottom: 1px solid">
 					<div style="text-align: center">
-						<img src="<?= $_ENV['stagingUrl'] ?>/images/items/<?= $detail['fco_monitor_signature'] ?>"
+						<img src="<?= site_url('assets/images/signature') ?>/<?= $detail['fco_monitor_signature'] ?>"
 							style='height: 60px; margin-bottom: -10px'>
 					</div>
 					<p style="font-size: 14px; text-align: center"><?= $detail['fco_monitor_name'] ?></p>

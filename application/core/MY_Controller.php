@@ -13,9 +13,9 @@ class MY_Controller extends CI_Controller
         $this->load->helper('cookie');
         $token = get_cookie('fast_token');
         if (!$token) {
-            redirect($_ENV['loginUrl']);
+            redirect('https://staging.faster.bantuanteknis.id/Login');
         } else {
-            $key = $_ENV['secretKey'];
+            $key = 'p3g3lnajarS!@#$)*(JHJHFGHK&H#&^*&!#HUYT*&!';
             $user_data = JWT::decode($token, new Key($key, 'HS256'));
             $this->user_data = $user_data;
         }
