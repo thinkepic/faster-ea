@@ -1,7 +1,6 @@
 .DS_Store
 
 application/cache/*
-application/config/database.php
 !application/cache/index.html
 
 application/logs/*
@@ -21,6 +20,9 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 !/vendor/phpmailer
 !/vendor/phpoffice
 !/vendor/firebase
+!/vendor/composer
+!/vendor/mikey179
+!/vendor/phpunit
 
 # IDE Files
 #-------------------------
