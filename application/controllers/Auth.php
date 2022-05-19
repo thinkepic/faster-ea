@@ -13,6 +13,6 @@ class Auth extends CI_Controller {
 	{   
         delete_cookie('fast_token');
 		session_destroy();
-		redirect($_ENV['loginUrl']);
+		redirect('https://staging.faster.bantuanteknis.id/Login');
 	}
 }

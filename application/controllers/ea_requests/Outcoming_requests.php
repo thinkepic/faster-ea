@@ -231,12 +231,12 @@ class Outcoming_requests extends MY_Controller {
         $mail = $this->phpmailer_library->load();
         $mail->isSMTP();
         $mail->SMTPSecure = 'ssl';
-        $mail->Host = $_ENV['EMAIL_HOST'];
+        $mail->Host = 'smtp.googlemail.com';
         $mail->Port = 465;
         $mail->SMTPDebug = 0; 
         $mail->SMTPAuth = true;
-        $mail->Username = $_ENV['EMAIL_USERNAME'];
-        $mail->Password = $_ENV['EMAIL_PASSWORD'];
+        $mail->Username = 'alfayed@mhs.unsyiah.ac.id';
+        $mail->Password = 'fadeladen0510';
 		$detail = $this->request->get_request_by_id($request_id);
 		$requestor = $this->request->get_requestor_data($detail['requestor_id']);
 		$approver_name = $detail['head_of_units_name'];
@@ -336,12 +336,12 @@ class Outcoming_requests extends MY_Controller {
         $mail = $this->phpmailer_library->load();
         $mail->isSMTP();
         $mail->SMTPSecure = 'ssl';
-        $mail->Host = $_ENV['EMAIL_HOST'];
+        $mail->Host = 'smtp.googlemail.com';
         $mail->Port = 465;
         $mail->SMTPDebug = 0; 
         $mail->SMTPAuth = true;
-        $mail->Username = $_ENV['EMAIL_USERNAME'];
-        $mail->Password = $_ENV['EMAIL_PASSWORD'];
+        $mail->Username = 'alfayed@mhs.unsyiah.ac.id';
+        $mail->Password = 'fadeladen0510';
 		$detail = $this->request->get_request_by_id($request_id);
 		$requestor = $this->request->get_requestor_data($detail['requestor_id']);
 
