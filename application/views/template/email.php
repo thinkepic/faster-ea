@@ -392,7 +392,7 @@
               <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                 <tr>
                   <td class="content-block">
-                    <span class="apple-link"><a href="http://localhost/faster-ea/ea_requests/incoming-requests/requests-for-review" target="_blank">faster.bantuanteknis.id</a></span>
+                    <span class="apple-link"><a href="<?= base_url('ea_requests/dashboard') ?>" target="_blank">faster.bantuanteknis.id</a></span>
                   </td>
                 </tr>
               </table>
