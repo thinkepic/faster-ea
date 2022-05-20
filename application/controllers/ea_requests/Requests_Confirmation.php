@@ -81,13 +81,14 @@ class Requests_Confirmation extends CI_Controller {
         $this->load->library('Phpmailer_library');
         $mail = $this->phpmailer_library->load();
         $mail->isSMTP();
+        $email_config = $this->config->item('email');
         $mail->SMTPSecure = 'ssl';
-        $mail->Host = 'smtp.googlemail.com';
+        $mail->Host = $email_config['host'];
         $mail->Port = 465;
         $mail->SMTPDebug = 0; 
         $mail->SMTPAuth = true;
-        $mail->Username = 'alfayed@mhs.unsyiah.ac.id';
-        $mail->Password = 'fadeladen0510';
+        $mail->Username = $email_config['username'];
+        $mail->Password = $email_config['password'];
 		$detail = $this->request->get_request_by_id($req_id);
 		$enc_req_id = encrypt($detail['r_id']);
 		$requestor = $this->request->get_requestor_data($detail['requestor_id']);
@@ -184,13 +185,14 @@ class Requests_Confirmation extends CI_Controller {
         $this->load->library('Phpmailer_library');
         $mail = $this->phpmailer_library->load();
         $mail->isSMTP();
+        $email_config = $this->config->item('email');
         $mail->SMTPSecure = 'ssl';
-		$mail->Host = 'smtp.googlemail.com';
+        $mail->Host = $email_config['host'];
         $mail->Port = 465;
         $mail->SMTPDebug = 0; 
         $mail->SMTPAuth = true;
-        $mail->Username = 'alfayed@mhs.unsyiah.ac.id';
-        $mail->Password = 'fadeladen0510';
+        $mail->Username = $email_config['username'];
+        $mail->Password = $email_config['password'];
 		$detail = $this->request->get_request_by_id($req_id);
 		$enc_req_id = encrypt($detail['r_id']);
 
@@ -275,13 +277,14 @@ class Requests_Confirmation extends CI_Controller {
         $this->load->library('Phpmailer_library');
         $mail = $this->phpmailer_library->load();
         $mail->isSMTP();
+        $email_config = $this->config->item('email');
         $mail->SMTPSecure = 'ssl';
-        $mail->Host = 'smtp.googlemail.com';
+        $mail->Host = $email_config['host'];
         $mail->Port = 465;
         $mail->SMTPDebug = 0; 
         $mail->SMTPAuth = true;
-        $mail->Username = 'alfayed@mhs.unsyiah.ac.id';
-        $mail->Password = 'fadeladen0510';
+        $mail->Username = $email_config['username'];
+        $mail->Password = $email_config['password'];
 		$detail = $this->request->get_request_by_id($req_id);
 		$enc_req_id = encrypt($detail['r_id']);
 

@@ -13,6 +13,6 @@ class Auth extends CI_Controller {
 	{   
         delete_cookie('fast_token');
 		session_destroy();
-		redirect('https://staging.faster.bantuanteknis.id/Login');
+		redirect($this->config->item('url')['stagingLogin']);
 	}
 }
