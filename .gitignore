@@ -23,6 +23,7 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 !/vendor/composer
 !/vendor/mikey179
 !/vendor/phpunit
+!/vendor/autoload.php
 
 # IDE Files
 #-------------------------
