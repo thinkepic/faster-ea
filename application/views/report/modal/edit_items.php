@@ -14,8 +14,12 @@
 					<label for="cost" class="d-block">Item</label>
 					<select name="item" id="item">
 						<option value="">Select items</option>
+						<option <?= ($detail['item'] == 'Ticket Cost' ? 'selected' : '') ?> value="Ticket Cost">Ticket Cost (if purchased by traveler</option>
+						<option <?= ($detail['item'] == 'Mileage' ? 'selected' : '') ?> value="Mileage">Mileage (# of miles)</option>
 						<option <?= ($detail['item'] == 'Parking' ? 'selected' : '') ?> value="Parking">Parking</option>
 						<option <?= ($detail['item'] == 'Airport Tax' ? 'selected' : '') ?> value="Airport Tax">Airport Tax</option>
+						<option <?= ($detail['item'] == 'Communication' ? 'selected' : '') ?> value="Communication">Communication (phone)</option>
+						<option <?= ($detail['item'] == 'Registration' ? 'selected' : '') ?> value="Registration">Registration (if paid by traveler)</option>
 						<option <?= ($detail['item'] == 'Visa Fee' ? 'selected' : '') ?> value="Visa Fee">Visa Fee</option>
 						<option <?= ($detail['item'] == 'Auto Rental' ? 'selected' : '') ?> value="Auto Rental">Auto Rental</option>
 						<option <?= ($detail['item'] == 'Internet Charges' ? 'selected' : '') ?> value="Internet Charges">Internet Charges</option>

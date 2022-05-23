@@ -13,9 +13,9 @@ class MY_Controller extends CI_Controller
         $this->load->helper('cookie');
         $token = get_cookie('fast_token');
         if (!$token) {
-            redirect($this->config->item('url')['stagingLogin']);
+            redirect($_ENV['LOGIN_URL']);
         } else {
-            $key = $this->config->item('secretKey');
+            $key = $_ENV['SECRET_KEY'];
             $user_data = JWT::decode($token, new Key($key, 'HS256'));
             $this->user_data = $user_data;
         }
@@ -33,8 +33,15 @@ class MY_Controller extends CI_Controller
     function attach_payment_request($req_id) {
         ob_start();
 		$detail = $this->request->get_request_by_id($req_id);
-		$data['requestor'] = $this->request->get_requestor_data($detail['requestor_id']);
-		$data['detail'] = $detail;
+		$requestor = $this->request->get_requestor_data($detail['requestor_id']);
+		$requestor_signature = $this->get_signature_from_api($requestor['signature']);
+		$fco_signature = $this->get_signature_from_api($detail['fco_monitor_signature']);
+		$data = [
+			'requestor' => $requestor,
+			'detail' => $detail,
+			'requestor_signature' => $requestor_signature,
+			'fco_signature' => $fco_signature,
+		];
 		$content = $this->load->view('template/form_payment_reimburstment', $data, true);
         $html2pdf = new Html2Pdf('P', [210, 330], 'en', true, 'UTF-8', array(15, 10, 15, 10));
         $html2pdf->setDefaultFont('arial');
@@ -91,7 +98,9 @@ class MY_Controller extends CI_Controller
 		// Signature
 		$drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
 		$drawing->setName('Traveler signature');
-		$drawing->setPath(FCPATH.'assets/images/signature/' . $requestor['signature']); // put your path and image here
+		// $signature = $this->extractImage($requestor['signature']);
+		$signature = $this->extractImageFromAPI($requestor['signature']);
+		$drawing->setPath($signature['image_path']);  
 		$drawing->setCoordinates('I84');
 		$drawing->setHeight(40);
 		$drawing->setWorksheet($spreadsheet->getActiveSheet());
@@ -99,27 +108,21 @@ class MY_Controller extends CI_Controller
 		if($detail['head_of_units_status'] == 2) {
 			$drawing2 = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
 			$drawing2->setName('Head of units signature');
-			$drawing2->setPath(FCPATH.'assets/images/signature/' . $detail['head_of_units_signature']); // put your path and image here
+			// $signature = $this->extractImage($detail['head_of_units_signature']);
+			$signature = $this->extractImageFromAPI($detail['head_of_units_signature']);
+			$drawing2->setPath($signature['image_path']);  
 			$drawing2->setCoordinates('I88');
 			$drawing2->setHeight(35);
 			$drawing2->setWorksheet($spreadsheet->getActiveSheet());
 
 		} 
 
-		// if($detail['ea_assosiate_status'] == 2) {
-		// 	$drawing3 = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
-		// 	$drawing3->setName('EA signature');
-		// 	$drawing3->setPath(FCPATH.'assets/images/signature/' . $detail['ea_assosiate_signature']); // put your path and image here
-		// 	$drawing3->setCoordinates('AK89');
-		// 	$drawing3->setHeight(50);
-		// 	$drawing3->setOffsetY(-15); 
-		// 	$drawing3->setWorksheet($spreadsheet->getActiveSheet());
-		// } 
-
 		if($detail['fco_monitor_status'] == 2) {
 			$drawing4 = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
 			$drawing4->setName('FCO signature');
-			$drawing4->setPath(FCPATH.'assets/images/signature/' . $detail['fco_monitor_signature']); // put your path and image here
+			// $signature = $this->extractImage($detail['fco_monitor_signature']);
+			$signature = $this->extractImageFromAPI($detail['fco_monitor_signature']);
+			$drawing4->setPath($signature['image_path']);  // put your path and image here
 			$drawing4->setCoordinates('V28');
 			$drawing4->setHeight(30);
 			$drawing4->setWorksheet($spreadsheet->getActiveSheet());
@@ -129,7 +132,9 @@ class MY_Controller extends CI_Controller
 		if($detail['finance_status'] == 2) {
 			$drawing5 = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
 			$drawing5->setName('Finance signature');
-			$drawing5->setPath(FCPATH.'assets/images/signature/' . $detail['finance_signature']); // put your path and image here
+			// $signature = $this->extractImage($detail['finance_signature']);
+			$signature = $this->extractImageFromAPI($detail['finance_signature']);
+			$drawing5->setPath($signature['image_path']); // put your path and image here
 			$drawing5->setCoordinates('AI88');
 			$drawing5->setOffsetY(-15); 
 			$drawing5->setHeight(50);
@@ -162,7 +167,9 @@ class MY_Controller extends CI_Controller
 			if($detail['fco_monitor_status'] == 2) {
 				$drawing6 = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
 				$drawing6->setName('FCO signature');
-				$drawing6->setPath(FCPATH.'assets/images/signature/' . $detail['fco_monitor_signature']); // put your path and image here
+				// $signature = $this->extractImage($detail['fco_monitor_signature']);
+				$signature = $this->extractImageFromAPI($detail['fco_monitor_signature']);
+				$drawing6->setPath($signature['image_path']);   // put your path and image here
 				$drawing6->setCoordinates('V41');
 				$drawing6->setHeight(30);
 				$drawing6->setWorksheet($spreadsheet->getActiveSheet());
@@ -183,7 +190,9 @@ class MY_Controller extends CI_Controller
 			if($detail['fco_monitor_status'] == 2) {
 				$drawing7 = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
 				$drawing7->setName('FCO signature');
-				$drawing7->setPath(FCPATH.'assets/images/signature/' . $detail['fco_monitor_signature']); // put your path and image here
+				// $signature = $this->extractImage($detail['fco_monitor_signature']);
+				$signature = $this->extractImageFromAPI($detail['fco_monitor_signature']);
+				$drawing7->setPath($signature['image_path']);  // put your path and image here
 				$drawing7->setCoordinates('V54');
 				$drawing7->setHeight(30);
 				$drawing7->setWorksheet($spreadsheet->getActiveSheet());
@@ -242,5 +251,103 @@ class MY_Controller extends CI_Controller
 		$this->load->helper('file');
 		$excel_path = './assets/excel/sent_ea_form.xlsx';
 		unlink($excel_path);
+	}
+
+	function delete_signature() {
+		$this->load->helper('file');
+		$path = './uploads/excel_signature';
+		delete_files($path);
+	}
+
+	function extractImage($filename) {
+		$file_url = base_url('assets/images/signature/') . $filename;
+		$path = pathinfo($file_url);
+		if (!is_dir('uploads/excel_signature')) {
+			mkdir('./uploads/excel_signature', 0777, TRUE);
+		
+		}
+        $imageTargetPath = 'uploads/excel_signature/' . time() . $filename;
+        
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $file_url);
+        curl_setopt($ch, CURLOPT_VERBOSE, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_AUTOREFERER, false);
+        curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0); // <-- important to specify
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0); // <-- important to specify
+        $resultImage = curl_exec($ch);
+		$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+        if($httpCode == 404) {
+			$imageInfo["image_name"] = 'signature_not_found.jpg';
+			$imageInfo["image_path"] = FCPATH . 'assets/images/signature_not_found.jpg';
+		} else {
+			$fp = fopen($imageTargetPath, 'wb');
+			fwrite($fp, $resultImage);
+			fclose($fp);
+			$imageInfo["image_name"] = $path['basename'];
+			$imageInfo["image_path"] = $imageTargetPath;
+		}
+        
+        return $imageInfo;
+	}
+
+	function extractImageFromAPI($filename) {
+		$token = $_ENV['ASSETS_TOKEN'];
+		$file_url = $_ENV['ASSETS_URL'] . "$filename?subfolder=signatures&token=$token";
+		$path = pathinfo($file_url);
+		if (!is_dir('uploads/excel_signature')) {
+			mkdir('./uploads/excel_signature', 0777, TRUE);
+		
+		}
+        $imageTargetPath = 'uploads/excel_signature/' . time() . $filename;
+        
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $file_url);
+        curl_setopt($ch, CURLOPT_VERBOSE, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_AUTOREFERER, false);
+        curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0); // <-- important to specify
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0); // <-- important to specify
+        $resultImage = curl_exec($ch);
+		$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+        if($httpCode == 404) {
+			$imageInfo["image_name"] = 'signature_not_found.jpg';
+			$imageInfo["image_path"] = FCPATH . 'assets/images/signature_not_found.jpg';
+		} else {
+			$fp = fopen($imageTargetPath, 'wb');
+			fwrite($fp, $resultImage);
+			fclose($fp);
+			$imageInfo["image_name"] = $path['basename'];
+			$imageInfo["image_path"] = $imageTargetPath;
+		}
+        
+        return $imageInfo;
+	}
+
+	function get_signature_from_api($filename) {
+		$token = $_ENV['ASSETS_TOKEN'];
+		$file_url = $_ENV['ASSETS_URL'] . "$filename?subfolder=signatures&token=$token";        
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $file_url);
+        curl_setopt($ch, CURLOPT_VERBOSE, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_AUTOREFERER, false);
+        curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0); // <-- important to specify
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0); // <-- important to specify
+        curl_exec($ch);
+		$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+        if($httpCode == 404) {
+			$file_url = base_url('assets/images/signature_not_found.jpg');
+		}
+		return $file_url;
 	}
 }

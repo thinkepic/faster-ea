@@ -105,7 +105,7 @@ if (!function_exists('is_ea_assosiate')) {
     {   
         $ci = &get_instance();
 
-        if($ci->user_data->email == 'mlisna@fhi360.org' || $ci->user_data->username == 'fadelassosiate') {
+        if($ci->user_data->username == 'mlisna@fhi360.org' || $ci->user_data->username == 'fadelassosiate') {
             return true;
         }
 
@@ -193,6 +193,36 @@ if (!function_exists('is_expired_request')) {
                 $expired = true;
             }
         } 
+        if($level == 'finance' ) {
+            if($request['finance_status'] != 1) {
+                $expired = true;
+            }
+        } 
         return $expired;
+    }
+}
+
+if (!function_exists('rejected_by')) {
+    function rejected_by($req_id)
+    {   
+        $ci = &get_instance();
+        $request = $ci->db->select('head_of_units_status, ea_assosiate_status, fco_monitor_status, finance_status')
+        ->from('ea_requests_status')
+        ->where('request_id', $req_id)
+        ->get()->row_array();
+        $rejected_by = '';
+        if($request['finance_status'] == 3) {
+            $rejected_by = 'finance';
+        }  
+        if($request['fco_monitor_status'] == 3) {
+            $rejected_by = 'fco_monitor';
+        } 
+        if($request['ea_assosiate_status'] == 3) {
+            $rejected_by = 'ea_assosiate';
+        } 
+        if($request['head_of_units_status'] == 3) {
+            $rejected_by = 'head_of_units';
+        }
+        return $rejected_by;
     }
 }

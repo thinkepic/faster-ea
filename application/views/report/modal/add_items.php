@@ -14,8 +14,12 @@
 					<label for="cost" class="d-block">Item</label>
 					<select name="item" id="item">
 						<option value="">Select items</option>
+						<option value="Ticket Cost">Ticket Cost (if purchased by traveler)</option>
+						<option value="Mileage">"Mileage (# of miles)</option>
 						<option value="Parking">Parking</option>
 						<option value="Airport Tax">Airport Tax</option>
+						<option value="Registration">Registration (if paid by traveler)</option>
+						<option value="Communication">Communication (phone)</option>
 						<option value="Visa Fee">Visa Fee</option>
 						<option value="Auto Rental">Auto Rental</option>
 						<option value="Internet Charges">Internet Charges</option>

@@ -49,6 +49,25 @@
 						<h4 class="text-dark fw-600"><?= $dest['order'] ?> destination
 							<span>(<?= $dest['city'] ?>, <?= $dest['night'] ?> night)</span></h4>
 					</div>
+					<div class="kt-infobox__body">
+						<div class="row mb-2">
+							<div class="col-md-6 mt-2">
+								<small for="arriv_date" class="col-form-label">
+									Arrival date
+								</small>
+								<input readonly value="<?= $dest['arriv_date'] ?>" class="form-control mt-2" type="text"
+									id="arriv_date" name="arriv_date">
+							</div>
+							<div class="col-md-6 mt-2">
+								<small for="departure_date" class="col-form-label">
+									Departure date
+								</small>
+								<input readonly value="<?= $dest['depar_date'] ?>" class="form-control mt-2" type="text"
+									id="depar_date" name="depar_date">
+							</div>
+						</div>
+						<div class="p-2 mb-2 border-bottom"></div>
+					</div>
 					<div
 						class="kt-datatable kt-datatable--default kt-datatable--brand kt-datatable--loaded border-bottom">
 						<table class="kt-datatable__table" id="html_table" width="100%" style="display: block;">
@@ -188,14 +207,14 @@
 									<td class="kt-datatable__cell">
 										<span style="width: 110px;">
 											<span class="badge badge-pill badge-secondary fw-bold">
-												<?= $item['cost'] ?>
+												<?= $item['text_cost'] ?>
 											</span>
 										</span>
 									</td>
 									<td class="kt-datatable__cell">
 										<span style="width: 110px;">
 											<span class="badge badge-pill badge-secondary fw-bold">
-												<?= $item['cost'] ?>
+												<?= $item['text_cost'] ?>
 											</span>
 										</span>
 									</td>
@@ -244,7 +263,7 @@
 											</button>
 										</span>
 									</td>
-								</tr> 
+								</tr>
 								<?php endforeach; ?>
 								<tr data-row="0" class="kt-datatable__row" style="left: 0px;">
 									<td class="kt-datatable__cell fw-bold">
@@ -314,6 +333,19 @@
 					</div>
 				</div>
 				<?php endforeach; ?>
+				<div class="ml-5">
+					<a target="_blank" href="<?= base_url('ea_requests/report/excel_report/') . $detail['r_id'] ?>"
+						class="btn btn btn-success">
+						<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor"
+							class="bi bi-file-earmark-spreadsheet" viewBox="0 0 16 16">
+							<path
+								d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V9H3V2a1 1 0 0 1 1-1h5.5v2zM3 12v-2h2v2H3zm0 1h2v2H4a1 1 0 0 1-1-1v-1zm3 2v-2h3v2H6zm4 0v-2h3v1a1 1 0 0 1-1 1h-2zm3-3h-3v-2h3v2zm-7 0v-2h3v2H6z" />
+						</svg>
+						<span class="ml-1">
+							Download Excel
+						</span>
+					</a>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -390,11 +422,11 @@
 				}
 			})
 		});
-		
+
 		const loader = `<div style="width: 5rem; height: 5rem;" class="spinner-border mb-5" role="status"></div>
 			<h5 class="mt-2">Please wait</h5>
 			<p>Saving data ...</p>`
-		
+
 		$(document).on("submit", '#meals-lodging-form', function (e) {
 			e.preventDefault()
 			const formData = new FormData(this);
@@ -461,7 +493,7 @@
 			e.preventDefault()
 			const formData = new FormData(this);
 			let title = 'Add item?';
-			if($('#method_').val() == 'PUT') {
+			if ($('#method_').val() == 'PUT') {
 				title = 'Edit item ?'
 			}
 			Swal.fire({
