@@ -62,8 +62,9 @@
 	<div id="kt_header_mobile" class="kt-header-mobile  kt-header-mobile--fixed ">
 		<div class="kt-header-mobile__logo">
 			<a href="<?= base_url('dashboard') ?>">
-				<!-- <img style="height: 3rem; width: auto;" alt="Logo" src="<?= site_url('assets/images/faster.png') ?>" /> -->
-				<h3 class="text-light">Faster</h3>
+				<img class="mt-2 mr-1" style="height: 2.73rem; width: auto;" alt="Logo"
+								src="<?= site_url('assets/images/logos/faster_v2.png') ?>">
+				<!-- <h3 class="text-light">Faster</h3> -->
 			</a>
 		</div>
 		<div class="kt-header-mobile__toolbar">
@@ -77,16 +78,17 @@
 			<!-- begin:: Aside -->
 			<button class="kt-aside-close " id="kt_aside_close_btn"><i class="la la-close"></i></button>
 
-			<div class="kt-aside  kt-aside--fixed  kt-grid__item kt-grid kt-grid--desktop kt-grid--hor-desktop"
+			<div class="kt-aside kt-aside--fixed  kt-grid__item kt-grid kt-grid--desktop kt-grid--hor-desktop"
 				id="kt_aside">
 				<!-- begin:: Aside -->
-				<div class="kt-aside__brand kt-grid__item " id="kt_aside_brand">
+				<div style="border-bottom: 1px solid #2d2d43; height: 74px;" class="kt-aside__brand kt-grid__item " id="kt_aside_brand">
 
 
 					<div class="kt-aside__brand-logo hidden-aside">
 						<a href="<?= base_url('dashboard') ?>">
-							<!-- <img alt="Logo" src="./assets/media/logos/logo-light.png" /> -->
-							<h3 class="text-light">Faster</h3>
+							<img class="mt-1 mr-1" style="height: 2.75rem; width: auto;" alt="Logo"
+								src="<?= site_url('assets/images/logos/faster_v2.png') ?>">
+							<!-- <h3 class="text-light">Faster</h3> -->
 						</a>
 					</div>
 
@@ -126,7 +128,7 @@
 				<!-- begin:: Aside Menu -->
 				<div class="kt-aside-menu-wrapper kt-grid__item kt-grid__item--fluid" id="kt_aside_menu_wrapper">
 
-					<div style="display: flex !important; flex-direction: column !important; justify-content: space-between !important;"
+					<div style="display: flex !important; flex-direction: column !important; justify-content: space-between !important; margin-top: 2px !important;"
 						id="kt_aside_menu" class="kt-aside-menu " data-ktmenu-vertical="1" data-ktmenu-scroll="1"
 						data-ktmenu-dropdown-timeout="500">
 						<div>
@@ -139,14 +141,14 @@
 											alt="">
 									</div>
 								</div>
-								<div class="aside-user-info flex-row-fluid flex-wrap mt-3 p-2">
+								<div class="aside-user-info flex-row-fluid flex-wrap mt-2 pt-1 p-2">
 									<div class="d-flex">
-										<div class="flex-grow-1">
+										<div class="flex-grow-1 pl-2 pt-1">
 											<span class="text-white fw-bold username">
 												<?= $this->user_data->fullName ?>
 											</span>
 											<small
-												class="text-muted fw-bold d-block mb-1 user-email"><?= $this->user_data->email ?>
+												class="text-muted fw-bold d-block mb-1 user-email"><?= $this->user_data->username ?>
 											</small>
 											<small class="d-flex align-items-center text-success online-status">
 												<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
@@ -158,7 +160,7 @@
 												</span>
 											</small>
 										</div>
-										<div class="pb-2 pr-2"><a href="#"
+										<div class="pb-2 pr-2 mt-1"><a href="#"
 												class="btn btn-icon btn-sm btn-active-color-primary mt-n2"
 												data-kt-menu-trigger="click" data-kt-menu-placement="bottom-start"
 												data-kt-menu-overflow="true"><span class="pulse-ring"></span><span
@@ -170,7 +172,7 @@
 															fill="gray"></path>
 														<path
 															d="M17.1 12.1C17.1 14.9 14.9 17.1 12.1 17.1C9.30001 17.1 7.10001 14.9 7.10001 12.1C7.10001 9.29998 9.30001 7.09998 12.1 7.09998C14.9 7.09998 17.1 9.29998 17.1 12.1ZM12.1 10.1C11 10.1 10.1 11 10.1 12.1C10.1 13.2 11 14.1 12.1 14.1C13.2 14.1 14.1 13.2 14.1 12.1C14.1 11 13.2 10.1 12.1 10.1Z"
-															fill="gray"></path>
+															fill="#a1a5b7"></path>
 													</svg></span></a>
 											<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-primary fw-bold py-4 fs-6 w-275px"
 												data-kt-menu="true"></div>
@@ -179,9 +181,9 @@
 								</div>
 							</div>
 							<ul class="kt-menu__nav ">
-								<li class="kt-menu__item " aria-haspopup="true"><a href="<?= $_ENV['STAGING_URL'] ?>dashboard"
-										class="kt-menu__link "><span class="kt-menu__link-icon"><svg
-												xmlns="http://www.w3.org/2000/svg"
+								<li class="kt-menu__item " aria-haspopup="true"><a
+										href="<?= $_ENV['STAGING_URL'] ?>dashboard" class="kt-menu__link "><span
+											class="kt-menu__link-icon"><svg xmlns="http://www.w3.org/2000/svg"
 												xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
 												viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
 												<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -435,11 +437,15 @@
 				</div>
 
 				<!-- begin:: Footer -->
-				<div class="kt-footer  kt-grid__item kt-grid kt-grid--desktop kt-grid--ver-desktop" id="kt_footer">
-					<div class="kt-container  kt-container--fluid ">
-						<div class="kt-footer__copyright">
-							2022&nbsp;&copy;&nbsp; Faster
-						</div>
+				<div class="py-3 px-3 bg-white" id="kt_footer">
+					<div
+						class="container-fluid d-flex px-4 flex-column flex-md-row align-items-center justify-content-between">
+						<div class="text-dark order-2 order-md-1"><span class="text-muted fw-bold me-1">2022 © </span><a
+								href="/dashboard" class="text-dark">Faster Version 2.0</a></div>
+						<ul class="d-flex fw-bold order-1">
+							<li class="px-2 text-muted list-unstyled">EpiC</li>
+							<li class="px-2 text-muted list-unstyled">FHI360 - INDONESIA</li>
+						</ul>
 					</div>
 				</div>
 				<!-- end:: Footer -->
@@ -461,7 +467,7 @@
 
 	<!-- Modal -->
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
-		
+
 	</div>
 	<!-- begin::Global Config(global config for global JS sciprts) -->
 	<script>

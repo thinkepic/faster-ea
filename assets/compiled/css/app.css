@@ -11370,9 +11370,13 @@ label {
   color: #212529 !important;
 }
 
+.aside-user .aside-user-info {
+  min-width: 180px;
+}
+
 .aside-user .avatar-img {
-  height: 4rem;
-  width: 4rem;
+  height: 3.7rem;
+  width: 3.7rem;
   -o-object-fit: cover;
      object-fit: cover;
   border-radius: 4px;
