@@ -112,7 +112,8 @@
 									</div>
 								</div>
 								<div class="form-group row">
-									<label for="ea_online_number" class="col-md-3 col-form-label">EA Online Number <small>(if known)</small></label>
+									<label for="ea_online_number" class="col-md-3 col-form-label">EA Online Number
+										<small>(if known)</small></label>
 									<div class="col-md-9">
 										<input type="text" placeholder="Enter EA online number" id="ea_online_number"
 											class="form-control" name="ea_online_number">
@@ -221,6 +222,10 @@
 									<div class="col-md-9">
 										<select data-url="<?= site_url('api/cities') ?>" class="form-control"
 											name="originating_city" id="originating_city">
+											<option value="">Select originating city</option>
+											<?php foreach ($locations as $loc): ?>
+											<option value="<?= $loc['nama'] ?>"><?= $loc['nama'] ?></option>
+											<?php endforeach; ?>
 										</select>
 									</div>
 								</div>
@@ -712,24 +717,27 @@
 
 		KTWizard3.init();
 
-		$('#originating_city').select2({
-			placeholder: 'Select originating city',
-			ajax: {
-				'url': `${base_url}api/cities`,
-				data: function (params) {
-					return {
-						q: params.term,
-						select2: true,
-					}
-				},
-				processResults: function (response) {
-					return {
-						results: response.result
-					}
-				}
-			}
-		})
+		// $('#originating_city').select2({
+		// 	placeholder: 'Select originating city',
+		// 	ajax: {
+		// 		'url': `${base_url}api/cities`,
+		// 		data: function (params) {
+		// 			return {
+		// 				q: params.term,
+		// 				select2: true,
+		// 			}
+		// 		},
+		// 		processResults: function (response) {
+		// 			return {
+		// 				results: response.result
+		// 			}
+		// 		}
+		// 	}
+		// })
 
+		$('#originating_city').select2({
+			placeholder: 'Select Originating city',
+		})
 		$('#head_of_units_id').select2({
 			placeholder: 'Select head of units',
 		})
@@ -1112,7 +1120,8 @@
 								</div>`;
 				$('.destinations-review-lists').append(html);
 			});
-			$('.destination-lodging-val, .destination-meals-val, .destination-meals-lodging-total-val, .destination-total-val').number(true, 0, '', '.');
+			$('.destination-lodging-val, .destination-meals-val, .destination-meals-lodging-total-val, .destination-total-val')
+				.number(true, 0, '', '.');
 		}
 
 		const updateStepReview = () => {
@@ -1305,11 +1314,11 @@
 					beforeSend: function () {
 						$('p.error').remove();
 						Swal.fire({
-									html: loader,
-									showConfirmButton: false,
-									allowEscapeKey: false,
-									allowOutsideClick: false,
-								});
+							html: loader,
+							showConfirmButton: false,
+							allowEscapeKey: false,
+							allowOutsideClick: false,
+						});
 						KTApp.progress($('#btn-submit'))
 					},
 					error: function (xhr) {

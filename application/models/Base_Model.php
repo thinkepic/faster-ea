@@ -50,4 +50,11 @@ class Base_Model extends CI_Model
         ->where('un.unit_name', 'Finance')
         ->get()->result_array();
     }
+
+    function get_cities() {
+        return $this->db->select('*')
+        ->from('tb_wilayah_kabupaten')
+        ->order_by('nama', 'asc')
+        ->get()->result_array();
+    }
 }

@@ -51,6 +51,7 @@ class Outcoming_requests extends MY_Controller {
 			$data['head_of_units'] = $this->base_model->get_head_of_units($user_id);
 		}
 		$data['requestor_data'] = $this->request->get_requestor_data($user_id);
+		$data['locations'] = $this->base_model->get_cities();
 		$this->template->set('page', 'Create request');
 		$this->template->render('outcoming_requests/create', $data);
 	}
