@@ -14,6 +14,13 @@
 							</div>
 						</div>
 						<div class="row">
+							<label class="col-3 mb-2 col-form-label fw-bold">EA Online Number</label>
+							<div class="col-9">
+								<span style="font-size: 1rem;"
+									class="badge badge-success fw-bold"><?= $detail['ea_online_number'] ?></span>
+							</div>
+						</div>
+						<div class="row">
 							<label class="col-3 mb-2 col-form-label fw-bold">Status</label>
 							<div class="col-9">
 								<span style="font-size: 1rem;"
@@ -741,7 +748,8 @@
 												style="width: 110px;"><?= $detail['finance_status_at'] ?></span></td>
 										<td class="kt-datatable__cell">
 											<div style="width: 140px;" class="d-flex flex-column <?= $finance_btn ?>">
-												<button style="padding: 0.3rem .6rem !important;" data-level='finance' data-id=<?= $detail['r_id'] ?>
+												<button style="padding: 0.3rem .6rem !important;" data-level='finance'
+													data-id=<?= $detail['r_id'] ?>
 													class="btn btn-payment btn-sm btn-warning text-light">
 													<div class="d-flex align-items-center justify-content-center">
 														<svg xmlns="http://www.w3.org/2000/svg" width="11" height="11"
@@ -753,8 +761,8 @@
 														Payment
 													</div>
 												</button>
-												<button data-level='finance' data-id=<?= $detail['r_id'] ?>
-													data-status="3" class="btn btn-status btn-danger mt-2">
+												<button data-level='finance' data-id=<?= $detail['r_id'] ?> data-status="3"
+													class="btn btn-status btn-danger mt-2">
 													<div class="d-flex align-items-center justify-content-center">
 														<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
 															fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
@@ -770,10 +778,17 @@
 								</tbody>
 							</table>
 							<?php if ($request_status['text'] == 'Rejected'): ?>
-								<div class="mt-4">
-									<h5>Rejected reason :</h5>
-									<textarea class="form-control" readonly id="" rows="3"><?= $detail['rejected_reason'] ?></textarea>
+							<div class="mt-4">
+								<h5>Rejected reason :</h5>
+								<textarea class="form-control" readonly id=""
+									rows="3"><?= $detail['rejected_reason'] ?></textarea>
+							</div>
+								<?php if ($detail['requestor_id'] == $this->user_data->userId): ?>
+								<div class="mt-3 d-flex justify-content-end align-items-center">
+									<button id="btn-resubmit" data-id="<?= $detail['r_id'] ?>"
+										class="btn btn btn-success">RESUBMIT REQUEST</button>
 								</div>
+								<?php endif; ?>
 							<?php endif; ?>
 						</div>
 					</div>
@@ -838,6 +853,62 @@
 						$('#lodging, #meals').number(true, 0, '', '.');
 						$('#myModal').modal('show')
 					});
+			})
+			$(document).on('click', '#btn-resubmit', function (e) {
+				e.preventDefault()
+				const request_id = $(this).attr('data-id')
+				const loader = `<div style="width: 5rem; height: 5rem;" class="spinner-border mb-5" role="status"></div>
+					<h5 class="mt-2">Please wait</h5>
+					<p>Resubmit request and sending email ...</p>`
+				Swal.fire({
+					title: 'Resubmit request?',
+					text: "",
+					type: 'warning',
+					showCancelButton: true,
+					confirmButtonColor: '#3085d6',
+					cancelButtonColor: '#d33',
+					confirmButtonText: `Yes!`
+				}).then((result) => {
+					if (result.value) {
+						$.ajax({
+							type: 'POST',
+							url: base_url + 'ea_requests/outcoming_requests/resubmit_request',
+							data: {
+								request_id
+							},
+							beforeSend: function () {
+								Swal.fire({
+									html: loader,
+									showConfirmButton: false,
+									allowEscapeKey: false,
+									allowOutsideClick: false,
+								});
+							},
+							error: function (xhr) {
+								const response = xhr.responseJSON;
+								Swal.fire({
+									"title": response.message,
+									"text": '',
+									"type": "error",
+									"confirmButtonClass": "btn btn-dark"
+								});
+							},
+							success: function (response) {
+								Swal.fire({
+									"title": "Success!",
+									"text": response.message,
+									"type": "success",
+									"confirmButtonClass": "btn btn-dark"
+								}).then((result) => {
+									console.log(response)
+									if (result.value) {
+										location.reload();
+									}
+								})
+							},
+						});
+					}
+				})
 			})
 			$(document).on("submit", '#update-costs', function (e) {
 				e.preventDefault()
@@ -1027,9 +1098,10 @@
 										"confirmButtonClass": "btn btn-dark"
 									}).then((result) => {
 										if (result.value) {
-											window.location.replace(base_url +
-												'ea_requests/incoming-requests/requests-for-review'
-											)
+											location.reload();
+											// window.location.replace(base_url +
+											// 	'ea_requests/incoming-requests/requests-for-review'
+											// )
 										}
 									})
 								},

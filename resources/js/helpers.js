@@ -36,8 +36,10 @@ export function initSelect2(selector, customConfig = null) {
 
 export function initDatatable(selector, config = {}) {
 	const defaultConfig = {
+		ordering: true,
 		processing: true,
 		serverSide: true,
+		order: [[0, 'desc']],
 		ajax: {
 			url: $(selector).attr("data-url"),
 			type: "POST",

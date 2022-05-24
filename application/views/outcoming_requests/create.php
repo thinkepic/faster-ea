@@ -112,6 +112,13 @@
 									</div>
 								</div>
 								<div class="form-group row">
+									<label for="ea_online_number" class="col-md-3 col-form-label">EA Online Number <small>(if known)</small></label>
+									<div class="col-md-9">
+										<input type="text" placeholder="Enter EA online number" id="ea_online_number"
+											class="form-control" name="ea_online_number">
+									</div>
+								</div>
+								<div class="form-group row">
 									<label class="col-md-3 col-form-label">Employment</label>
 									<div class="col-md-9">
 										<div id="employment" class="kt-radio-inline">
@@ -1171,12 +1178,14 @@
 				order = '2nd'
 			} else if (list == 3) {
 				order = '3rd'
-			} else if (list == 4) {
-				order = '4th'
-			} else if (list == 5) {
-				order = '5th'
 				$(this).addClass('d-none')
 			}
+			// else if (list == 4) {
+			// 	order = '4th'
+			// } else if (list == 5) {
+			// 	order = '5th'
+			// 	$(this).addClass('d-none')
+			// }
 
 			const html = `<div class="destination pb-2 mb-5 border-bottom">
 										<h5 class="mb-3"><span>${order}</span> Destination</h5>

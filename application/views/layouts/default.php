@@ -69,14 +69,6 @@
 		<div class="kt-header-mobile__toolbar">
 			<button class="kt-header-mobile__toggler kt-header-mobile__toggler--left"
 				id="kt_aside_mobile_toggler"><span></span></button>
-
-			<button class="kt-header-mobile__topbar-toggler" id="kt_header_mobile_topbar_toggler">
-				<svg xmlns="http://www.w3.org/2000/svg" width="18" height="20" fill="#6c757d"
-					class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
-					<path
-						d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
-				</svg>
-			</button>
 		</div>
 	</div>
 	<!-- end:: Header Mobile -->
@@ -143,7 +135,7 @@
 								<div class="symbol symbol-50px">
 									<div class="mr-2 container-img">
 										<img class="avatar-img"
-											src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJ4AAACeCAMAAAD0W0NJAAAAYFBMVEX///8AAADPz88iIiImJiYeHh7MzMwxMTHo6OiVlZW+vr76+vr29vba2trf39+kpKTu7u5RUVE/Pz9fX1+wsLB7e3sSEhJMTEyFhYU2NjZHR0ednZ3ExMRtbW0rKytkZGTryM8AAAADwklEQVR4nO2ciXaCMBBFjYossipQFbX//5cVrVtF0cx7CT0n9wPae5BMZpIZRiM8QbRUAeHvIphH1V4pFdv26CJOVp5qCW2bdJBmS/XLzLbLA7Odf5ZT9di2zT1JM1W3RLaFbol2e3XPt22lC+lKdbDLbXsdmVV1l51Si8x66IvLzRO5Fu8rSy2Gv7Txn7v94q/KZG5DLqj65Y7sN2FqWi7pXA9PWZRGDRvvI7sD68aYXDLt13nEM7STlC9W6yvq0oRdpifXYiCPEdgZ8IskdvRUIZDZKUUNMPNKqrdj7iFbqR335y3kegXPLpXbMd++EKHHCy7L/n/eDy3PDxYIvQUri07ezPBe4yckvfEEoeexSnSn5/ScHlFvwqo5nJ7Ts6anVX6b03NPz+n9a72p03N6Ts/pOT0Ms49vM7qg1RqiU+8rGccuWmP0FpQD0gYj10K4wAo2OL0N/gxt4Ho55Gj0xJLQaPDZDe5LVng7VFhpYYSWreY96SP1lqAXQLa0lgnl8BsUlZVaM+wwtxotS4oebNvgdD3MUHqMlXEIzCg9TvdXDFobPqexSn4VfoJ1IQ7aN1j9QMIujDOs6/occ2FK64uEvHwVy240RugRO70AlWTNs0OkpIxU9AygzYazo51IxFcHHquToCUXtwEV1HZrcWjhhZUWcR8Qt8EwkeoxX70DwnpoyrWTZvTs7uVEVO3W5N9WuDj4ncGp4PHVBjrnBW+fkb75b107Tvn9l+Tv3NKb7Onr4kSpp2eko/9ArKdnam5orqdnamZo4E9PMy8wtDJ0y3FTc5MDX7ma266pkWLNjJ6bx1/R3NVMDcVqnoGb2XJHsWY1WZgJfLqDB7RRg3vGmgdBZqYQ852enZmB7K3gHKNgnv8cEd69sD+nIBx48bl24osr7uMb9gnVwM/3Bn54CxjzY6ZVgIsDj2cnPnxsoZUcJeZOjZLUxxFkBLHFj+Cp1QzYQnXITKHReZ4AxprvKXAfGhmDbunvqTDpX1BBOlof8Sp5+pwCezIfaWSnufMQtly78UP9VzCnPrkzjWaSkMGXazeFRrdhHEG2iPdYfBqnI2gU7mf5yekaPgr3U7ybKiTahayM3TuCtCjcT3+c7v7emjlWr+J0HsK6a3WZhs/CYJzBOpMl1FlXlIlL8v71Pn75IFh+2Za65es+4Y+A0w4YNjdxWvOigsvlAeawdnMk6/MSxsyfobnMs2FG0tFMnJ4ApyfB6UlwehKcngSnJ+G/6AWDqTJu8S9Fr+Xitpvr5ERsv779yzQ8Vms/U85JaV5npxMAAAAASUVORK5CYII="
+											src="<?= ($this->user_data->avatar == null) ? base_url('assets/images/no-avatar.png') : $_ENV['ASSETS_URL'] . $this->user_data->avatar .'?subfolder=avatars&token=' . $_ENV['ASSETS_TOKEN'] ?>"
 											alt="">
 									</div>
 								</div>
@@ -187,7 +179,7 @@
 								</div>
 							</div>
 							<ul class="kt-menu__nav ">
-								<li class="kt-menu__item " aria-haspopup="true"><a href="<?= base_url('dashboard') ?>"
+								<li class="kt-menu__item " aria-haspopup="true"><a href="<?= $_ENV['STAGING_URL'] ?>dashboard"
 										class="kt-menu__link "><span class="kt-menu__link-icon"><svg
 												xmlns="http://www.w3.org/2000/svg"
 												xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"

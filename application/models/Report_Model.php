@@ -35,19 +35,17 @@ class Report_Model extends CI_Model
         return $request_data;
     }
 
-    function get_excel_data_by_id($id) {
-        $request_data =  $this->db->select('r.id as r_id, CONCAT("EA", r.id) AS ea_number, r.*, DATE_FORMAT(r.created_at, "%d-%M-%y") as request_date,
-        DATE_FORMAT(r.departure_date, "%d-%M-%y") as departure_date, DATE_FORMAT(r.return_date, "%d-%M-%y") as return_date,
-        r.requestor_id, st.*, r.country_director_notified, format(r.max_budget_usd,0,"de_DE") as max_budget_usd,r.originating_city,
+    function get_excel_report_by_id($id) {
+        $request_data =  $this->db->select('r.id as r_id, CONCAT("EA", r.id) AS ea_number, DATE_FORMAT(r.created_at, "%d %F %Y") as request_date,
+        DATE_FORMAT(r.departure_date, "%d/%M/%y") as departure_date, DATE_FORMAT(r.return_date, "%d/%M/%y") as return_date,
+        r.requestor_id, ur.username as requestor_name, ur.signature as requestor_signature ,r.originating_city,
         uh.username as head_of_units_name, uh.signature as head_of_units_signature, uea.username as ea_assosiate_name, ufc.username as fco_monitor_name,
-        ufc.purpose as fco_monitor_purpose, ufc.signature as fco_monitor_signature, uea.signature as ea_assosiate_signature,
-        ufi.username as finance_name, DATE_FORMAT(st.head_of_units_status_at, "%d %M %Y - %H:%i") as head_of_units_status_at,
-        DATE_FORMAT(st.ea_assosiate_status_at, "%d %M %Y - %H:%i") as ea_assosiate_status_at,
-        DATE_FORMAT(st.fco_monitor_status_at, "%d %M %Y - %H:%i") as fco_monitor_status_at, st.fco_monitor_status_at as fco_signature_date,
-        DATE_FORMAT(st.finance_status_at, "%d %M %Y - %H:%i") as finance_status_at, ufi.signature as finance_signature
+        ufc.signature as fco_monitor_signature, uea.signature as ea_assosiate_signature, ufi.username as finance_name,
+        DATE_FORMAT(st.head_of_units_status_at, "%d %M %Y - %H:%i") as head_of_units_status_at, ufi.signature as finance_signature
         ')
             ->from('ea_requests r')
             ->join('ea_requests_status st', 'st.request_id = r.id', 'left')
+            ->join('tb_userapp ur', 'r.requestor_id = ur.id', 'left')
             ->join('tb_userapp uh', 'st.head_of_units_id = uh.id', 'left')
             ->join('tb_userapp uea', 'st.ea_assosiate_id = uea.id', 'left')
             ->join('tb_userapp ufc', 'st.fco_monitor_id = ufc.id', 'left')
@@ -57,27 +55,28 @@ class Report_Model extends CI_Model
         if(!$request_data) {
             return false;
         }
-        $destinations = $this->db->select('*, DATE_FORMAT(departure_date, "%d-%M-%y") as depar_date, DATE_FORMAT(arrival_date, "%d-%M-%y") as arriv_date
+        $destinations = $this->db->select('id, total, city, night, actual_lodging, actual_meals,
+        departure_date, arrival_date,
+        DATE_FORMAT(departure_date, "%d/%M/%y") as depar_date, DATE_FORMAT(arrival_date, "%d/%M/%y") as arriv_date
         ')
         ->from('ea_requests_destinations')
         ->where('request_id', $id)
         ->get()->result_array();
-        $participants = $this->db->select('*')
-        ->from('ea_requests_participants')
-        ->where('request_id', $id)
-        ->get()->result_array();
         $total_destinations_cost = 0;
-        foreach($destinations as $dest) {
-            $total_destinations_cost += $dest['total'];
-        }
+        $total_dest = count($destinations);
+        for ($i = 0; $i < $total_dest; $i++) {
+            $total_destinations_cost += $destinations[$i]['total'];
+            $other_items = $this->get_destination_other_items($destinations[$i]['id']);
+            $destinations[$i]['other_items'] = $other_items;
+          }
         $request_data['total_destinations_cost'] = $total_destinations_cost;
         $request_data['destinations'] = $destinations;
-        $request_data['participants'] = $participants;
+        $request_data['destinations'] = $destinations;
         return $request_data;
     }
 
     function get_destination_other_items($dest_id) {
-        $other_items = $this->db->select('*, format(cost,2,"de_DE") as cost')
+        $other_items = $this->db->select('id, receipt, item, cost ,format(cost,2,"de_DE") as text_cost')
         ->from('ea_requests_other_items')
         ->where('destination_id', $dest_id)
         ->get()->result_array();

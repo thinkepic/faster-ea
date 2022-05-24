@@ -188,6 +188,7 @@ class Outcoming_requests extends MY_Controller {
 			$status_code = 422;
 		}
 		$this->delete_ea_excel();
+		$this->delete_signature();
 		$this->send_json($response, $status_code);
 	}
 
@@ -219,7 +220,6 @@ class Outcoming_requests extends MY_Controller {
 			$this->datatable->where('st.finance_status =', 2);
 		}
 		$this->datatable->where('ea.requestor_id =', $this->user_data->userId);
-        $this->datatable->order_by('created_at', 'desc');
 		$this->datatable->edit_column('id', "$1", 'encrypt(id)');
 		$this->datatable->edit_column('ea_number', '<span style="font-size: 1rem;"
 		class="badge badge-success fw-bold">$1</span>', 'ea_number');
@@ -420,7 +420,9 @@ class Outcoming_requests extends MY_Controller {
 		// Signature
 		$drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
 		$drawing->setName('Traveler signature');
-		$drawing->setPath(FCPATH.'assets/images/signature/' . $requestor['signature']); // put your path and image here
+		// $signature = $this->extractImage($requestor['signature']);
+		$signature = $this->extractImageFromAPI($requestor['signature']);
+		$drawing->setPath($signature['image_path']); // put your path and image here
 		$drawing->setCoordinates('I85');
 		$drawing->setHeight(40);
 		$drawing->setWorksheet($spreadsheet->getActiveSheet());
@@ -428,7 +430,9 @@ class Outcoming_requests extends MY_Controller {
 		if($detail['head_of_units_status'] == 2) {
 			$drawing2 = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
 			$drawing2->setName('Head of units signature');
-			$drawing2->setPath(FCPATH.'assets/images/signature/' . $detail['head_of_units_signature']); // put your path and image here
+			// $signature = $this->extractImage($detail['head_of_units_signature']);
+			$signature = $this->extractImageFromAPI($detail['head_of_units_signature']);
+			$drawing2->setPath($signature['image_path']);  
 			$drawing2->setCoordinates('I89');
 			$drawing2->setHeight(40);
 			$drawing2->setOffsetY(-5); 
@@ -439,7 +443,9 @@ class Outcoming_requests extends MY_Controller {
 		if($detail['fco_monitor_status'] == 2) {
 			$drawing4 = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
 			$drawing4->setName('FCO signature');
-			$drawing4->setPath(FCPATH.'assets/images/signature/' . $detail['fco_monitor_signature']); // put your path and image here
+			// $signature = $this->extractImage($detail['fco_monitor_signature']);
+			$signature = $this->extractImageFromAPI($detail['fco_monitor_signature']);
+			$drawing4->setPath($signature['image_path']); 
 			$drawing4->setCoordinates('V28');
 			$drawing4->setHeight(30);
 			$drawing4->setWorksheet($spreadsheet->getActiveSheet());
@@ -449,7 +455,9 @@ class Outcoming_requests extends MY_Controller {
 		if($detail['finance_status'] == 2) {
 			$drawing5 = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
 			$drawing5->setName('Finance signature');
-			$drawing5->setPath(FCPATH.'assets/images/signature/' . $detail['finance_signature']); // put your path and image here
+			// $signature = $this->extractImage($detail['finance_signature']);
+			$signature = $this->extractImageFromAPI($detail['finance_signature']);
+			$drawing5->setPath($signature['image_path']);
 			$drawing5->setCoordinates('AK89');
 			$drawing5->setOffsetY(-15); 
 			$drawing5->setHeight(50);
@@ -482,7 +490,9 @@ class Outcoming_requests extends MY_Controller {
 			if($detail['fco_monitor_status'] == 2) {
 				$drawing6 = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
 				$drawing6->setName('FCO signature');
-				$drawing6->setPath(FCPATH.'assets/images/signature/' . $detail['fco_monitor_signature']); // put your path and image here
+				// $signature = $this->extractImage($detail['fco_monitor_signature']);
+				$signature = $this->extractImageFromAPI($detail['fco_monitor_signature']);
+				$drawing6->setPath($signature['image_path']); 
 				$drawing6->setCoordinates('V41');
 				$drawing6->setHeight(30);
 				$drawing6->setWorksheet($spreadsheet->getActiveSheet());
@@ -503,7 +513,9 @@ class Outcoming_requests extends MY_Controller {
 			if($detail['fco_monitor_status'] == 2) {
 				$drawing7 = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
 				$drawing7->setName('FCO signature');
-				$drawing7->setPath(FCPATH.'assets/images/signature/' . $detail['fco_monitor_signature']); // put your path and image here
+				// $signature = $this->extractImage($detail['fco_monitor_signature']);
+				$signature = $this->extractImageFromAPI($detail['fco_monitor_signature']);
+				$drawing7->setPath($signature['image_path']);  // put your path and image here
 				$drawing7->setCoordinates('V54');
 				$drawing7->setHeight(30);
 				$drawing7->setWorksheet($spreadsheet->getActiveSheet());
@@ -552,6 +564,7 @@ class Outcoming_requests extends MY_Controller {
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header("Content-Disposition: attachment; filename=$filename.xlsx");
         $writer->save('php://output');
+		$this->delete_signature();
 	}
 
 	public function edit_costs_modal() {
@@ -602,6 +615,148 @@ class Outcoming_requests extends MY_Controller {
 			$this->send_json($response, $status_code);
 		} else {
 			exit('No direct script access allowed');
+		}
+	}
+
+	public function resubmit_request() {
+		if ($this->input->is_ajax_request() && $this->input->server('REQUEST_METHOD') === 'POST') {
+			$request_id = $this->input->post('request_id');
+			$level = rejected_by($request_id);
+			$email_sent = $this->send_resubmit_request_email($request_id, $level);
+			if($email_sent) {
+				$updated = $this->request->resubmit_request($request_id, $level);
+				if($updated) {
+					$response['success'] = true;
+					$response['message'] = 'Request has been submited!';
+					$status_code = 200;
+				} else {
+					$response['success'] = false;
+					$response['message'] = 'Failed to submit request, please try again later';
+					$status_code = 400;
+				}
+				$this->delete_ea_excel();
+			} else {
+				$response['success'] = false;
+				$response['message'] = 'Failed to submit request, please try again later';
+				$status_code = 400;
+			}		
+			$this->send_json($response, $status_code);
+		} else {
+			exit('No direct script access allowed');
+		}
+	}
+
+	private function send_resubmit_request_email($request_id, $level) {
+		$this->load->library('Phpmailer_library');
+        $mail = $this->phpmailer_library->load();
+        $mail->isSMTP();
+		$email_config = $this->config->item('email');
+        $mail->SMTPSecure = 'ssl';
+        $mail->Host = $email_config['host'];
+        $mail->Port = 465;
+        $mail->SMTPDebug = 0; 
+        $mail->SMTPAuth = true;
+        $mail->Username = $email_config['username'];
+        $mail->Password = $email_config['password'];
+		$detail = $this->request->get_request_by_id($request_id);
+		$requestor = $this->request->get_requestor_data($detail['requestor_id']);
+		if($level ==  'head_of_units') {
+			$approver_name = $detail['head_of_units_name'];
+			$approver_id = $detail['head_of_units_id'];
+			$email = $detail['head_of_units_email'];
+		} else if($level == 'ea_assosiate') {
+			$approver_name = $detail['ea_assosiate_name'];
+			$approver_id = $detail['ea_assosiate_id'];
+			$email = $detail['ea_assosiate_email'];
+		} else if($level == 'fco_monitor') {
+			$approver_name = $detail['fco_monitor_name'];
+			$approver_id = $detail['fco_monitor_id'];
+			$email = $detail['fco_monitor_email'];
+		} else if($level == 'finance') {
+			$approver_name = $detail['finance_name'];
+			$approver_id = $detail['finance_id'];
+			$email = $detail['finance_email'];
+		}
+		$enc_req_id = encrypt($detail['r_id']);
+
+		$approve_btn = '<table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
+							<tbody>
+							<tr>
+								<td align="left">
+								<table role="presentation" border="0" cellpadding="0" cellspacing="0">
+									<tbody>
+									<tr>
+										<td> <a href="'.base_url('ea_requests/requests_confirmation').'?req_id='.$enc_req_id.'&approver_id='.$approver_id.'&status=2&level='.$level.'" target="_blank">APPROVE</a> </td>
+									</tr>
+									</tbody>
+								</table>
+								</td>
+							</tr>
+							</tbody>
+						</table>';
+		if($level == 'finance') {
+			$approve_btn = '';
+		}
+		
+		$data['preview'] = '<p>You have EA Request #EA-'.$detail['r_id'].' from <b>'.$requestor['username'].'</b> and it need your review. Please check on attachment</p>';
+        
+        $data['content'] = '
+            <tr>
+                <td>
+                    <p>Dear <b>'.$approver_name.'</b>,</p>
+                    <p>'.$data['preview'].'</p>
+                    <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-detail">
+                        <tbody>
+                        <tr>
+                            <td align="left">
+                            <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                                <tbody>
+                                <tr>
+                                    <td> <a href="'.base_url('ea_requests/outcoming-requests/detail').'/'.$enc_req_id.'" target="_blank">DETAILS</a> </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+					'.$approve_btn.'
+					
+                    <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-danger">
+                        <tbody>
+                        <tr>
+                            <td align="left">
+                            <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                                <tbody>
+                                <tr>
+									<td> <a <a href="'.base_url('ea_requests/requests_confirmation').'?req_id='.$enc_req_id.'&approver_id='.$approver_id.'&status=3&level='.$level.'" target="_blank">REJECT</a> </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    
+                </td>
+            </tr>';
+
+        $text = $this->load->view('template/email', $data, true);
+        $mail->setFrom('no-reply@faster.bantuanteknis.id', 'FASTER-FHI360');
+		$excel = $this->attach_ea_form($request_id);
+		$mail->addAttachment($excel['path'], $excel['file_name']);
+        $mail->addAddress($email);
+        $mail->Subject = "Resubmit EA Request";
+        $mail->isHTML(true);
+        $mail->Body = $text;
+        $sent=$mail->send();
+
+		if ($sent) {
+			return true;
+		} else {
+			return false;
 		}
 	}
 }

@@ -106,7 +106,6 @@ class Incoming_requests extends MY_Controller {
 			$this->datatable->where('st.fco_monitor_status =', 2);
 			$this->datatable->where('st.finance_status =', 2);
 		}
-        $this->datatable->order_by('created_at', 'desc');
 		$this->datatable->edit_column('id', "$1", 'encrypt(id)');
 		$this->datatable->edit_column('ea_number', '<span style="font-size: 1rem;"
 		class="badge badge-success fw-bold">$1</span>', 'ea_number');
@@ -133,6 +132,7 @@ class Incoming_requests extends MY_Controller {
 							$response['message'] = 'Request has been rejected and email has been sent';
 							$status_code = 200;
 							$this->delete_ea_excel();
+							$this->delete_signature();
 						} else {
 							$this->request->update_status($req_id, $approver_id, 1, $level);
 							$response['success'] = false;
@@ -155,7 +155,10 @@ class Incoming_requests extends MY_Controller {
 				if($updated) {
 					$request_detail = $this->request->get_request_by_id($req_id);
 					if ($level == 'fco_monitor') {
-						$email_sent = $this->send_email_to_finance_teams($req_id, $approver_name);
+						$finance_teams = $this->base_model->get_finance_teams();
+						foreach($finance_teams as $user) {
+							$email_sent = $this->send_email_to_finance_teams($req_id, $approver_name, $user);
+						}
 					} else {
 						if($level == 'head_of_units') {
 							$ea_assosiate = $this->base_model->get_ea_assosiate();
@@ -183,8 +186,10 @@ class Incoming_requests extends MY_Controller {
 						$response['message'] = 'Request has been approved and email has been sent!';
 						$status_code = 200;
 						$this->delete_ea_excel();
+						$this->delete_signature();
 					} else {
 						$this->request->update_status($req_id, $approver_id, 1, $level);
+						$this->delete_signature();
 						$response['success'] = false;
 						$response['message'] = 'Something wrong, please try again later';
 						$status_code = 400;
@@ -348,7 +353,7 @@ class Incoming_requests extends MY_Controller {
 		}
     }
 
-	private function send_email_to_finance_teams($req_id, $approver_name) {
+	private function send_email_to_finance_teams($req_id, $approver_name, $user) {
         $this->load->library('Phpmailer_library');
         $mail = $this->phpmailer_library->load();
         $mail->isSMTP();
@@ -364,34 +369,45 @@ class Incoming_requests extends MY_Controller {
 		$enc_req_id = encrypt($detail['r_id']);
 
 		$data['preview'] = '<p>EA Request #EA-'.$detail['r_id'].' has been approved by '.$approver_name.'</p>
-                             <p>Please process payment request, check on following details</p>
-             ';
-        $data['content'] = '
-                    <p>Dear Finance Teams,</p> 
-                    <p>'.$data['preview'].'</p>
-                    <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-detail">
-                        <tbody>
-                        <tr>
-                            <td align="left">
-                            <table role="presentation" border="0" cellpadding="0" cellspacing="0">
-                                <tbody>
-                                <tr>
-                                    <td> <a href="'.base_url('ea_requests/outcoming-requests/detail').'/'.$enc_req_id.'" target="_blank">DETAILS</a> </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    ';
-
+						 <p>Please process payment request, check on following details</p>
+		 ';
+		 $data['content'] = '
+					 <p>Dear '.$user['username'].',</p> 
+					 <p>'.$data['preview'].'</p>
+					 <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-detail">
+						 <tbody>
+						 <tr>
+							 <td align="left">
+							 <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+								 <tbody>
+								 <tr>
+									 <td> <a href="'.base_url('ea_requests/outcoming-requests/detail').'/'.$enc_req_id.'" target="_blank">DETAILS</a> </td>
+								 </tr>
+								 </tbody>
+							 </table>
+							 </td>
+						 </tr>
+						 </tbody>
+					 </table>
+					 <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-danger">
+					 <tbody>
+					 <tr>
+						 <td align="left">
+						 <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+							 <tbody>
+							 <tr>
+								 <td> <a <a href="'.base_url('ea_requests/requests_confirmation').'?req_id='.$enc_req_id.'&approver_id='.$user['id'].'&status=3&level=finance" target="_blank">REJECT</a> </td>
+							 </tr>
+							 </tbody>
+						 </table>
+						 </td>
+					 </tr>
+					 </tbody>
+				 </table>
+					 ';
         $text = $this->load->view('template/email', $data, true);
         $mail->setFrom('no-reply@faster.bantuanteknis.id', 'FASTER-FHI360');
-		$finance_teams = $this->base_model->get_finance_teams();
-		foreach($finance_teams as $user) {
-			$mail->addAddress($user['email']);
-		}
+		$mail->addAddress($user['email']);
 		$payment_pdf = $this->attach_payment_request($req_id);
 		$mail->addStringAttachment($payment_pdf, 'Payment form request.pdf');
 		$excel = $this->attach_ea_form($req_id);
@@ -515,6 +531,7 @@ class Incoming_requests extends MY_Controller {
 				$status_code = 422;
 			}
 			$this->delete_ea_excel();
+			$this->delete_signature();
 			$this->send_json($response, $status_code);
 		} else {
 			exit('No direct script access allowed');
@@ -524,8 +541,15 @@ class Incoming_requests extends MY_Controller {
 	public function get_payment_form($req_id) {
 		ob_start();
 		$detail = $this->request->get_request_by_id($req_id);
-		$data['requestor'] = $this->request->get_requestor_data($detail['requestor_id']);
-		$data['detail'] = $detail;
+		$requestor = $this->request->get_requestor_data($detail['requestor_id']);
+		$requestor_signature = $this->get_signature_from_api($requestor['signature']);
+		$fco_signature = $this->get_signature_from_api($detail['fco_monitor_signature']);
+		$data = [
+			'requestor' => $requestor,
+			'detail' => $detail,
+			'requestor_signature' => $requestor_signature,
+			'fco_signature' => $fco_signature,
+		];
 		$content = $this->load->view('template/form_payment_reimburstment', $data, true);
         $html2pdf = new Html2Pdf('P', [210, 330], 'en', true, 'UTF-8', array(15, 10, 15, 10));
         $html2pdf->setDefaultFont('arial');

@@ -39662,8 +39662,10 @@ function initSelect2(selector) {
 function initDatatable(selector) {
   var config = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
   var defaultConfig = {
+    ordering: true,
     processing: true,
     serverSide: true,
+    order: [[0, 'desc']],
     ajax: {
       url: $(selector).attr("data-url"),
       type: "POST"

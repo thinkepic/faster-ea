@@ -6,6 +6,7 @@ class Request_Model extends CI_Model
 
     protected $fillable_columns = [
         "request_base",
+        "ea_online_number",
         "tor_number",
         "employment",
         "employment_status",
@@ -37,9 +38,10 @@ class Request_Model extends CI_Model
     function get_request_by_id($id) {
         $request_data =  $this->db->select('r.id as r_id, CONCAT("EA", r.id) AS ea_number, DATE_FORMAT(r.created_at, "%d %M %Y - %H:%i") as request_date,
         DATE_FORMAT(r.departure_date, "%d %M %Y") as d_date, DATE_FORMAT(r.return_date, "%d %M %Y") as r_date,
-        r.*, st.*, uh.username as head_of_units_name, uh.email as head_of_units_email, uea.username as ea_assosiate_name, ufc.username as fco_monitor_name,
+        r.*, st.*, uh.username as head_of_units_name, uh.email as head_of_units_email, uea.username as ea_assosiate_name,
+        uea.email as ea_assosiate_email, ufc.username as fco_monitor_name, ufc.email as fco_monitor_email, 
         ufc.purpose as fco_monitor_purpose, ufc.signature as fco_monitor_signature,
-        ufi.username as finance_name, DATE_FORMAT(st.head_of_units_status_at, "%d %M %Y - %H:%i") as head_of_units_status_at,
+        ufi.username as finance_name, ufi.email as finance_email, DATE_FORMAT(st.head_of_units_status_at, "%d %M %Y - %H:%i") as head_of_units_status_at,
         DATE_FORMAT(st.ea_assosiate_status_at, "%d %M %Y - %H:%i") as ea_assosiate_status_at,
         DATE_FORMAT(st.fco_monitor_status_at, "%d %M %Y - %H:%i") as fco_monitor_status_at, st.fco_monitor_status_at as fco_signature_date,
         DATE_FORMAT(st.finance_status_at, "%d %M %Y - %H:%i") as finance_status_at, st.payment_receipt,
@@ -207,6 +209,14 @@ class Request_Model extends CI_Model
             $level . '_status_at' => date("Y-m-d H:i:s"),
             $level . '_id' => $approver_id,
             'rejected_reason' => $rejected_reason,
+        ]);
+        return $this->db->affected_rows() === 1;
+    }
+
+    function resubmit_request($request_id, $level) {
+        $this->db->where('request_id', $request_id)->update('ea_requests_status', [
+            $level . '_status' => 1,
+            $level . '_status_at' => date("Y-m-d H:i:s"),
         ]);
         return $this->db->affected_rows() === 1;
     }
