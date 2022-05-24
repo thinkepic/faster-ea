@@ -580,7 +580,7 @@ class Requests_Confirmation extends CI_Controller {
 
 	private function delete_signature() {
 		$this->load->helper('file');
-		$path = FCPATH . 'uploads/signature_url';
+		$path = FCPATH . 'uploads/excel_signature';
 		delete_files($path, TRUE); 
 	}
 
