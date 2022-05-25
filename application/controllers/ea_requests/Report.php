@@ -485,6 +485,7 @@ class Report extends MY_Controller {
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header("Content-Disposition: attachment; filename=$filename.xlsx");
         $writer->save('php://output');
+		$this->delete_signature();
 	}
 
 	private function get_other_items_cell($items, $row) {
