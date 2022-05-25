@@ -188,8 +188,8 @@ class Outcoming_requests extends MY_Controller {
 			$response['message'] = 'Please fill all required fields';
 			$status_code = 422;
 		}
-		$this->delete_ea_excel();
-		$this->delete_signature();
+		// $this->delete_ea_excel();
+		// $this->delete_signature();
 		$this->send_json($response, $status_code);
 	}
 
@@ -314,7 +314,9 @@ class Outcoming_requests extends MY_Controller {
         $text = $this->load->view('template/email', $data, true);
         $mail->setFrom('no-reply@faster.bantuanteknis.id', 'FASTER-FHI360');
 		$excel = $this->attach_ea_form($request_id);
-		$mail->addAttachment($excel['path'], $excel['file_name']);
+		if(!empty($excel)) {
+			$mail->addAttachment($excel['path'], $excel['file_name']);
+		}
         $mail->addAddress($detail['head_of_units_email']);
 		if($detail['travel_advance'] == 'Yes') {
 			if($assosiate) {
@@ -361,7 +363,9 @@ class Outcoming_requests extends MY_Controller {
         $text = $this->load->view('template/email', $data, true);
         $mail->setFrom('no-reply@faster.bantuanteknis.id', 'FASTER-FHI360');
 		$excel = $this->attach_ea_form($request_id);
-		$mail->addAttachment($excel['path'], $excel['file_name']);
+		if(!empty($excel)) {
+			$mail->addAttachment($excel['path'], $excel['file_name']);
+		}
         $mail->addAddress($director['email']);
         $mail->Subject = "EA Request notification for Country Director";
         $mail->isHTML(true);
@@ -565,7 +569,7 @@ class Outcoming_requests extends MY_Controller {
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header("Content-Disposition: attachment; filename=$filename.xlsx");
         $writer->save('php://output');
-		$this->delete_signature();
+		// $this->delete_signature();
 	}
 
 	public function edit_costs_modal() {
@@ -635,7 +639,7 @@ class Outcoming_requests extends MY_Controller {
 					$response['message'] = 'Failed to submit request, please try again later';
 					$status_code = 400;
 				}
-				$this->delete_ea_excel();
+				// $this->delete_ea_excel();
 			} else {
 				$response['success'] = false;
 				$response['message'] = 'Failed to submit request, please try again later';
@@ -747,7 +751,9 @@ class Outcoming_requests extends MY_Controller {
         $text = $this->load->view('template/email', $data, true);
         $mail->setFrom('no-reply@faster.bantuanteknis.id', 'FASTER-FHI360');
 		$excel = $this->attach_ea_form($request_id);
-		$mail->addAttachment($excel['path'], $excel['file_name']);
+		if(!empty($excel)) {
+			$mail->addAttachment($excel['path'], $excel['file_name']);
+		}
         $mail->addAddress($email);
         $mail->Subject = "Resubmit EA Request";
         $mail->isHTML(true);

@@ -64,8 +64,8 @@ class Requests_Confirmation extends CI_Controller {
 					}
 					if($email_sent) {
 						$data['message'] = "EA Requests #EA$req_id has been approved";
-						$this->delete_ea_excel();
-						$this->delete_signature();
+						// $this->delete_ea_excel();
+						// $this->delete_signature();
 					} else {
 						$data['message'] = "Something wrong, please try again later";
 						$this->request->update_status($req_id, $approver_id, 1, $level);
@@ -130,15 +130,17 @@ class Requests_Confirmation extends CI_Controller {
         $mail->setFrom('no-reply@faster.bantuanteknis.id', 'FASTER-FHI360');
         $mail->addAddress($requestor['email']);
         $excel = $this->attach_ea_form($req_id);
-		$mail->addAttachment($excel['path'], $excel['file_name']);
+		if(!empty($excel)) {
+			$mail->addAttachment($excel['path'], $excel['file_name']);
+		}
         $mail->Subject = "Rejected EA Request";
         $mail->isHTML(true);
         $mail->Body = $text;
         $sent=$mail->send();
 
 		if ($sent) {
-			$this->delete_ea_excel();
-			$this->delete_signature();
+			// $this->delete_ea_excel();
+			// $this->delete_signature();
 			return true;
 		} else {
 			return false;
@@ -262,7 +264,9 @@ class Requests_Confirmation extends CI_Controller {
         $mail->setFrom('no-reply@faster.bantuanteknis.id', 'FASTER-FHI360');
         $mail->addAddress($email_detail['target_email']);
         $excel = $this->attach_ea_form($req_id);
-		$mail->addAttachment($excel['path'], $excel['file_name']);
+		if(!empty($excel)) {
+			$mail->addAttachment($excel['path'], $excel['file_name']);
+		}
         $mail->Subject = "EA Request";
         $mail->isHTML(true);
         $mail->Body = $text;
@@ -332,7 +336,9 @@ class Requests_Confirmation extends CI_Controller {
 		$mail->addAddress($user['email']);
         $payment_pdf = $this->attach_payment_request($req_id);
         $excel = $this->attach_ea_form($req_id);
-		$mail->addAttachment($excel['path'], $excel['file_name']);
+		if(!empty($excel)) {
+			$mail->addAttachment($excel['path'], $excel['file_name']);
+		}
 		$mail->addStringAttachment($payment_pdf, 'Payment form request.pdf');
         $mail->Subject = "Approved EA Requests for review by Finance Teams";
         $mail->isHTML(true);

@@ -131,8 +131,8 @@ class Incoming_requests extends MY_Controller {
 							$response['success'] = true;
 							$response['message'] = 'Request has been rejected and email has been sent';
 							$status_code = 200;
-							$this->delete_ea_excel();
-							$this->delete_signature();
+							// $this->delete_ea_excel();
+							// $this->delete_signature();
 						} else {
 							$this->request->update_status($req_id, $approver_id, 1, $level);
 							$response['success'] = false;
@@ -185,11 +185,11 @@ class Incoming_requests extends MY_Controller {
 						$response['success'] = true;
 						$response['message'] = 'Request has been approved and email has been sent!';
 						$status_code = 200;
-						$this->delete_ea_excel();
-						$this->delete_signature();
+						// $this->delete_ea_excel();
+						// $this->delete_signature();
 					} else {
 						$this->request->update_status($req_id, $approver_id, 1, $level);
-						$this->delete_signature();
+						// $this->delete_signature();
 						$response['success'] = false;
 						$response['message'] = 'Something wrong, please try again later';
 						$status_code = 400;
@@ -248,7 +248,9 @@ class Incoming_requests extends MY_Controller {
         $mail->setFrom('no-reply@faster.bantuanteknis.id', 'FASTER-FHI360');
         $mail->addAddress($requestor['email']);
 		$excel = $this->attach_ea_form($req_id);
-		$mail->addAttachment($excel['path'], $excel['file_name']);
+		if(!empty($excel)) {
+			$mail->addAttachment($excel['path'], $excel['file_name']);
+		}
         $mail->Subject = "Rejected EA Request";
         $mail->isHTML(true);
         $mail->Body = $text;
@@ -339,7 +341,9 @@ class Incoming_requests extends MY_Controller {
         $text = $this->load->view('template/email', $data, true);
         $mail->setFrom('no-reply@faster.bantuanteknis.id', 'FASTER-FHI360');
 		$excel = $this->attach_ea_form($req_id);
-		$mail->addAttachment($excel['path'], $excel['file_name']);
+		if(!empty($excel)) {
+			$mail->addAttachment($excel['path'], $excel['file_name']);
+		}
         $mail->addAddress($email_detail['target_email']);
         $mail->Subject = "EA Requests";
         $mail->isHTML(true);
@@ -411,7 +415,9 @@ class Incoming_requests extends MY_Controller {
 		$payment_pdf = $this->attach_payment_request($req_id);
 		$mail->addStringAttachment($payment_pdf, 'Payment form request.pdf');
 		$excel = $this->attach_ea_form($req_id);
-		$mail->addAttachment($excel['path'], $excel['file_name']);
+		if(!empty($excel)) {
+			$mail->addAttachment($excel['path'], $excel['file_name']);
+		}
         $mail->Subject = "Approved EA Requests for review by Finance Teams";
         $mail->isHTML(true);
         $mail->Body = $text;
@@ -530,8 +536,8 @@ class Incoming_requests extends MY_Controller {
 				$response['message'] = 'Please fill all required fields';
 				$status_code = 422;
 			}
-			$this->delete_ea_excel();
-			$this->delete_signature();
+			// $this->delete_ea_excel();
+			// $this->delete_signature();
 			$this->send_json($response, $status_code);
 		} else {
 			exit('No direct script access allowed');
@@ -600,12 +606,14 @@ class Incoming_requests extends MY_Controller {
         $mail->setFrom('no-reply@faster.bantuanteknis.id', 'FASTER-FHI360');
 		$payment_pdf = $this->attach_payment_request($req_id);
 		$mail->addStringAttachment($payment_pdf, 'Payment form request.pdf');
-		$excel = $this->attach_ea_form($req_id);
 		if($detail['payment_receipt'] != null) {
 			$receipt_path = FCPATH.'uploads/ea_payment_receipt/' . $detail['payment_receipt'];
 			$mail->addAttachment($receipt_path, 'Payment receipt_'.$detail['payment_receipt']);
 		}
-		$mail->addAttachment($excel['path'], $excel['file_name']);
+		$excel = $this->attach_ea_form($req_id);
+		if(!empty($excel)) {
+			$mail->addAttachment($excel['path'], $excel['file_name']);
+		}
         $mail->addAddress($requestor['email']);
         $mail->Subject = "EA Request Payment Confirmation";
         $mail->isHTML(true);
