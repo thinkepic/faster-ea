@@ -658,7 +658,11 @@ class Outcoming_requests extends MY_Controller {
 		if ($this->input->is_ajax_request() && $this->input->server('REQUEST_METHOD') === 'POST') {
 			$request_id = $this->input->post('request_id');
 			$level = rejected_by($request_id);
-			$email_sent = $this->send_resubmit_request_email($request_id, $level);
+			if($level == 'finance') {
+				$email_sent = $this->send_resubmit_requests_to_finance($request_id);
+			} else {
+				$email_sent = $this->send_resubmit_request_email($request_id, $level);
+			}
 			if($email_sent) {
 				$updated = $this->request->resubmit_request($request_id, $level);
 				if($updated) {
@@ -708,13 +712,8 @@ class Outcoming_requests extends MY_Controller {
 			$approver_name = $detail['fco_monitor_name'];
 			$approver_id = $detail['fco_monitor_id'];
 			$email = $detail['fco_monitor_email'];
-		} else if($level == 'finance') {
-			$approver_name = $detail['finance_name'];
-			$approver_id = $detail['finance_id'];
-			$email = $detail['finance_email'];
-		}
+		} 
 		$enc_req_id = encrypt($detail['r_id']);
-
 		$approve_btn = '<table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
 							<tbody>
 							<tr>
@@ -730,9 +729,6 @@ class Outcoming_requests extends MY_Controller {
 							</tr>
 							</tbody>
 						</table>';
-		if($level == 'finance') {
-			$approve_btn = '';
-		}
 		
 		$data['preview'] = '<p>You have EA Request #EA-'.$detail['r_id'].' from <b>'.$requestor['username'].'</b> and it need your review. Please check on attachment</p>';
         
@@ -802,6 +798,100 @@ class Outcoming_requests extends MY_Controller {
 		// 	$mail->addAttachment($excel['path'], $excel['file_name']);
 		// }
         $mail->addAddress($email);
+        $mail->Subject = "Resubmit EA Request";
+        $mail->isHTML(true);
+        $mail->Body = $text;
+        $sent=$mail->send();
+
+		if ($sent) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	private function send_resubmit_requests_to_finance($request_id) {
+		$this->load->library('Phpmailer_library');
+        $mail = $this->phpmailer_library->load();
+        $mail->isSMTP();
+		$email_config = $this->config->item('email');
+        $mail->SMTPSecure = 'ssl';
+        $mail->Host = $email_config['host'];
+        $mail->Port = 465;
+        $mail->SMTPDebug = 0; 
+        $mail->SMTPAuth = true;
+        $mail->Username = $email_config['username'];
+        $mail->Password = $email_config['password'];
+		$detail = $this->request->get_request_by_id($request_id);
+		$requestor = $this->request->get_requestor_data($detail['requestor_id']);
+	
+		$enc_req_id = encrypt($detail['r_id']);
+
+		$data['preview'] = '<p>You have EA Request #EA-'.$detail['r_id'].' from <b>'.$requestor['username'].'</b> and it need your review. Please check on attachment</p>';
+        
+        $data['content'] = '
+            <tr>
+                <td>
+                    <p>Dear <b>Finance teams</b>,</p>
+                    <p>'.$data['preview'].'</p>
+                    <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-detail">
+                        <tbody>
+                        <tr>
+                            <td align="left">
+                            <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                                <tbody>
+                                <tr>
+                                    <td> <a href="'.base_url('ea_requests/outcoming-requests/detail').'/'.$enc_req_id.'" target="_blank">DETAILS</a> </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+					
+                    <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-danger">
+                        <tbody>
+                        <tr>
+                            <td align="left">
+                            <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                                <tbody>
+                                <tr>
+									<td> <a <a href="'.base_url('ea_requests/requests_confirmation').'?req_id='.$enc_req_id.'&approver_id=null&status=3&level=finance" target="_blank">REJECT</a> </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+					<table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-detail">
+						<tbody>
+							<tr>
+								<td align="left">
+								<table role="presentation" border="0" cellpadding="0" cellspacing="0">
+									<tbody>
+									<tr>
+										<td> <a <a href="'.base_url('ea_requests/requests_confirmation/ea_form/'). $request_id . '" target="_blank">DOWNLOAD EA FORM</a> </td>
+									</tr>
+									</tbody>
+								</table>
+								</td>
+							</tr>
+						</tbody>
+					 </table>
+
+                    
+                </td>
+            </tr>';
+
+        $text = $this->load->view('template/email', $data, true);
+        $mail->setFrom('no-reply@faster.bantuanteknis.id', 'FASTER-FHI360');
+		$finance_teams = $this->base_model->get_finance_teams();
+		foreach($finance_teams as $user) {
+			$mail->addAddress($user['email']);
+		}
         $mail->Subject = "Resubmit EA Request";
         $mail->isHTML(true);
         $mail->Body = $text;

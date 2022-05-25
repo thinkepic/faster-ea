@@ -96,7 +96,7 @@ class Requests_Confirmation extends CI_Controller {
         } else if($level == 'fco_monitor') {
             $rejected_by = $detail['fco_monitor_name'];
         } else if($level == 'finance') {
-            $rejected_by = $detail['finance_name'];
+            $rejected_by = 'Finance Team';
         }
 
 		$data['preview'] = '<p>Your EA Request #EA-'.$detail['r_id'].' has been rejected by '.$rejected_by.'</p>

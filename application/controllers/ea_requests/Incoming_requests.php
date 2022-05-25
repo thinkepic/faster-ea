@@ -642,6 +642,21 @@ class Incoming_requests extends MY_Controller {
                         </tr>
                         </tbody>
                     </table>
+					<table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-detail">
+						<tbody>
+							<tr>
+								<td align="left">
+								<table role="presentation" border="0" cellpadding="0" cellspacing="0">
+									<tbody>
+									<tr>
+										<td> <a <a href="'.base_url('ea_requests/requests_confirmation/ea_form/'). $req_id . '" target="_blank">DOWNLOAD EA FORM</a> </td>
+									</tr>
+									</tbody>
+								</table>
+								</td>
+							</tr>
+						</tbody>
+					 </table>
 					';
 
         $text = $this->load->view('template/email', $data, true);
