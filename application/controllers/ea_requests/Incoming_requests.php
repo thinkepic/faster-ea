@@ -131,8 +131,7 @@ class Incoming_requests extends MY_Controller {
 							$response['success'] = true;
 							$response['message'] = 'Request has been rejected and email has been sent';
 							$status_code = 200;
-							// $this->delete_ea_excel();
-							// $this->delete_signature();
+							$this->delete_signature();
 						} else {
 							$this->request->update_status($req_id, $approver_id, 1, $level);
 							$response['success'] = false;
@@ -155,10 +154,7 @@ class Incoming_requests extends MY_Controller {
 				if($updated) {
 					$request_detail = $this->request->get_request_by_id($req_id);
 					if ($level == 'fco_monitor') {
-						$finance_teams = $this->base_model->get_finance_teams();
-						foreach($finance_teams as $user) {
-							$email_sent = $this->send_email_to_finance_teams($req_id, $approver_name, $user);
-						}
+						$email_sent = $this->send_email_to_finance_teams($req_id, $approver_name);
 					} else {
 						if($level == 'head_of_units') {
 							$ea_assosiate = $this->base_model->get_ea_assosiate();
@@ -185,11 +181,10 @@ class Incoming_requests extends MY_Controller {
 						$response['success'] = true;
 						$response['message'] = 'Request has been approved and email has been sent!';
 						$status_code = 200;
-						// $this->delete_ea_excel();
-						// $this->delete_signature();
+						$this->delete_signature();
 					} else {
 						$this->request->update_status($req_id, $approver_id, 1, $level);
-						// $this->delete_signature();
+						$this->delete_signature();
 						$response['success'] = false;
 						$response['message'] = 'Something wrong, please try again later';
 						$status_code = 400;
@@ -242,15 +237,30 @@ class Incoming_requests extends MY_Controller {
                         </tr>
                         </tbody>
                     </table>
+					<table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-detail">
+						<tbody>
+							<tr>
+								<td align="left">
+								<table role="presentation" border="0" cellpadding="0" cellspacing="0">
+									<tbody>
+									<tr>
+										<td> <a <a href="'.base_url('ea_requests/requests_confirmation/ea_form/'). $req_id . '" target="_blank">DOWNLOAD EA FORM</a> </td>
+									</tr>
+									</tbody>
+								</table>
+								</td>
+							</tr>
+						</tbody>
+					 </table>
 					';
 
         $text = $this->load->view('template/email', $data, true);
         $mail->setFrom('no-reply@faster.bantuanteknis.id', 'FASTER-FHI360');
         $mail->addAddress($requestor['email']);
-		$excel = $this->attach_ea_form($req_id);
-		if(!empty($excel)) {
-			$mail->addAttachment($excel['path'], $excel['file_name']);
-		}
+		// $excel = $this->attach_ea_form($req_id);
+		// if(!empty($excel)) {
+		// 	$mail->addAttachment($excel['path'], $excel['file_name']);
+		// }
         $mail->Subject = "Rejected EA Request";
         $mail->isHTML(true);
         $mail->Body = $text;
@@ -335,15 +345,30 @@ class Incoming_requests extends MY_Controller {
 								</td>
 							</tr>
 							</tbody>
-						</table>
+					</table>
+					<table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-detail">
+						<tbody>
+							<tr>
+								<td align="left">
+								<table role="presentation" border="0" cellpadding="0" cellspacing="0">
+									<tbody>
+									<tr>
+										<td> <a <a href="'.base_url('ea_requests/requests_confirmation/ea_form/'). $req_id . '" target="_blank">DOWNLOAD EA FORM</a> </td>
+									</tr>
+									</tbody>
+								</table>
+								</td>
+							</tr>
+						</tbody>
+					 </table>
                     ';
 
         $text = $this->load->view('template/email', $data, true);
         $mail->setFrom('no-reply@faster.bantuanteknis.id', 'FASTER-FHI360');
-		$excel = $this->attach_ea_form($req_id);
-		if(!empty($excel)) {
-			$mail->addAttachment($excel['path'], $excel['file_name']);
-		}
+		// $excel = $this->attach_ea_form($req_id);
+		// if(!empty($excel)) {
+		// 	$mail->addAttachment($excel['path'], $excel['file_name']);
+		// }
         $mail->addAddress($email_detail['target_email']);
         $mail->Subject = "EA Requests";
         $mail->isHTML(true);
@@ -357,7 +382,7 @@ class Incoming_requests extends MY_Controller {
 		}
     }
 
-	private function send_email_to_finance_teams($req_id, $approver_name, $user) {
+	private function send_email_to_finance_teams($req_id, $approver_name) {
         $this->load->library('Phpmailer_library');
         $mail = $this->phpmailer_library->load();
         $mail->isSMTP();
@@ -376,7 +401,7 @@ class Incoming_requests extends MY_Controller {
 						 <p>Please process payment request, check on following details</p>
 		 ';
 		 $data['content'] = '
-					 <p>Dear '.$user['username'].',</p> 
+					 <p>Dear Finance Teams,</p> 
 					 <p>'.$data['preview'].'</p>
 					 <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-detail">
 						 <tbody>
@@ -394,30 +419,48 @@ class Incoming_requests extends MY_Controller {
 						 </tbody>
 					 </table>
 					 <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-danger">
-					 <tbody>
-					 <tr>
-						 <td align="left">
-						 <table role="presentation" border="0" cellpadding="0" cellspacing="0">
-							 <tbody>
-							 <tr>
-								 <td> <a <a href="'.base_url('ea_requests/requests_confirmation').'?req_id='.$enc_req_id.'&approver_id='.$user['id'].'&status=3&level=finance" target="_blank">REJECT</a> </td>
-							 </tr>
-							 </tbody>
-						 </table>
-						 </td>
-					 </tr>
-					 </tbody>
-				 </table>
+						<tbody>
+						<tr>
+							<td align="left">
+							<table role="presentation" border="0" cellpadding="0" cellspacing="0">
+								<tbody>
+								<tr>
+									<td> <a <a href="'.base_url('ea_requests/requests_confirmation').'?req_id='.$enc_req_id.'&approver_id=null&status=3&level=finance" target="_blank">REJECT</a> </td>
+								</tr>
+								</tbody>
+							</table>
+							</td>
+						</tr>
+						</tbody>
+				 	</table>
+					 <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-detail">
+						<tbody>
+							<tr>
+								<td align="left">
+								<table role="presentation" border="0" cellpadding="0" cellspacing="0">
+									<tbody>
+									<tr>
+										<td> <a <a href="'.base_url('ea_requests/requests_confirmation/ea_form/'). $req_id . '" target="_blank">DOWNLOAD EA FORM</a> </td>
+									</tr>
+									</tbody>
+								</table>
+								</td>
+							</tr>
+						</tbody>
+					 </table>
 					 ';
         $text = $this->load->view('template/email', $data, true);
         $mail->setFrom('no-reply@faster.bantuanteknis.id', 'FASTER-FHI360');
-		$mail->addAddress($user['email']);
+		$finance_teams = $this->base_model->get_finance_teams();
+		foreach($finance_teams as $user) {
+			$mail->addAddress($user['email']);
+		}
 		$payment_pdf = $this->attach_payment_request($req_id);
 		$mail->addStringAttachment($payment_pdf, 'Payment form request.pdf');
-		$excel = $this->attach_ea_form($req_id);
-		if(!empty($excel)) {
-			$mail->addAttachment($excel['path'], $excel['file_name']);
-		}
+		// $excel = $this->attach_ea_form($req_id);
+		// if(!empty($excel)) {
+		// 	$mail->addAttachment($excel['path'], $excel['file_name']);
+		// }
         $mail->Subject = "Approved EA Requests for review by Finance Teams";
         $mail->isHTML(true);
         $mail->Body = $text;
@@ -536,8 +579,7 @@ class Incoming_requests extends MY_Controller {
 				$response['message'] = 'Please fill all required fields';
 				$status_code = 422;
 			}
-			// $this->delete_ea_excel();
-			// $this->delete_signature();
+			$this->delete_signature();
 			$this->send_json($response, $status_code);
 		} else {
 			exit('No direct script access allowed');
@@ -610,10 +652,10 @@ class Incoming_requests extends MY_Controller {
 			$receipt_path = FCPATH.'uploads/ea_payment_receipt/' . $detail['payment_receipt'];
 			$mail->addAttachment($receipt_path, 'Payment receipt_'.$detail['payment_receipt']);
 		}
-		$excel = $this->attach_ea_form($req_id);
-		if(!empty($excel)) {
-			$mail->addAttachment($excel['path'], $excel['file_name']);
-		}
+		// $excel = $this->attach_ea_form($req_id);
+		// if(!empty($excel)) {
+		// 	$mail->addAttachment($excel['path'], $excel['file_name']);
+		// }
         $mail->addAddress($requestor['email']);
         $mail->Subject = "EA Request Payment Confirmation";
         $mail->isHTML(true);

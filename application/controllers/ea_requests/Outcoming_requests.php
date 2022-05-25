@@ -188,8 +188,7 @@ class Outcoming_requests extends MY_Controller {
 			$response['message'] = 'Please fill all required fields';
 			$status_code = 422;
 		}
-		// $this->delete_ea_excel();
-		// $this->delete_signature();
+		$this->delete_signature();
 		$this->send_json($response, $status_code);
 	}
 
@@ -307,16 +306,32 @@ class Outcoming_requests extends MY_Controller {
                         </tbody>
                     </table>
 
+					<table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-detail">
+						<tbody>
+							<tr>
+								<td align="left">
+								<table role="presentation" border="0" cellpadding="0" cellspacing="0">
+									<tbody>
+									<tr>
+										<td> <a <a href="'.base_url('ea_requests/requests_confirmation/ea_form/'). $request_id . '" target="_blank">DOWNLOAD EA FORM</a> </td>
+									</tr>
+									</tbody>
+								</table>
+								</td>
+							</tr>
+						</tbody>
+					 </table>
+
                     
                 </td>
             </tr>';
 
         $text = $this->load->view('template/email', $data, true);
         $mail->setFrom('no-reply@faster.bantuanteknis.id', 'FASTER-FHI360');
-		$excel = $this->attach_ea_form($request_id);
-		if(!empty($excel)) {
-			$mail->addAttachment($excel['path'], $excel['file_name']);
-		}
+		// $excel = $this->attach_ea_form($request_id);
+		// if(!empty($excel)) {
+		// 	$mail->addAttachment($excel['path'], $excel['file_name']);
+		// }
         $mail->addAddress($detail['head_of_units_email']);
 		if($detail['travel_advance'] == 'Yes') {
 			if($assosiate) {
@@ -358,14 +373,30 @@ class Outcoming_requests extends MY_Controller {
                     <p>Dear <b>'.$director['username'].'</b>,</p>
                     <p>'.$data['preview'].'</p>
                 </td>
-            </tr>';
+            </tr>
+			<table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-detail">
+						<tbody>
+							<tr>
+								<td align="left">
+								<table role="presentation" border="0" cellpadding="0" cellspacing="0">
+									<tbody>
+									<tr>
+										<td> <a <a href="'.base_url('ea_requests/requests_confirmation/ea_form/'). $request_id . '" target="_blank">DOWNLOAD EA FORM</a> </td>
+									</tr>
+									</tbody>
+								</table>
+								</td>
+							</tr>
+						</tbody>
+					 </table>
+			';
 
         $text = $this->load->view('template/email', $data, true);
         $mail->setFrom('no-reply@faster.bantuanteknis.id', 'FASTER-FHI360');
-		$excel = $this->attach_ea_form($request_id);
-		if(!empty($excel)) {
-			$mail->addAttachment($excel['path'], $excel['file_name']);
-		}
+		// $excel = $this->attach_ea_form($request_id);
+		// if(!empty($excel)) {
+		// 	$mail->addAttachment($excel['path'], $excel['file_name']);
+		// }
         $mail->addAddress($director['email']);
         $mail->Subject = "EA Request notification for Country Director";
         $mail->isHTML(true);
@@ -569,7 +600,7 @@ class Outcoming_requests extends MY_Controller {
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header("Content-Disposition: attachment; filename=$filename.xlsx");
         $writer->save('php://output');
-		// $this->delete_signature();
+		$this->delete_signature();
 	}
 
 	public function edit_costs_modal() {
@@ -744,16 +775,32 @@ class Outcoming_requests extends MY_Controller {
                         </tbody>
                     </table>
 
+					<table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-detail">
+						<tbody>
+							<tr>
+								<td align="left">
+								<table role="presentation" border="0" cellpadding="0" cellspacing="0">
+									<tbody>
+									<tr>
+										<td> <a <a href="'.base_url('ea_requests/requests_confirmation/ea_form/'). $request_id . '" target="_blank">DOWNLOAD EA FORM</a> </td>
+									</tr>
+									</tbody>
+								</table>
+								</td>
+							</tr>
+						</tbody>
+					 </table>
+
                     
                 </td>
             </tr>';
 
         $text = $this->load->view('template/email', $data, true);
         $mail->setFrom('no-reply@faster.bantuanteknis.id', 'FASTER-FHI360');
-		$excel = $this->attach_ea_form($request_id);
-		if(!empty($excel)) {
-			$mail->addAttachment($excel['path'], $excel['file_name']);
-		}
+		// $excel = $this->attach_ea_form($request_id);
+		// if(!empty($excel)) {
+		// 	$mail->addAttachment($excel['path'], $excel['file_name']);
+		// }
         $mail->addAddress($email);
         $mail->Subject = "Resubmit EA Request";
         $mail->isHTML(true);
